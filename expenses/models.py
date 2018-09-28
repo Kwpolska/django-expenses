@@ -55,7 +55,7 @@ class Category(models.Model):
 
 class Expense(models.Model):
     date = models.DateField(_("date"), default=datetime.date.today)
-    vendor = models.CharField(_("vendor"), max_length=100)
+    vendor = models.CharField(_("vendor"), max_length=40)
     category = models.ForeignKey(Category, verbose_name=_("category"), on_delete=models.PROTECT)
     amount = models.DecimalField(_("amount"), max_digits=10, decimal_places=2)
     description = models.CharField(_("description"), max_length=80, blank=True)
