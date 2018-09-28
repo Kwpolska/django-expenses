@@ -3,10 +3,7 @@
 # All rights reserved.
 # See /LICENSE for licensing information.
 
-import functools
-
 from expenses.models import Expense
-from expenses.utils import revchron
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
@@ -17,9 +14,9 @@ def autocomplete_expense_provider(field):
         def view(request):
             query = request.GET['q']
             results = f(request, query)
-            results = revchron(results.distinct())
+            results = results.values_list(field, flat=True).distinct()
             return JsonResponse(
-                [getattr(e, field) for e in reversed(results[:10])],
+                list(reversed(results[:10])),
                 safe=False
             )
 
