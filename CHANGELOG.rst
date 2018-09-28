@@ -11,5 +11,11 @@ More information can be found on GitHub in the `releases section
 Version History
 ===============
 
+0.1.1
+    * Fix some visual glitches
+    * Refactor autocomplete handlers
+    * Improve pagination display
+    * Shorten descriptions
+
 0.1.0
     Initial public release.

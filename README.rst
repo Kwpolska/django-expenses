@@ -21,6 +21,7 @@ To-do
 * Autocomplete for templates
 * i18n (Polish translation)
 * Pushing config (URLs, locale) to JS
+* searching and filtering
 
 Configuration
 -------------
