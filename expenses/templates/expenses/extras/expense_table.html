@@ -55,7 +55,7 @@
         <tr>
             <td class="expenses-mtable-left"><a class="expenses-mtable-description" href="{{ expense.get_absolute_url }}">{{ expense.desc_auto }}</a>
                 <p class="expenses-mtable-details">
-                    {% trans "Vendor:" %} {{ expense.vendor }} — {% trans "Category:" %} {{ expense.category.html_link }}
+                    {{ expense.vendor }} — {{ expense.category.html_link }}
                     {% if expense.is_bill and pid != 'bill_list' %}— <span class="badge badge-secondary">{% trans "Bill" %}</span>{% endif %}
                 </p>
             </td>
