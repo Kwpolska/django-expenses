@@ -17,8 +17,12 @@
                     </a>
                 </li>
             {% endif %}
-            {% for p in page.paginator.page_range %}
-                <li class="page-item{% if p == page.number %} active{% endif %}"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+            {% for p in page_range %}
+                {% if p == '...' %}
+                    <li class="page-item disabled"><a class="page-link" href="?page={{ page.number }}">…</a></li>
+                {% else %}
+                    <li class="page-item{% if p == page.number %} active{% endif %}"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                {% endif %}
             {% endfor %}
             {% if page.has_next %}
                 <li class="page-item">
