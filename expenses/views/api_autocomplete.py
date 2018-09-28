@@ -11,7 +11,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
 
-def autocomplete_expense_provider(field=None, f=None):
+def autocomplete_expense_provider(f=None, field=None):
     if f is None:
         return functools.partial(autocomplete_expense_provider, field=field)
 
@@ -29,17 +29,17 @@ def autocomplete_expense_provider(field=None, f=None):
     return wrap
 
 
-@autocomplete_expense_provider('vendor')
+@autocomplete_expense_provider(field='vendor')
 def expense_vendor(request, query):
     return Expense.objects.filter(user=request.user, vendor__istartswith=query)
 
 
-@autocomplete_expense_provider('vendor')
+@autocomplete_expense_provider(field='vendor')
 def bill_vendor(request, query):
     return Expense.objects.filter(user=request.user, is_bill=True, vendor__istartswith=query)
 
 
-@autocomplete_expense_provider('description')
+@autocomplete_expense_provider(field='description')
 def expense_description(request, query):
     vendor = request.GET.get('vendor')
     results = None
