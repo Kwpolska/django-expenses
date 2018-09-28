@@ -58,7 +58,7 @@ class Expense(models.Model):
     vendor = models.CharField(_("vendor"), max_length=100)
     category = models.ForeignKey(Category, verbose_name=_("category"), on_delete=models.PROTECT)
     amount = models.DecimalField(_("amount"), max_digits=10, decimal_places=2)
-    description = models.CharField(_("description"), max_length=250, blank=True)
+    description = models.CharField(_("description"), max_length=80, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
     is_bill = models.BooleanField(_("this is a bill"), default=False)
     date_added = models.DateTimeField(auto_now_add=True)
@@ -85,12 +85,12 @@ class Expense(models.Model):
             return self.description
         if self.billitem_set.count() == 0:
             return gettext_lazy("(empty)")
-        return Truncator(", ".join(i.product for i in self.billitem_set.all())).chars(200)
+        return Truncator(", ".join(i.product for i in self.billitem_set.all())).chars(80)
 
 
 class BillItem(models.Model):
     bill = models.ForeignKey(Expense, verbose_name=_("bill"), on_delete=models.CASCADE)
-    product = models.CharField(_("product"), max_length=100)
+    product = models.CharField(_("product"), max_length=40)
     serving = models.DecimalField(_("serving [g, L]"), max_digits=10, decimal_places=3)
     count = models.DecimalField(_("count"), max_digits=10, decimal_places=3)  # weighted products
     unit_price = models.DecimalField(_("unit price"), max_digits=10, decimal_places=2)
@@ -110,7 +110,7 @@ class BillItem(models.Model):
 
 
 class BillItemTemplate(models.Model):
-    product = models.CharField(_("product"), max_length=100)
+    product = models.CharField(_("product"), max_length=40)
     serving = models.DecimalField(_("serving [g, L]"), max_digits=10, decimal_places=3)
     unit_price = models.DecimalField(_("unit price"), max_digits=10, decimal_places=2)
     comment = models.TextField(_("comment"))
@@ -126,14 +126,14 @@ class BillItemTemplate(models.Model):
 
 
 class ExpenseTemplate(models.Model):
-    vendor = models.CharField(_("vendor"), max_length=100)
+    vendor = models.CharField(_("vendor"), max_length=40)
     category = models.ForeignKey(Category, verbose_name=_("category"), on_delete=models.PROTECT)
     type = models.CharField(_("template type"), max_length=20, choices=(
         ('simple', _('Simple')),
         ('count', _('Multiplied by count')),
     ))
     amount = models.DecimalField(_("amount"), max_digits=10, decimal_places=2, null=True)
-    description = models.CharField(_("description (!count! tag accepted)"), max_length=250)
+    description = models.CharField(_("description (!count! tag accepted)"), max_length=80)
     comment = models.TextField(_("comment"))
     user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
