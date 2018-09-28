@@ -17,8 +17,9 @@ def autocomplete_expense_provider(field):
         def view(request):
             query = request.GET['q']
             results = f(request, query)
+            results = revchron(results.distinct())
             return JsonResponse(
-                [getattr(e, field) for e in reversed(revchron(results)[:10])],
+                [getattr(e, field) for e in reversed(results[:10])],
                 safe=False
             )
 
