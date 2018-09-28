@@ -178,3 +178,7 @@ footer#footer {
     margin: 0;
     font-size: 0.85em;
 }
+
+.expenses-table .autocomplete {
+    position: sticky;
+}
