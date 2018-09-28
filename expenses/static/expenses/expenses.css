@@ -1,0 +1,173 @@
+.expenses-stat-heading {
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+#expenses-wordmark {
+    font-weight: bold;
+}
+#expenses-wordmark:before {
+    content: " ◆ ";
+    color: #bbb;
+}
+
+.expenses-stat-item-lg {
+    font-size: 2em;
+}
+
+.expenses-big-question {
+    font-size: 1.5rem;
+    margin: 1rem;
+    text-align: center;
+}
+
+.expenses-table td, .expenses-table th {
+    vertical-align: middle;
+}
+
+.expenses-buttons {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.table-no-top-border th {
+    border-top: none;
+}
+
+#expenses-toolbar {
+    border: 1px solid #0000c1;
+    border-top: none;
+    border-radius: 0 0 .25rem .25rem;
+    padding: .5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0px 1px 1px #0ad;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+#expenses-toolbar:empty {
+    border: none;
+    padding: 0;
+    box-shadow: none;
+}
+
+.expenses-empty {
+    font-size: 1.5em;
+    font-style: italic;
+    text-align: center;
+}
+
+.expenses-container h1,
+.expenses-container h2,
+.expenses-container h3,
+.expenses-container h4,
+.expenses-container h5,
+.expenses-container h6 {
+    font-family: var(--font-family-sans-serif);
+}
+
+footer#footer {
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.expense-container > p:last-child {
+    margin-bottom: 0;
+}
+
+.expenses-table-date {
+    width: 12%;
+}
+
+.expenses-table-vendor {
+    width: 21%;
+}
+
+.expenses-table-category {
+    width: 21%;
+}
+
+.expenses-table-amount {
+    width: 8%;
+    text-align: right;
+}
+
+.expenses-table-description {
+    width: 36%;
+}
+
+.expenses-cattable-name {
+    width: 40%;
+}
+
+.expenses-cattable-expenses, .expenses-cattable-templates {
+    width: 15%;
+}
+
+.expenses-cattable-alltimetotal, .expenses-cattable-monthlytotal {
+    width: 15%;
+}
+
+.expenses-quickadd-mini-input {
+    padding-left: 0;
+    padding-right: 0;
+    text-align: right;
+}
+
+.expenses-container h1 {
+    font-size: 2.5rem;
+}
+
+.expenses-container h2 {
+    font-size: 2rem;
+}
+
+.expenses-bill-meta-title {
+    font-weight: bold;
+}
+
+.expenses-bill-total-title {
+    font-weight: bold;
+    text-align: right;
+}
+
+.expenses-bill-total {
+    font-size: 1.5em;
+    text-align: right;
+}
+
+.expenses-billtable-product {
+    width: 25%;
+}
+
+.expenses-billtable-serving,
+.expenses-billtable-count,
+.expenses-billtable-unitprice,
+.expenses-billtable-amount {
+    width: 15%;
+    text-align: right;
+}
+
+.expenses-billtable-actions {
+    width: 15%;
+}
+
+.expenses-mtable-date {
+    font-weight: bold;
+    padding: 0.1rem !important;
+}
+
+.expenses-mtable-left {
+    width: 75%;
+}
+
+.expenses-mtable-amount {
+    font-size: 1.25em;
+    text-align: right;
+    width: 25%;
+}
+
+.expenses-mtable-details {
+    margin: 0;
+    font-size: 0.85em;
+}

@@ -1,0 +1,20 @@
+{
+  "name": "expenses-ts",
+  "version": "1.0.0",
+  "description": "Expenses TypeScript",
+  "dependencies": {
+    "autocomplete-js": "^2.7.1"
+  },
+  "devDependencies": {
+    "@types/node": "^10.11.2",
+    "ts-loader": "^5.2.1",
+    "typescript": "^3.1.1",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chris Warrick",
+  "license": "BSD-3-Clause"
+}

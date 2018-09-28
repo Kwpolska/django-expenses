@@ -1,0 +1,13 @@
+{% extends "expenses/expbase.html" %}
+{% load i18n %}
+{% block content %}
+    <form method="post" class="text-center">{% csrf_token %}
+        <p class="expenses-big-question">{% blocktrans with name=object %}Are you sure you want to delete <strong>{{ name }}</strong>?{% endblocktrans %}</p>
+        {% if object.is_bill %}<p>{% trans "Removing a bill will also remove all its items." %}</p>{% endif %}
+        <p class="expenses-buttons">
+            <button type="submit" value="Confirm" class="btn btn-danger"><i class="fa fa-trash-alt"></i> {% trans "Confirm" %}</button>
+            <a href="{{ cancel_url }}" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> {% trans "Cancel" %}</a>
+        </p>
+    </form>
+{% endblock %}
+

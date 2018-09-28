@@ -1,0 +1,47 @@
+{% extends "expenses/expbase.html" %}
+{% load i18n %}
+{% block content %}
+    <h1>{% trans "Delete category" %}</h1>
+    {% if deletion_failed %}
+        <p class="text-danger">{% trans "Failed to delete category. Select a valid move destination." %}</p>
+    {% endif %}
+    <p>
+        {% blocktrans %}
+            You’re attempting to delete the <strong>{{ object.name }}</strong> category.
+        {% endblocktrans %}
+        {% blocktrans count num=object.total_count %}
+            The category has {{ num }} item in total.
+        {% plural %}
+            The category has {{ num }} items in total.
+        {% endblocktrans %}
+    </p>
+    <form method="post">{% csrf_token %}
+        {% if object.total_count == 0 %}
+            <p>{% trans "It can be deleted without further intervention." %}</p>
+        {% else %}
+            {% if categories.count == 1 %}
+                <p class="text-danger">{% trans "It cannot be deleted, because each expense must have a category associated with it. If you want to remove this category, you must first remove all expenses in this category." %}</p>
+            {% else %}
+                <p>{% trans "Before you delete it, you will need to move its contents to another category." %}</p>
+                <label for="move_destination"><strong>{% trans "Move items to:" %}</strong></label>
+                <select class="form-control" id="move_destination" name="move_destination">
+                    {% for cat in categories %}
+                        {% if cat != object %}
+                            <option value="{{ cat.pk }}">{{ cat.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            {% endif %}
+        {% endif %}
+
+        {% if show_del_button %}
+            <div class="text-center">
+                <p class="expenses-big-question">{% blocktrans with name=object %}Are you sure you want to delete <strong>{{ name }}</strong>?{% endblocktrans %}
+                <p class="expenses-buttons">
+                    <button type="submit" value="Confirm" class="btn btn-danger"><i class="fa fa-trash-alt"></i> {% trans "Confirm" %}</button>
+                    <a href="{% url "expenses:category_show" object.slug %}" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> {% trans "Cancel" %}</a>
+                </p></div>
+        {% endif %}
+    </form>
+{% endblock %}
+

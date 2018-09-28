@@ -1,0 +1,33 @@
+{% extends "expenses/expbase.html" %}
+{% load i18n %}
+{% block content %}
+    {% if not categories %}
+    <p class="expenses-empty">{% trans "No categories to show." %}
+        <a href="{% url 'expenses:category_add' %}" class="btn btn-sm btn-secondary"><i class="fas fa-plus-circle"></i> {% trans "Add a category" %}</a>
+    </p>
+    {% else %}
+        <form method="POST">
+        {% csrf_token %}
+        <table class="table table-hover table-no-top-border">
+            <thead>
+            <tr>
+                <th>{% trans "Name" %}</th>
+                <th>{% trans "Order" %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td><input class="form-control" name="cat_{{ category.id }}_name" title="{% trans "Category name" %}" value="{{ category.name }}" required></td>
+                    <td><input class="form-control" type="number" title="{% trans "Category order" %}" name="cat_{{ category.id }}_order" value="{{ category.order }}" required></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+            <p class="expenses-buttons align-center">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> {% trans "Save" %}</button>
+                <a href="{% url 'expenses:category_list' %}" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> {% trans "Cancel" %}</a>
+            </p>
+        </form>
+    {% endif %}
+{% endblock %}

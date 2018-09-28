@@ -1,0 +1,6 @@
+{% load i18n %}
+    <div class="btn-group" role="group" aria-label="{% trans "Action selection" %}">
+        <a href="{% url "expenses:expense_add" %}" class="btn btn-secondary {% if pid == 'expense_add' %}active{% endif %}">{% trans "Add an expense" %}</a>
+        <a href="{% url "expenses:bill_add" %}" class="btn btn-secondary {% if pid == 'bill_add' %}active{% endif %}">{% trans "Add a bill" %}</a>
+        <a href="{% url "expenses:template_list" %}" class="btn btn-secondary {% if pid == 'template_run' %}active{% endif %}">{% trans "Use a template" %}</a>
+    </div>

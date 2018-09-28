@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "outDir": "js",
+        "sourceMap": false,
+        "lib": ["es2015", "dom"]
+    },
+    "files": [
+        "expenses.ts"
+    ],
+    "compileOnSave": true
+}

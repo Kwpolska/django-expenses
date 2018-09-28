@@ -1,0 +1,10 @@
+{% extends "expenses/expbase.html" %}
+{% load i18n %}
+{% load expenses_extras %}
+{% block exp_toolbar %}
+{% exp_template_toolbar pid %}
+{% endblock %}
+{% block content %}
+    {% template_table templates %}
+    {% exp_paginator templates %}
+{% endblock %}

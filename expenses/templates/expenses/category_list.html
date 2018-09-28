@@ -1,0 +1,39 @@
+{% extends "expenses/expbase.html" %}
+{% load i18n %}
+{% load expenses_extras %}
+    {% block exp_toolbar %}
+        <a href="{% url 'expenses:category_add' %}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> {% trans "Add a category" %}</a>
+        {% if categories %}
+            <a href="{% url 'expenses:category_bulk_edit' %}" class="btn btn-info"><i class="fa fa-edit"></i> {% trans "Bulk edit" %}</a>
+        {% endif %}
+    {% endblock %}
+{% block content %}
+
+    {% if not categories %}
+        <p class="expenses-empty">{% trans "No categories to show." %}</p>
+    {% else %}
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th class="expenses-cattable-name">{% trans "Name" %}</th>
+                <th class="expenses-cattable-expenses">{% trans "Expenses" %}</th>
+                <th class="expenses-cattable-templates">{% trans "Templates" %}</th>
+                <th class="expenses-cattable-alltimetotal">{% trans "All-time Total" %}</th>
+                <th class="expenses-cattable-monthlytotal">{% trans "Monthly Total" %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td class="expenses-cattable-name">{{ category.html_link }}</td>
+                    <td class="expenses-cattable-expenses">{{ category.expense_set.count }}</td>
+                    <td class="expenses-cattable-templates">{{ category.expensetemplate_set.count }}</td>
+                    <td class="expenses-cattable-alltimetotal">{% money category.all_time_sum %}</td>
+                    <td class="expenses-cattable-monthlytotal">{% money category.monthly_sum %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% exp_paginator categories %}
+    {% endif %}
+{% endblock %}

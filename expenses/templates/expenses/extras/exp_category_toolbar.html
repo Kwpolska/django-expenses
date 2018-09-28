@@ -1,0 +1,7 @@
+{% load i18n %}
+<a class="btn btn-info" href="{% url 'expenses:category_edit' category.slug %}"><i class="fa fa-edit"></i> {% trans "Edit" %}</a>
+<a class="btn btn-danger" href="{% url 'expenses:category_delete' category.slug %}"><i class="fa fa-trash-alt"></i> {% trans "Delete" %}</a>
+<div class="btn-group" role="group" aria-label="{% trans "Type selection" %}">
+    <a href="{% url "expenses:category_show" category.slug %}" class="btn btn-secondary {%  if pid == 'category_show' %}active{% endif %}">{% trans "Expenses" %}</a>
+    <a href="{% url "expenses:category_show_templates" category.slug %}" class="btn btn-secondary {% if pid == 'category_show_templates' %}active{% endif %}">{% trans "Templates" %}</a>
+</div>

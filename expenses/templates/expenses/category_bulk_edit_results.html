@@ -1,0 +1,9 @@
+{% extends "expenses/expbase.html" %}
+{% load i18n %}
+{% block content %}
+    <h1>{% trans "Edit results" %}</h1>
+    <p>{% trans "Categories changed:" %} <strong>{{ changed_count }}</strong></p>
+    <p>{% trans "Categories unchanged:" %} <strong>{{ unchanged_count }}</strong></p>
+    <p>{% trans "Failures:" %} {% if failure_count > 0 %}<span class="text-danger">{{ failure_list|join:", " }} <strong>({{ failure_count }}</strong></span>{% else %}<strong>0</strong>{% endif %}</p>
+    <p><a href="{% url "expenses:category_list" %}" class="btn btn-primary"><i class="fa fa-check"></i> OK</a></p>
+{% endblock %}

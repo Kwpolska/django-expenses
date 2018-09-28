@@ -1,0 +1,11 @@
+{% extends "expenses/expbase.html" %}
+{% load i18n %}
+{% load expenses_extras %}
+{% block exp_toolbar %}
+{% exp_category_toolbar category pid %}
+{% endblock %}
+{% block content %}
+    <h1>{% trans "Category:" %} {{ category.name }}</h1>
+    {% expense_table expenses %}
+    {% exp_paginator expenses %}
+{% endblock %}

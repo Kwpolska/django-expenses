@@ -1,0 +1,7 @@
+{% extends "expenses/expbase.html" %}
+{% load i18n %}
+{% load expenses_extras %}
+{% block content %}
+    {% expense_table expenses %}
+    {% exp_paginator expenses %}
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load expenses_extras %}
+{% block extra_head %}
+<link href="/static/expenses/expenses.css" rel="stylesheet">
+<link href="/static/expenses/autocomplete.min.css" rel="stylesheet">
+{% endblock %}
+{% block extra_scripts %}
+    <script src="/static/expenses/expenses.js"></script>
+{% endblock %}
+{% block navbar_container %}
+    <nav class="navbar navbar-expand-md navbar-kw bg-dark static-top"><div class="container">
+
+            <a class="navbar-brand" href="{% url 'expenses:index' %}">
+            <img src="/static/expenses/logo.png" srcset="/static/expenses/logo2x.png 2x, /static/expenses/logo3x.png 3x, /static/expenses/logo4x.png 4x" alt="{% trans "Expenses" %}" id="logo"><span id="blog-title">Kw<span id="expenses-wordmark">{% trans "Expenses" %}</span></span>
+        </a>
+        <div>
+            <button class="navbar-toggler mr-2" id="color-changer-mobile" type="button" aria-label="Change color scheme">
+                <span class="color-changer"></span>
+            </button>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-navbar">
+            <ul class="navbar-nav mr-auto">
+                {% exp_menu_link 'Dashboard' 'expenses:index' 'expenses_index' %}
+                {% exp_menu_link 'Expenses' 'expenses:expense_list' 'expense_list' %}
+                {% exp_menu_link 'Add Expense' 'expenses:expense_add' 'expense_add' %}
+                {% exp_menu_link 'Bills' 'expenses:bill_list' 'bill_list' %}
+                {% exp_menu_link 'Add Bill' 'expenses:bill_add' 'bill_add' %}
+                {% exp_menu_link 'Templates' 'expenses:template_list' 'template_list' %}
+                {% exp_menu_link 'Categories' 'expenses:category_list' 'category_list' %}
+            </ul>
+            <ul class="navbar-nav navbar-right">
+                <li class="nav-item" id="color-changer-menu">
+                    <a href="#" class="nav-link" id="color-changer-btn">
+                        <div class="color-changer"></div>
+                        <span id="color-changer-text"><script type="text/javascript">document.write(csText);</script></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    </nav>
+{% endblock %}
+
+{% block content_top %}
+    <div id="expenses-toolbar">{% block exp_toolbar %}{% endblock %}</div>
+    <div id="cookiebox"></div>
+    <div class="expenses-container">
+        {% block content %}{% endblock %}
+    </div>
+{% endblock %}

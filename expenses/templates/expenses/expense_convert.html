@@ -1,0 +1,21 @@
+{% extends "expenses/expbase.html" %}
+{% load i18n %}
+{% load expenses_extras %}
+{% block content %}
+    <h1>{% trans "Convert" %}</h1>
+    <p><strong>{% trans "Description:" %}</strong> {{ expense.desc_auto }}</p>
+    {% if expense.is_bill %}
+        <p>{% trans "Conversion will remove all bill items permanently and turn it into an expense with the same amount as the sum of its items." %}</p>
+        <p class="expenses-big-question">{% trans "Are you sure you want to convert this bill to an expense?" %}</p>
+    {% else %}
+        <p>{% trans "Conversion will turn this expense into a bill and add one item with the same amount as this expense currently has." %}</p>
+        <p class="expenses-big-question">{% trans "Are you sure you want to convert this expense to a bill?" %}</p>
+    {% endif %}
+<form action="" method="POST">
+    {% csrf_token %}
+    <p class="expenses-buttons">
+            <button type="submit" value="Confirm" class="btn btn-danger"><i class="fas fa-exchange-alt"></i> {% trans "Confirm" %}</button>
+            <a href="{{ cancel_url }}" class="btn btn-secondary"><i class="far fa-arrow-alt-circle-left"></i> {% trans "Cancel" %}</a>
+        </p>
+</form>
+{% endblock %}

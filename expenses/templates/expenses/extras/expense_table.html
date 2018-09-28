@@ -1,0 +1,66 @@
+{% load i18n %}
+{% load expenses_extras %}
+{% if not expenses %}
+    <p class="expenses-empty">{% trans "No expenses to show." %}</p>
+{% endif %}
+{% if expenses or show_form %}
+    <table class="table table-hover expenses-table-desktop d-none d-md-table">
+        <thead>
+        <tr>
+            <th class="expenses-table-date">{% trans "Date" %}</th>
+            <th class="expenses-table-vendor">{% trans "Vendor" %}</th>
+            <th class="expenses-table-category">{% trans "Category" %}</th>
+            <th class="expenses-table-amount">{% trans "Amount" %}</th>
+            <th class="expenses-table-description">{% trans "Description" %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if show_form %}
+            <form method="POST" action="{% url "expenses:expense_add" %}">
+                {% csrf_token %}
+                <tr>
+                    <td class="expenses-table-date"><input name="date" class="form-control" placeholder="{% trans "Date" %}" value="{{ today|date:"Y-m-d" }}" required></td>
+                    <td class="expenses-table-vendor"><input name="vendor" class="form-control expenses-addform-vendor" placeholder="{% trans "Vendor" %}" required></td>
+                    <td class="expenses-table-category"><select name="category" class="form-control" required title="{% trans "Category" %}"><option value="" selected="">---------</option>{% for c in categories %}
+                        <option value="{{ c.pk }}">{{ c.name }}</option>{% endfor %}</select></td>
+                    <td class="expenses-table-amount"><input name="amount" class="form-control expenses-quickadd-mini-input" type="number" step="0.01" placeholder="{% trans "Amount" %}" required></td>
+                    <td class="expenses-table-description"><div class="input-group">
+                        <input name="description" class="form-control expenses-addform-description" placeholder="{% trans "Description" %}">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit"><i class="fas fa-plus-circle"></i></button>
+                        </div>
+                    </div></td>
+
+                </tr>
+            </form>
+        {% endif %}
+        {% for expense in expenses %}
+            <tr>
+                <td class="expenses-table-date">{{ expense.date|date:"c" }}</td>
+                <td class="expenses-table-vendor">{{ expense.vendor }}</td>
+                <td class="expenses-table-category">{{ expense.category.html_link }}</td>
+                <td class="expenses-table-amount">{% money expense.amount %}</td>
+                <td class="expenses-table-description"><a href="{{ expense.get_absolute_url }}">{% if expense.is_bill and pid != 'bill_list' %}<span class="badge badge-secondary">{% trans "Bill" %}</span>{% endif %} {{ expense.desc_auto }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% if expenses %}
+    <table class="table table-hover expenses-table-mobile d-table d-md-none">
+    {% for expense in expenses %}
+        {% ifchanged expense.date %}
+            <tr><td colspan="2" class="expenses-mtable-date">{{ expense.date|date:"c" }}</td></tr>
+        {% endifchanged %}
+        <tr>
+            <td class="expenses-mtable-left"><a class="expenses-mtable-description" href="{{ expense.get_absolute_url }}">{{ expense.desc_auto }}</a>
+                <p class="expenses-mtable-details">
+                    {% trans "Vendor:" %} {{ expense.vendor }} — {% trans "Category:" %} {{ expense.category.html_link }}
+                    {% if expense.is_bill and pid != 'bill_list' %}— <span class="badge badge-secondary">{% trans "Bill" %}</span>{% endif %}
+                </p>
+            </td>
+            <td class="expenses-mtable-amount">{% money expense.amount %}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endif %}
