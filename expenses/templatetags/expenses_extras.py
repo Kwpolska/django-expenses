@@ -2,6 +2,7 @@ from itertools import zip_longest
 from django import template
 
 from expenses.utils import format_money, today_date
+from expenses.pagination import pagination
 
 register = template.Library()
 register.simple_tag(format_money, name='money')
@@ -29,29 +30,7 @@ def bill_template_table(bill_templates):
 
 @register.inclusion_tag('expenses/extras/exp_paginator.html')
 def exp_paginator(page):
-    maxpage = page.paginator.num_pages
-    num = page.number
-    page_range = []
-    if maxpage <= 5:
-        page_range = list(range(num, maxpage + 1))
-    else:
-        if num == 1:
-            around = {1, 2, 3}
-        elif num == maxpage:
-            around = {num - 2, num - 1, num}
-        else:
-            around = {num - 1, num, num + 1}
-        around |= {1, maxpage}
-        page_range_prop = [i for i in sorted(around) if 0 < i <= maxpage]
-        for current_page, next_page in zip_longest(page_range_prop, page_range_prop[1:]):
-            page_range.append(current_page)
-            if next_page is None:
-                continue
-            diff = next_page - current_page
-            if diff == 2:
-                page_range.append(current_page + 1)  # ellipsis should not be one page
-            elif diff > 2:
-                page_range.append('...')
+    page_range = pagination(page.number, page.paginator.num_pages)
 
     return {'page': page, 'page_range': page_range}
 
