@@ -3,45 +3,51 @@
 # All rights reserved.
 # See /LICENSE for licensing information.
 
+import functools
+
 from expenses.models import Expense
 from expenses.utils import revchron
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
 
-@login_required
-def expense_vendor(request):
-    query = request.GET['q']
-    results = Expense.objects.filter(user=request.user, vendor__istartswith=query)
-    return JsonResponse(
-        [e.vendor for e in reversed(revchron(results)[10:])],
-        safe=False
-    )
+def autocomplete_expense_provider(f=None, field=None):
+    if f is None:
+        return functools.partial(autocomplete_expense_provider, field=field)
+
+    def wrap(f):
+        @login_required
+        def view(request):
+            query = request.GET['q']
+            results = f(request, query)
+            return JsonResponse(
+                [getattr(e, field) for e in reversed(revchron(results)[10:])],
+                safe=False
+            )
+
+        return view
+    return wrap
 
 
-@login_required
-def bill_vendor(request):
-    query = request.GET['q']
-    results = Expense.objects.filter(user=request.user, is_bill=True, vendor__istartswith=query)
-    return JsonResponse(
-        [e.vendor for e in reversed(revchron(results)[10:])],
-        safe=False
-    )
+@autocomplete_expense_provider('vendor')
+def expense_vendor(request, query):
+    return Expense.objects.filter(user=request.user, vendor__istartswith=query)
 
 
-@login_required
-def expense_description(request):
-    query = request.GET['q']
+@autocomplete_expense_provider('vendor')
+def bill_vendor(request, query):
+    return Expense.objects.filter(user=request.user, is_bill=True, vendor__istartswith=query)
+
+
+@autocomplete_expense_provider('description')
+def expense_description(request, query):
     vendor = request.GET.get('vendor')
     results = None
     if vendor:
-        results = Expense.objects.filter(user=request.user, vendor__iexact=vendor,
-                                         description__istartswith=query)
-    if results is None or results.exists():
+        results = results.filter(user=request.user, vendor__iexact=vendor,
+                                 description__istartswith=query)
+    if results is None or not results.exists():
         results = Expense.objects.filter(user=request.user,
                                          description__istartswith=query)
 
-    return JsonResponse(
-        [e.vendor for e in reversed(revchron(results)[10:])],
-        safe=False
-    )
+    return results
