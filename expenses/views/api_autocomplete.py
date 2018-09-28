@@ -4,6 +4,7 @@
 # See /LICENSE for licensing information.
 
 from expenses.models import Expense
+from expenses.utils import revchron
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
@@ -13,7 +14,7 @@ def expense_vendor(request):
     query = request.GET['q']
     results = Expense.objects.filter(user=request.user, vendor__istartswith=query)
     return JsonResponse(
-        [e.vendor for e in results.order_by('pk')[-10:]],
+        [e.vendor for e in reversed(revchron(results)[10:])],
         safe=False
     )
 
@@ -23,7 +24,7 @@ def bill_vendor(request):
     query = request.GET['q']
     results = Expense.objects.filter(user=request.user, is_bill=True, vendor__istartswith=query)
     return JsonResponse(
-        [e.vendor for e in results.order_by('pk')[-10:]],
+        [e.vendor for e in reversed(revchron(results)[10:])],
         safe=False
     )
 
@@ -41,6 +42,6 @@ def expense_description(request):
                                          description__istartswith=query)
 
     return JsonResponse(
-        [e.description for e in results.order_by('pk')[-10:]],
+        [e.vendor for e in reversed(revchron(results)[10:])],
         safe=False
     )
