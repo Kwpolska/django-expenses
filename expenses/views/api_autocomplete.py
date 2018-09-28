@@ -11,7 +11,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
 
-def autocomplete_expense_provider(f=None, field=None):
+def autocomplete_expense_provider(field=None, f=None):
     if f is None:
         return functools.partial(autocomplete_expense_provider, field=field)
 
