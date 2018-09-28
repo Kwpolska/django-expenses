@@ -94,6 +94,10 @@ footer#footer {
 
 .expenses-table-description {
     width: 36%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 0;
 }
 
 .expenses-cattable-name {
@@ -158,13 +162,15 @@ footer#footer {
 }
 
 .expenses-mtable-left {
-    width: 75%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 0;
 }
 
 .expenses-mtable-amount {
     font-size: 1.25em;
     text-align: right;
-    width: 25%;
 }
 
 .expenses-mtable-details {

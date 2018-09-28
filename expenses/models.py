@@ -85,7 +85,7 @@ class Expense(models.Model):
             return self.description
         if self.billitem_set.count() == 0:
             return gettext_lazy("(empty)")
-        return Truncator(", ".join(i.product for i in self.billitem_set.all())).chars(80)
+        return ", ".join(i.product for i in self.billitem_set.all())
 
 
 class BillItem(models.Model):
