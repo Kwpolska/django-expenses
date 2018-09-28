@@ -127,4 +127,4 @@ def bill_template_list(request):
 # TODO remove
 def vni(request):
     from django.http import HttpResponse
-    return HttpResponse("<h1>View not implemented.</h1>")
+    return HttpResponse('<h1>View not implemented.</h1> <a href="{}">Back to dashboard</a>'.format(reverse('expenses:index')))
