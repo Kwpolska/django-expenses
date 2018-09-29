@@ -3,13 +3,10 @@
  * Copyright © 2018, Chris Warrick. All rights reserved. License: 3-clause BSD.
  */
 
-import { getTrForEvent } from './exputils';
+import { getTrForEvent, getNewAIDForSelector } from './exputils';
 
-function getNewAID() {
-    let form = document.querySelector<HTMLFormElement>("#expenses-bulkcatedit-form");
-    let id = parseInt(form.dataset['last_aid']) + 1;
-    form.dataset['last_aid'] = id.toString();
-    return id;
+function getNewAID(): number {
+    return getNewAIDForSelector("#expenses-bulkcatedit-form");
 }
 
 function addBtnHandler(_event?: Event) {

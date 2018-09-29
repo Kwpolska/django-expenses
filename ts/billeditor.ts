@@ -3,7 +3,7 @@
  * Copyright © 2018, Chris Warrick. All rights reserved. License: 3-clause BSD.
  */
 
-import { getTrForEvent } from './exputils';
+import { getTrForEvent, getNewAIDForSelector } from './exputils';
 
 const NUMBER_CLASS_NAMES = ['expenses-billtable-serving', 'expenses-billtable-count', 'expenses-billtable-unitprice'];
 
@@ -53,11 +53,8 @@ function activateSaveChanges() {
     btn.disabled = false;
 }
 
-function getNewAID() {
-    let form = document.querySelector<HTMLFormElement>("#expenses-billtable-form");
-    let id = parseInt(form.dataset['last_aid']) + 1;
-    form.dataset['last_aid'] = id.toString();
-    return id;
+function getNewAID(): number {
+    return getNewAIDForSelector("#expenses-billtable-form");
 }
 
 function getStdButtonGroup(buttonNames: string[]): HTMLDivElement {
