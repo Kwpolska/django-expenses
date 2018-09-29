@@ -34,10 +34,10 @@ class Category(models.Model):
     def html_link(self):
         return format_html('<a href="{0}">{1}</a>', self.get_absolute_url(), self.name)
 
-    def monthly_sum(self):
+    def all_time_sum(self):
         return self.expense_set.aggregate(models.Sum('amount'))['amount__sum']
 
-    def all_time_sum(self):
+    def monthly_sum(self):
         today = datetime.date.today()
         return self.expense_set.filter(
             date__year=today.year, date__month=today.month).aggregate(models.Sum('amount'))['amount__sum']
