@@ -11,6 +11,12 @@ More information can be found on GitHub in the `releases section
 Version History
 ===============
 
+0.1.2
+    * Handle Return key in bill editor better
+    * Add custom favicon
+    * Streamline ``category_list.html`` table
+    * Undo mixing up two functions
+
 0.1.1
     * Fix some visual glitches
     * Refactor autocomplete handlers
