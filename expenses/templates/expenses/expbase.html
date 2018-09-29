@@ -1,18 +1,21 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load static %}
 {% load expenses_extras %}
 {% block extra_head %}
-<link href="/static/expenses/expenses.css" rel="stylesheet">
-<link href="/static/expenses/autocomplete.min.css" rel="stylesheet">
+<link href="{% static "expenses/expenses.css" %}" rel="stylesheet">
+<link href="{% static "expenses/autocomplete.min.css" %}" rel="stylesheet">
+<link rel="shortcut icon" href="{% static "expenses/expenses-favicon.ico" %}">
+<link rel="icon" href="{% static "expenses/expenses-favicon.ico" %}">
 {% endblock %}
 {% block extra_scripts %}
-    <script src="/static/expenses/expenses.js"></script>
+    <script src="{% static "expenses/expenses.js" %}"></script>
 {% endblock %}
 {% block navbar_container %}
     <nav class="navbar navbar-expand-md navbar-kw bg-dark static-top"><div class="container">
 
             <a class="navbar-brand" href="{% url 'expenses:index' %}">
-            <img src="/static/expenses/logo.png" srcset="/static/expenses/logo2x.png 2x, /static/expenses/logo3x.png 3x, /static/expenses/logo4x.png 4x" alt="{% trans "Expenses" %}" id="logo"><span id="blog-title">Kw<span id="expenses-wordmark">{% trans "Expenses" %}</span></span>
+                <img src="{% static "expenses/logo.png" %}" srcset="{% static "expenses/logo2x.png" %} 2x, {% static "expenses/logo3x.png" %} 3x, {% static "expenses/logo4x.png" %} 4x" alt="{% trans "Expenses" %}" id="logo"><span id="blog-title">Kw<span id="expenses-wordmark">{% trans "Expenses" %}</span></span>
         </a>
         <div>
             <button class="navbar-toggler mr-2" id="color-changer-mobile" type="button" aria-label="Change color scheme">
