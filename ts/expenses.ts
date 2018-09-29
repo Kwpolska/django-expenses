@@ -2,7 +2,7 @@
  * Expenses Scripting Enhancements
  * Copyright © 2018, Chris Warrick. All rights reserved. License: 3-clause BSD.
  */
-import initializeBillTable from "./billtable";
+import initializeBillEditor from "./billeditor";
 import injectAutoComplete from "./exp_autocomplete";
 
 function onDocReady() {
@@ -12,7 +12,7 @@ function onDocReady() {
     // initialize BillTable editor
     let expBTForm = document.querySelector("#expenses-billtable-form");
     if (expBTForm !== null) {
-        initializeBillTable();
+        initializeBillEditor();
     }
 
     // make navbar sticky for ExpensesWebView Android app

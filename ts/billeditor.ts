@@ -108,7 +108,7 @@ function getButtonGroup(buttons: ButtonSpec[]): HTMLDivElement {
     return div;
 }
 
-function addBtnHandler(event: Event) {
+function addBtnHandler(_event?: Event) {
     let addForm: HTMLTableRowElement = document.querySelector<HTMLTableRowElement>("#expenses-billtable-addrow");
 
     // Build new table row
@@ -235,6 +235,7 @@ function editBtnHandler(event: Event) {
         if (fieldName == 'count' || fieldName == 'unit_price') {
             clonedInput.addEventListener('input', amountChangeHandler);
         }
+        clonedInput.addEventListener('keydown', returnKeyHandler);
         td.innerHTML = '';
         td.appendChild(clonedInput);
     }
@@ -292,7 +293,7 @@ function acceptChangesHandlerWithTr(editedTr: HTMLTableRowElement) {
     let newTr = <HTMLTableRowElement>document.createElement('tr');
     newTr.classList.add("expenses-billtable-row", "table-info");
     newTr.dataset['id'] = id;
-    buildTrFromInputs(newTr, editedTr, id,isIdForAddition(id) ? 'add' : 'edit',['edit', 'undo', 'delete']);
+    buildTrFromInputs(newTr, editedTr, id,isIdForAddition(id) ? 'add' : 'edit', ['edit', 'undo', 'delete']);
     editedTr.parentElement.replaceChild(newTr, editedTr);
 }
 
@@ -305,7 +306,20 @@ function saveChangesBtnHandler() {
             acceptChangesHandlerWithTr(btn.closest('tr')));
         document.querySelector<HTMLFormElement>("#expenses-billtable-form").submit();
     } catch (error) {
+        inputs.forEach(i => i.disabled = false);
         event.preventDefault();
+    }
+}
+
+function returnKeyHandler(event: KeyboardEvent) {
+    if (event.keyCode == 13) {
+        let tr = getTrForEvent(event);
+        if (tr.id === "expenses-billtable-addrow") {
+            addBtnHandler(event);
+        } else {
+            acceptChangesHandlerWithTr(tr);
+        }
+        return false;
     }
 }
 
@@ -314,7 +328,7 @@ function getTrForEvent(event: Event): HTMLTableRowElement {
     return <HTMLTableRowElement>target.closest("tr");
 }
 
-export default function initializeBillTable() {
+export default function initializeBillEditor() {
     let addBtn = document.querySelector<HTMLButtonElement>("#expenses-billtable-btn-add");
     if (addBtn !== null) {
         addBtn.type = "button";
@@ -325,6 +339,7 @@ export default function initializeBillTable() {
     document.querySelector<HTMLElement>("#expenses-billtable-addrow .expenses-billtable-unitprice .form-control").addEventListener("input", amountChangeHandler);
     document.querySelector<HTMLElement>("#expenses-billtable-addrow .expenses-billtable-count .form-control").addEventListener("input", amountChangeHandler);
     document.querySelector<HTMLElement>("#expenses-billtable-addrow .expenses-billtable-amount").innerText = formatMoney(0);
+    document.querySelectorAll<HTMLElement>("#expenses-billtable-addrow input").forEach(el => el.addEventListener("keypress", returnKeyHandler));
 
     document.querySelector<HTMLElement>("#expenses-billtable-savechanges").addEventListener("click", saveChangesBtnHandler);
 
