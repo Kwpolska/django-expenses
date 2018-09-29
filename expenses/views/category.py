@@ -184,7 +184,7 @@ def category_bulk_edit(request):
                 added_count += 1
             else:
                 failures_count += 1
-                failures_list.append("Addition {}, {}".format(new_name, new_order))
+                failures_list.append("+{}/{}".format(new_name, new_order))
 
         return render(request, 'expenses/category_bulk_edit_results.html', {
             'htmltitle': _('Edit categories'),

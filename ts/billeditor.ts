@@ -235,7 +235,7 @@ function editBtnHandler(event: Event) {
         if (fieldName == 'count' || fieldName == 'unit_price') {
             clonedInput.addEventListener('input', amountChangeHandler);
         }
-        clonedInput.addEventListener('keydown', returnKeyHandler);
+        clonedInput.addEventListener('keypress', returnKeyHandler);
         td.innerHTML = '';
         td.appendChild(clonedInput);
     }

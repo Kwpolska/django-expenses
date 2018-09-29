@@ -73,7 +73,14 @@ function returnKeyHandler(event: KeyboardEvent) {
     if (event.keyCode == 13) {
         let tr = getTrForEvent(event);
         if (tr.id === "expenses-bulkcatedit-addrow") {
-            addBtnHandler(event);
+            let addForm: HTMLTableRowElement = document.querySelector<HTMLTableRowElement>("#expenses-bulkcatedit-addrow");
+            let inputs = addForm.querySelectorAll("input");
+            // If both fields are empty, save instead.
+            if (inputs[0].value === '' && inputs[1].value === '') {
+                saveChangesBtnHandler(null);
+            } else {
+                addBtnHandler(event);
+            }
         } else {
             saveChangesBtnHandler(null);
         }
@@ -86,9 +93,16 @@ export default function initializeBulkCatEditor() {
     addBtn.type = "button";
     addBtn.addEventListener("click", addBtnHandler);
 
-    document.querySelectorAll<HTMLInputElement>("#expenses-bulkcatedit-addrow input").forEach(i => i.disabled = false);
+    document.querySelectorAll<HTMLInputElement>("#expenses-bulkcatedit-addrow input").forEach(i => {
+        i.disabled = false;
+        i.addEventListener("keypress", returnKeyHandler);
+    });
 
-    document.querySelector<HTMLElement>("#expenses-bulkcatedit-btn-save").addEventListener("click", saveChangesBtnHandler);
+    document.querySelectorAll<HTMLElement>("#expenses-bulkcatedit-addrow input").forEach(el => el.addEventListener("keypress", returnKeyHandler));
+
+    let saveBtn = document.querySelector<HTMLButtonElement>("#expenses-bulkcatedit-btn-save");
+    saveBtn.type = 'button';
+    saveBtn.addEventListener("click", saveChangesBtnHandler);
 
     let form = document.querySelector<HTMLFormElement>("#expenses-bulkcatedit-form");
     form.dataset['last_aid'] = '0';
