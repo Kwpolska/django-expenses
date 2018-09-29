@@ -16,20 +16,18 @@
             <thead>
             <tr>
                 <th class="expenses-cattable-name">{% trans "Name" %}</th>
-                <th class="expenses-cattable-expenses">{% trans "Expenses" %}</th>
-                <th class="expenses-cattable-templates">{% trans "Templates" %}</th>
-                <th class="expenses-cattable-alltimetotal">{% trans "All-time Total" %}</th>
+                <th class="expenses-cattable-items">{% trans "Items" %}</th>
                 <th class="expenses-cattable-monthlytotal">{% trans "Monthly Total" %}</th>
+                <th class="expenses-cattable-alltimetotal">{% trans "All-time Total" %}</th>
             </tr>
             </thead>
             <tbody>
             {% for category in categories %}
                 <tr>
                     <td class="expenses-cattable-name">{{ category.html_link }}</td>
-                    <td class="expenses-cattable-expenses">{{ category.expense_set.count }}</td>
-                    <td class="expenses-cattable-templates">{{ category.expensetemplate_set.count }}</td>
-                    <td class="expenses-cattable-alltimetotal">{% money category.all_time_sum %}</td>
+                    <td class="expenses-cattable-items">{{ category.total_count }}</td>
                     <td class="expenses-cattable-monthlytotal">{% money category.monthly_sum %}</td>
+                    <td class="expenses-cattable-alltimetotal">{% money category.all_time_sum %}</td>
                 </tr>
             {% endfor %}
             </tbody>
