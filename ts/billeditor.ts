@@ -2,6 +2,9 @@
  * Expenses Bill Editor
  * Copyright © 2018, Chris Warrick. All rights reserved. License: 3-clause BSD.
  */
+
+import { getTrForEvent } from './exputils';
+
 const NUMBER_CLASS_NAMES = ['expenses-billtable-serving', 'expenses-billtable-count', 'expenses-billtable-unitprice'];
 
 class ButtonSpec {
@@ -116,7 +119,7 @@ function addBtnHandler(_event?: Event) {
     tr.classList.add("expenses-billtable-row", "table-success");
     let aid = 'a' + getNewAID();
     tr.dataset['id'] = aid;
-    buildTrFromInputs(tr, addForm, aid,'add',['edit', 'delete']);
+    buildTrFromInputs(tr, addForm, aid, 'add', ['edit', 'delete']);
 
     let origAmount = <HTMLElement>addForm.getElementsByClassName("expenses-billtable-amount")[0];
     origAmount.innerText = formatMoney(0);
@@ -323,17 +326,11 @@ function returnKeyHandler(event: KeyboardEvent) {
     }
 }
 
-function getTrForEvent(event: Event): HTMLTableRowElement {
-    let target = <HTMLElement>event.target;
-    return <HTMLTableRowElement>target.closest("tr");
-}
-
 export default function initializeBillEditor() {
     let addBtn = document.querySelector<HTMLButtonElement>("#expenses-billtable-btn-add");
-    if (addBtn !== null) {
-        addBtn.type = "button";
-        addBtn.addEventListener("click", addBtnHandler);
-    }
+    addBtn.type = "button";
+    addBtn.addEventListener("click", addBtnHandler);
+
     document.querySelectorAll<HTMLElement>(".expenses-billtable-btn-edit").forEach(el => el.addEventListener("click", editBtnHandler));
     document.querySelectorAll<HTMLElement>(".expenses-billtable-btn-delete").forEach(el => el.addEventListener("click", deleteBtnHandler));
     document.querySelector<HTMLElement>("#expenses-billtable-addrow .expenses-billtable-unitprice .form-control").addEventListener("input", amountChangeHandler);

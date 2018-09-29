@@ -5,6 +5,7 @@
 
 """Category management."""
 
+from collections import defaultdict
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -139,6 +140,7 @@ def category_delete(request, slug):
 def category_bulk_edit(request):
     categories = cat_objs(request)
     if request.method == 'POST':
+        added_count = 0
         changed_count = 0
         unchanged_count = 0
         failure_count = 0
@@ -161,11 +163,34 @@ def category_bulk_edit(request):
             else:
                 failure_count += 1
                 failure_list.append(cat.name)
+        
+        additions = defaultdict(dict)
+        print(request.POST)
+        for k, v in request.POST.items():
+            if k.startswith("add_"):
+                print(k, v)
+                _add, aid, key = k.split('_')
+                additions[aid][key] = v
+        
+        for k, fields in additions.items():
+            new_name = fields.get('name')
+            new_order = fields.get('order')
+            if new_name and new_order and new_order.isnumeric():
+                c = Category()
+                c.name = new_name
+                c.order = new_order
+                c.user = request.user
+                c.save()
+                added_count += 1
+            else:
+                failures_count += 1
+                failures_list.append("Addition {}, {}".format(new_name, new_order))
 
         return render(request, 'expenses/category_bulk_edit_results.html', {
             'htmltitle': _('Edit categories'),
             'title': _('Edit categories'),
             'pid': 'category_bulk_edit_results',
+            'added_count': added_count,
             'changed_count': changed_count,
             'unchanged_count': unchanged_count,
             'failure_count': failure_count,

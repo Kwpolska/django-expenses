@@ -182,3 +182,8 @@ footer#footer {
 .expenses-table .autocomplete {
     position: sticky;
 }
+
+.expenses-bulkcatedit-actions {
+    max-width: 0;
+    text-align: right;
+}

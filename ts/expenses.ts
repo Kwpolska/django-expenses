@@ -3,6 +3,7 @@
  * Copyright © 2018, Chris Warrick. All rights reserved. License: 3-clause BSD.
  */
 import initializeBillEditor from "./billeditor";
+import initializeBulkCatEditor from "./bulkcateditor";
 import injectAutoComplete from "./exp_autocomplete";
 
 function onDocReady() {
@@ -13,6 +14,12 @@ function onDocReady() {
     let expBTForm = document.querySelector("#expenses-billtable-form");
     if (expBTForm !== null) {
         initializeBillEditor();
+    }
+
+    // initialize BillTable editor
+    let expCatForm = document.querySelector("#expenses-bulkcatedit-form");
+    if (expCatForm !== null) {
+        initializeBulkCatEditor();
     }
 
     // make navbar sticky for ExpensesWebView Android app
