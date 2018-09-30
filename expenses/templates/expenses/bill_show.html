@@ -50,7 +50,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for item in expense.billitem_set.all %}
+        {% for item in items %}
             <tr class="expenses-billtable-row" data-id="{{ item.id }}">
                 <td class="expenses-billtable-product">{{ item.product }}</td>
                 <td class="expenses-billtable-serving">{{ item.serving|floatformat:"-3" }}</td>

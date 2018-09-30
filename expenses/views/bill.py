@@ -147,6 +147,7 @@ def bill_show(request, pk):
         'htmltitle': str(expense),
         'pid': 'bill_show',
         'expense': expense,
+        'items': expense.billitem_set.order_by('date_added'),
         'form': form,
         'status_msg': status_msg,
         'status_type': status_type,
