@@ -4,18 +4,6 @@
 {% block content %}
     <h2>{% blocktrans count exp_count=EXPENSES_INDEX_COUNT %}Last 1 expense{% plural %}Last {{ exp_count }} expenses{% endblocktrans %}</h2>
     {% expense_table last_n_expenses %}
-    <h2>{% trans "Last 3 days" %}</h2>
-    <div class="row last-3-days-row">
-        {% for date, amount in last_3_days %}
-            <div class="col-sm-3">
-                <strong>{{ date|date:"c" }}:</strong> {% money amount %}
-            </div>
-        {% endfor %}
-        <div class="col-sm-3">
-            <strong>{% trans "Total:" %}</strong>
-            {% money last_3_days_sum %}
-        </div>
-    </div>
 
     <h2>{% trans "Statistics" %}</h2>
     <div class="expenses-stat">
@@ -31,6 +19,16 @@
         </div>
             <div class="row">
             <div class="col-sm-6">
+                <p class="expenses-stat-heading">{% trans "Last 3 days" %}</p>
+                <table class="table table-borderless table-sm">
+                    {% for date, amount in last_3_days %}
+                    <tr>
+                        <td>{{ date|date:"c"}}</td>
+                        <td class="align-right">{% money amount %}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr><td><strong>{% trans "Total:" %}</strong></td><td class="align-right">{% money last_3_days_sum %}</td></tr>
+                </table>
                 <p class="expenses-stat-heading">{% trans "Spending per category" %}</p>
                 <table class="table table-borderless table-sm">
                     {% for category, amount in spending_per_category %}
