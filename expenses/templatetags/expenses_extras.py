@@ -1,8 +1,7 @@
-from itertools import zip_longest
 from django import template
 
-from expenses.utils import format_money, today_date
 from expenses.pagination import pagination
+from expenses.utils import format_money, today_date
 
 register = template.Library()
 register.simple_tag(format_money, name='money')
