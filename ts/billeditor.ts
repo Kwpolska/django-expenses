@@ -108,6 +108,10 @@ function getButtonGroup(buttons: ButtonSpec[]): HTMLDivElement {
     return div;
 }
 
+function focusAddProduct() {
+    document.querySelector<HTMLTableCellElement>("#expenses-billtable-addrow .expenses-billtable-product input").focus();
+}
+
 function addBtnHandler(_event?: Event) {
     let addForm: HTMLTableRowElement = document.querySelector<HTMLTableRowElement>("#expenses-billtable-addrow");
 
@@ -134,6 +138,7 @@ function addBtnHandler(_event?: Event) {
     });
 
     activateSaveChanges();
+    focusAddProduct();
 }
 
 function buildTrFromInputs(tr: HTMLTableRowElement, inputForm: HTMLTableRowElement, prefix: string, type: string, actionButtonNames: string[]) {
@@ -343,4 +348,5 @@ export default function initializeBillEditor() {
     let form = document.querySelector<HTMLFormElement>("#expenses-billtable-form");
     form.action = '';
     form.dataset['last_aid'] = '0';
+    focusAddProduct();
 }
