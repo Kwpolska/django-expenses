@@ -43,8 +43,8 @@
         <tr>
             <th class="expenses-billtable-product">{% trans "Product" %}</th>
             <th class="expenses-billtable-serving">{% trans "Serving [g, L]" %}</th>
-            <th class="expenses-billtable-count">{% trans "Count" %}</th>
             <th class="expenses-billtable-unitprice">{% trans "Unit Price" %}</th>
+            <th class="expenses-billtable-count">{% trans "Count" %}</th>
             <th class="expenses-billtable-amount">{% trans "Amount" %}</th>
             <th class="expenses-billtable-actions">{% trans "Actions" %}</th>
         </tr>
@@ -54,8 +54,8 @@
             <tr class="expenses-billtable-row" data-id="{{ item.id }}">
                 <td class="expenses-billtable-product">{{ item.product }}</td>
                 <td class="expenses-billtable-serving">{{ item.serving|floatformat:"-3" }}</td>
-                <td class="expenses-billtable-count">{{ item.count|floatformat:"-3" }}</td>
                 <td class="expenses-billtable-unitprice" data-value="{{ item.unit_price|floatformat:"2" }}">{% money item.unit_price %}</td>
+                <td class="expenses-billtable-count">{{ item.count|floatformat:"-3" }}</td>
                 <td class="expenses-billtable-amount" data-value="{{ item.amount|floatformat:"2" }}">{% money item.amount %}</td>
                 <td class="expenses-billtable-actions">
                     <div class="btn-group" role="group" aria-label="{% trans "Item actions" %}">
@@ -68,8 +68,8 @@
             <tr id="expenses-billtable-addrow">
                 <td class="expenses-billtable-product"><input name="product" class="form-control" placeholder="{% trans "Product" %}" required maxlength="40"></td>
                 <td class="expenses-billtable-serving"><input name="serving" class="form-control" placeholder="{% trans "Serving [g, L]" %}" step="0.001" required type="number"></td>
-                <td class="expenses-billtable-count"><input name="count" class="form-control" placeholder="{% trans "Count" %}" step="0.001" type="number" value="1" data-default="1" required></td>
                 <td class="expenses-billtable-unitprice"><input name="unit_price" class="form-control" type="number" step="0.01" placeholder="{% trans "Unit Price" %}" required></td>
+                <td class="expenses-billtable-count"><input name="count" class="form-control" placeholder="{% trans "Count" %}" step="0.001" type="number" value="1" data-default="1" required></td>
                 <td class="expenses-billtable-amount">—</td>
                 <td class="expenses-billtable-actions">
                     <button class="btn btn-primary" id="expenses-billtable-btn-add" type="submit" title="{% trans "Add an item" %}"><i class="fas fa-plus-circle"></i> {% trans "Add" %}</button>
