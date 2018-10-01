@@ -303,7 +303,7 @@ function acceptChangesHandlerWithTr(editedTr: HTMLTableRowElement) {
     editedTr.parentElement.replaceChild(newTr, editedTr);
 }
 
-function saveChangesBtnHandler() {
+function saveChangesHandler() {
     let addForm: HTMLTableRowElement = document.querySelector<HTMLTableRowElement>("#expenses-billtable-addrow");
     let inputs = addForm.querySelectorAll("input");
     inputs.forEach(i => i.disabled = true);
@@ -319,11 +319,15 @@ function saveChangesBtnHandler() {
 
 function returnKeyHandler(event: KeyboardEvent) {
     if (event.keyCode == 13) {
-        let tr = getTrForEvent(event);
-        if (tr.id === "expenses-billtable-addrow") {
-            addBtnHandler(event);
+        if (event.metaKey || event.ctrlKey) {
+            saveChangesHandler();
         } else {
-            acceptChangesHandlerWithTr(tr);
+            let tr = getTrForEvent(event);
+            if (tr.id === "expenses-billtable-addrow") {
+                addBtnHandler(event);
+            } else {
+                acceptChangesHandlerWithTr(tr);
+            }
         }
         return false;
     }
@@ -339,9 +343,9 @@ export default function initializeBillEditor() {
     document.querySelector<HTMLElement>("#expenses-billtable-addrow .expenses-billtable-unitprice .form-control").addEventListener("input", amountChangeHandler);
     document.querySelector<HTMLElement>("#expenses-billtable-addrow .expenses-billtable-count .form-control").addEventListener("input", amountChangeHandler);
     document.querySelector<HTMLElement>("#expenses-billtable-addrow .expenses-billtable-amount").innerText = formatMoney(0);
-    document.querySelectorAll<HTMLElement>("#expenses-billtable-addrow input").forEach(el => el.addEventListener("keypress", returnKeyHandler));
+    document.querySelectorAll<HTMLElement>("#expenses-billtable-addrow input").forEach(el => el.addEventListener("keydown", returnKeyHandler));
 
-    document.querySelector<HTMLElement>("#expenses-billtable-savechanges").addEventListener("click", saveChangesBtnHandler);
+    document.querySelector<HTMLElement>("#expenses-billtable-savechanges").addEventListener("click", saveChangesHandler);
 
     // By default, the form points at the 'additem' view. We need to change it, because that view can only handle a single bill item being added.
     // (Yay for progressive enhancement!)
