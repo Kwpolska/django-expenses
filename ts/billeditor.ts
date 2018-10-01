@@ -186,10 +186,11 @@ function buildTrFromInputs(tr: HTMLTableRowElement, inputForm: HTMLTableRowEleme
     let amountTd = document.createElement("td");
     amountTd.className = "expenses-billtable-amount";
     amountTd.innerText = oldAmountTd.innerText;
-        if (oldAmountTd.dataset.hasOwnProperty('orig_text')) {
-            amountTd.dataset['orig_text'] = oldAmountTd.dataset['orig_text'];
-            amountTd.dataset['orig_value'] = oldAmountTd.dataset['orig_value'];
-        }
+    amountTd.dataset['value'] = oldAmountTd.dataset['value'];
+    if (oldAmountTd.dataset.hasOwnProperty('orig_text')) {
+        amountTd.dataset['orig_text'] = oldAmountTd.dataset['orig_text'];
+        amountTd.dataset['orig_value'] = oldAmountTd.dataset['orig_value'];
+    }
     tr.appendChild(amountTd);
 
     // Create action buttons
