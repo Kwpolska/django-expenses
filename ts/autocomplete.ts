@@ -14,8 +14,8 @@ export default function setUpAutoComplete(input: string | HTMLInputElement,
     if (typeof input === "string") {
         input = document.querySelector<HTMLInputElement>(input);
     }
-    if (minLength === null) minLength = 1;
-    if (input === null) return;
+    if (minLength === undefined) minLength = 1;
+    if (input === null || input == undefined) return;
     let datalist: HTMLDataListElement = document.createElement('datalist');
     if (name === null || name === undefined) name = input.name;
     let id = 'acdl_' + name.replace('.', '');
@@ -33,7 +33,7 @@ export default function setUpAutoComplete(input: string | HTMLInputElement,
         let query = (<HTMLInputElement>input).value;
         if ((<HTMLInputElement>input).dataset['autocomplete'] === 'off') return;
         if (query.trim().length < minLength) return;
-        if (stopPrefix !== null && query.startsWith(stopPrefix)) { // slightly hacky support for bill item autocomplete
+        if (stopPrefix !== undefined && query.startsWith(stopPrefix)) { // slightly hacky support for bill item autocomplete
             stopHandler(query);
             return;
         }
@@ -48,7 +48,7 @@ export default function setUpAutoComplete(input: string | HTMLInputElement,
             if (json.length === 1 && json[0] === query) return;
             json.forEach((value) => {
                 let c: HTMLOptionElement = document.createElement("option");
-                if (displayHandler !== null) {
+                if (displayHandler !== undefined) {
                     c.value = displayHandler(value);
                 } else {
                     c.value = value;
