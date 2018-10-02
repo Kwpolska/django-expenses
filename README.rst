@@ -13,12 +13,13 @@ Features
 * Management of expenses
 * Management of bills — expenses with multiple items, complete with an advanced interactive editor
 * Reasonable appearance on Desktop and Mobile
+* Autocomplete for expenses and bill items
 
 To-do
 -----
 
-* Templates for expenses and bill items
-* Autocomplete for templates
+* Templates for expenses
+* Autocomplete for expense templates?
 * i18n (Polish translation)
 * Pushing config (URLs, locale) to JS
 * searching and filtering
