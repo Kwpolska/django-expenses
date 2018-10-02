@@ -2,9 +2,7 @@
   "name": "expenses-ts",
   "version": "1.0.0",
   "description": "Expenses TypeScript",
-  "dependencies": {
-    "autocomplete-js": "^2.7.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "^10.11.2",
     "ts-loader": "^5.2.1",
