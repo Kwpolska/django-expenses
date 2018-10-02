@@ -6,7 +6,7 @@
 export default function setUpAutoComplete(input: string | HTMLInputElement,
                                           name: string,
                                           url: string | (() => string),
-                                          alwaysShow?: boolean,
+                                          minLength?: number,
                                           displayHandler?: (data: string | object) => string,
                                           stopPrefix?: string,
                                           stopHandler?: (data: string) => void
@@ -14,6 +14,7 @@ export default function setUpAutoComplete(input: string | HTMLInputElement,
     if (typeof input === "string") {
         input = document.querySelector<HTMLInputElement>(input);
     }
+    if (minLength === null) minLength = 1;
     if (input === null) return;
     let datalist: HTMLDataListElement = document.createElement('datalist');
     if (name === null || name === undefined) name = input.name;
@@ -31,7 +32,7 @@ export default function setUpAutoComplete(input: string | HTMLInputElement,
         datalist.innerHTML = '';
         let query = (<HTMLInputElement>input).value;
         if ((<HTMLInputElement>input).dataset['autocomplete'] === 'off') return;
-        if (!alwaysShow && query.trim() === "") return;
+        if (query.trim().length < minLength) return;
         if (stopPrefix !== null && query.startsWith(stopPrefix)) { // slightly hacky support for bill item autocomplete
             stopHandler(query);
             return;

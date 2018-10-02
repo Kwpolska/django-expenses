@@ -375,7 +375,7 @@ export default function initializeBillEditor() {
             let vendorName = document.querySelector<HTMLSpanElement>("#expenses-bill-meta-vendor").innerText;
             return "/expenses/api/autocomplete/bill/item/?vendor=" + encodeURIComponent(vendorName);
         },
-        true,
+        3,
         (data) => {
             let hint = <BillHint>data;
             return `✨ ${hint.product} ⚖️${hint.serving} 💶${hint.unit_price}`;
