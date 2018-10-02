@@ -53,4 +53,4 @@ def bill_item(request):
     vendor = request.GET['vendor']
     results = BillItem.objects.filter(user=request.user, bill__vendor__iexact=vendor, product__istartswith=query).values('product', 'serving', 'unit_price').distinct().order_by('product')
 
-    return JsonResponse(results, safe=False)
+    return JsonResponse(list(results), safe=False)
