@@ -20,7 +20,7 @@ from django.views.generic.edit import DeleteView
 from django.urls import reverse
 
 from expenses.utils import format_money, today_date, revchron
-from expenses.models import Expense, ExpenseTemplate, BillItemTemplate, Category
+from expenses.models import Expense, ExpenseTemplate, Category
 from django.utils.translation import gettext as _
 
 
@@ -106,20 +106,6 @@ def template_list(request):
     return render(request, 'expenses/template_list.html', {
         'htmltitle': _("Templates"),
         'pid': 'template_list',
-        'templates': templates,
-    })
-
-
-@login_required
-def bill_template_list(request):
-    paginator = Paginator(
-        BillItemTemplate.objects.filter(user=request.user).order_by('-date_added'),
-        settings.EXPENSES_PAGE_SIZE)
-    page = request.GET.get('page')
-    templates = paginator.get_page(page)
-    return render(request, 'expenses/bill_template_list.html', {
-        'htmltitle': _("Bill Item Templates"),
-        'pid': 'bill_template_list',
         'templates': templates,
     })
 

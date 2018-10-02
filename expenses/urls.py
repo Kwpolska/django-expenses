@@ -46,13 +46,8 @@ urlpatterns = [
     path('bills/<int:bill_pk>/item/<int:item_pk>/', expenses.views.bill_item.bill_item_edit, name='bill_item_edit'),
     path('bills/<int:bill_pk>/item/<int:item_pk>/delete/', expenses.views.bill_item.bill_item_delete, name='bill_item_delete'),
 
-    path('bills/templates/', views.bill_template_list, name='bill_template_list'),
-    path('bills/templates/add/', views.vni, name='bill_template_add'),
-    path('bills/templates/<int:pk>/', views.vni, name='bill_template_run'),
-    path('bills/templates/<int:pk>/edit/', views.vni, name='bill_template_edit'),
-    path('bills/templates/<int:pk>/delete/', views.vni, name='bill_template_delete'),
-
     path('api/autocomplete/expense/vendor/', api_autocomplete.expense_vendor, name='api_autocomplete__expense_vendor'),
-    path('api/autocomplete/bill/vendor/', api_autocomplete.bill_vendor, name='api_autocomplete__bill_vendor'),
     path('api/autocomplete/expense/description/', api_autocomplete.expense_description, name='api_autocomplete__expense_description'),
+    path('api/autocomplete/bill/vendor/', api_autocomplete.bill_vendor, name='api_autocomplete__bill_vendor'),
+    path('api/autocomplete/bill/item/', api_autocomplete.bill_item, name='api_autocomplete__bill_item'),
 ]

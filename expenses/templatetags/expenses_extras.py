@@ -22,11 +22,6 @@ def template_table(templates):
     return {'templates': templates}
 
 
-@register.inclusion_tag('expenses/extras/bill_template_table.html')
-def bill_template_table(bill_templates):
-    return {'bill_templates': bill_templates}
-
-
 @register.inclusion_tag('expenses/extras/exp_paginator.html')
 def exp_paginator(page):
     page_range = pagination(page.number, page.paginator.num_pages)
@@ -42,11 +37,6 @@ def expenses_add_toolbar(pid):
 @register.inclusion_tag('expenses/extras/exp_category_toolbar.html')
 def exp_category_toolbar(category, pid):
     return {'category': category, 'pid': pid}
-
-
-@register.inclusion_tag('expenses/extras/exp_template_toolbar.html')
-def exp_template_toolbar(pid):
-    return {'pid': pid}
 
 
 @register.inclusion_tag('expenses/extras/exp_menu_link.html', takes_context=True)

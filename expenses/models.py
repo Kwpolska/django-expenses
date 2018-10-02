@@ -10,7 +10,7 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.html import format_html
-from django.utils.text import slugify, Truncator
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _, gettext_lazy
 from django.db import models
 
@@ -107,22 +107,6 @@ class BillItem(models.Model):
 
     def __repr__(self):
         return '<BillItem "{0}" on bill {1}: {2}>'.format(self.product, self.bill_id, self.amount)
-
-
-class BillItemTemplate(models.Model):
-    product = models.CharField(_("product"), max_length=40)
-    serving = models.DecimalField(_("serving [g, L]"), max_digits=10, decimal_places=3)
-    unit_price = models.DecimalField(_("unit price"), max_digits=10, decimal_places=2)
-    comment = models.TextField(_("comment"))
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
-    date_added = models.DateTimeField(auto_now_add=True)
-    date_modified = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.product
-
-    def __repr__(self):
-        return '<BillItemTemplate "{0}": {1} per unit>'.format(self.product, self.unit_price)
 
 
 class ExpenseTemplate(models.Model):
