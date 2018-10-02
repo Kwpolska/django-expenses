@@ -57,6 +57,6 @@ export default function setUpAutoComplete(input: string | HTMLInputElement,
             });
         });
     }
-    if (alwaysShow) buildCompletions(null);
+    if (minLength === 0) buildCompletions(null);
     input.addEventListener("input", buildCompletions);
 }
