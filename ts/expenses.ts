@@ -4,7 +4,19 @@
  */
 import initializeBillEditor from "./billeditor";
 import initializeBulkCatEditor from "./bulkcateditor";
-import injectAutoComplete from "./exp_autocomplete";
+import setUpAutoComplete from "./autocomplete";
+
+function injectAutoComplete() {
+    setUpAutoComplete(".expenses-addform-vendor", "vendor", "/expenses/api/autocomplete/expense/vendor/");
+    setUpAutoComplete(".expenses-billaddform-vendor", "vendor", "/expenses/api/autocomplete/bill/vendor/");
+    setUpAutoComplete(".expenses-addform-description", "description", () => {
+        let vendorName = document.querySelector<HTMLInputElement>(".expenses-addform-vendor").value.trim();
+        if (vendorName.length == 0) {
+            return "/expenses/api/autocomplete/expense/description/";
+        }
+        return "/expenses/api/autocomplete/expense/description/?vendor=" + encodeURIComponent(vendorName);
+    });
+}
 
 function onDocReady() {
     // AutoComplete

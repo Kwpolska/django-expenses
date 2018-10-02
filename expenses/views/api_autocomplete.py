@@ -3,7 +3,7 @@
 # All rights reserved.
 # See /LICENSE for licensing information.
 
-from expenses.models import Expense
+from expenses.models import Expense, BillItem
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
@@ -29,11 +29,6 @@ def expense_vendor(request, query):
     return Expense.objects.filter(user=request.user, vendor__istartswith=query)
 
 
-@autocomplete_expense_provider('vendor')
-def bill_vendor(request, query):
-    return Expense.objects.filter(user=request.user, is_bill=True, vendor__istartswith=query)
-
-
 @autocomplete_expense_provider('description')
 def expense_description(request, query):
     vendor = request.GET.get('vendor')
@@ -46,3 +41,18 @@ def expense_description(request, query):
                                          description__istartswith=query)
 
     return results
+
+
+@autocomplete_expense_provider('vendor')
+def bill_vendor(request, query):
+    return Expense.objects.filter(user=request.user, is_bill=True, vendor__istartswith=query)
+
+
+def bill_item(request):
+    query = request.GET['q']
+    vendor = request.GET['vendor']
+    results = BillItem.objects.filter(user=request.user, bill__vendor__iexact=vendor, product__istartswith=query).values('product', 'serving', 'unit_price').distinct()
+
+    return JsonResponse(
+        list(reversed(results[:10])),
+        safe=False)

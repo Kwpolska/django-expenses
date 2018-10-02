@@ -4,6 +4,7 @@
  */
 
 import { getTrForEvent, getNewAIDForSelector } from './exputils';
+import setUpAutoComplete from "./autocomplete";
 
 const NUMBER_CLASS_NAMES = ['expenses-billtable-serving', 'expenses-billtable-count', 'expenses-billtable-unitprice'];
 
@@ -12,6 +13,20 @@ class ButtonSpec {
     icon: string;
     title: string;
     callback: any;
+}
+
+class BillHint {
+    product: string;
+    serving: number;
+    unit_price: number;
+}
+
+class BillReOutput {
+    product: string;
+    serving: string;
+    unitprice: string;
+
+    [key: string]: string;
 }
 
 function formatMoney(number: number): string {
@@ -340,8 +355,8 @@ export default function initializeBillEditor() {
 
     document.querySelectorAll<HTMLElement>(".expenses-billtable-btn-edit").forEach(el => el.addEventListener("click", editBtnHandler));
     document.querySelectorAll<HTMLElement>(".expenses-billtable-btn-delete").forEach(el => el.addEventListener("click", deleteBtnHandler));
-    document.querySelector<HTMLElement>("#expenses-billtable-addrow .expenses-billtable-unitprice .form-control").addEventListener("input", amountChangeHandler);
-    document.querySelector<HTMLElement>("#expenses-billtable-addrow .expenses-billtable-count .form-control").addEventListener("input", amountChangeHandler);
+    document.querySelector<HTMLElement>("#expenses-billtable-addrow .expenses-billtable-unitprice input").addEventListener("input", amountChangeHandler);
+    document.querySelector<HTMLElement>("#expenses-billtable-addrow .expenses-billtable-count input").addEventListener("input", amountChangeHandler);
     document.querySelector<HTMLElement>("#expenses-billtable-addrow .expenses-billtable-amount").innerText = formatMoney(0);
     document.querySelectorAll<HTMLElement>("#expenses-billtable-addrow input").forEach(el => el.addEventListener("keydown", returnKeyHandler));
 
@@ -352,5 +367,35 @@ export default function initializeBillEditor() {
     let form = document.querySelector<HTMLFormElement>("#expenses-billtable-form");
     form.action = '';
     form.dataset['last_aid'] = '0';
+    let addProduct = document.querySelector<HTMLInputElement>("#expenses-billtable-addrow .expenses-billtable-product input");
+    setUpAutoComplete(
+        addProduct,
+        null,
+        () => {
+            let vendorName = document.querySelector<HTMLSpanElement>("#expenses-bill-meta-vendor").innerText;
+            return "/expenses/api/autocomplete/bill/item/?vendor=" + encodeURIComponent(vendorName);
+        },
+        true,
+        (data) => {
+            let hint = <BillHint>data;
+            return `✨ ${hint.product} ⚖️${hint.serving} 💶${hint.unit_price}`;
+        },
+        "✨",
+        (data) => {
+            let addForm: HTMLTableRowElement = document.querySelector<HTMLTableRowElement>("#expenses-billtable-addrow");
+            let re = /✨ (.*?) ⚖️(.*?) 💶(.*)/;
+            let splits = re.exec(data);
+            let output: BillReOutput = {'product': splits[1], 'serving': splits[2], 'unitprice': splits[3]};
+
+            addProduct.dataset['autocomplete'] = 'off';
+            for (var key in output) {
+                addForm.querySelector<HTMLInputElement>(`.expenses-billtable-${key} input`).value = output[key];
+            }
+            addProduct.dataset['autocomplete'] = 'on';
+
+            recalculateAmount(addForm);
+        }
+
+    );
     focusAddProduct();
 }

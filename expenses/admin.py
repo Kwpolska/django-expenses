@@ -10,6 +10,5 @@ from expenses import models
 
 # Register your models here.
 
-admin.site.register([models.Category, models.BillItem, models.Expense,
-                     models.ExpenseTemplate, models.BillItemTemplate], ModelAdmin)
+admin.site.register([models.ExpenseTemplate], ModelAdmin)
 
