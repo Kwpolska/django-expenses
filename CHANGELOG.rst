@@ -11,6 +11,13 @@ More information can be found on GitHub in the `releases section
 Version History
 ===============
 
+0.2.0
+    * Support adding items in bulk category editor
+    * Various bill editor UX improvements
+    * Nuke BillItemTemplates to improve usability
+    * Implement custom autocomplete thing based on ``<dataset>`` (yay for HTML5)
+    * Autocomplete for bill items based on history (with same vendor)
+
 0.1.2
     * Handle Return key in bill editor better
     * Add custom favicon
