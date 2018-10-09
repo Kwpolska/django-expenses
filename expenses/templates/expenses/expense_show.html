@@ -1,0 +1,47 @@
+{% extends "expenses/expbase.html" %}
+{% load i18n %}
+{% load expenses_extras %}
+{% block exp_toolbar %}
+    <a class="btn btn-info" href="{% url 'expenses:expense_edit' expense.pk %}"><i class="fa fa-edit"></i> {% trans "Edit" %}</a>
+    <a class="btn btn-danger" href="{% url 'expenses:expense_delete' expense.pk %}"><i class="fa fa-trash-alt"></i> {% trans "Delete" %}</a>
+    <a href="{% url 'expenses:expense_convert' expense.pk %}" class="btn btn-light">Convert to bill</a>
+{% endblock %}
+{% block content %}
+    <div class="expenses-show-list">
+    <div class="row">
+        <div class="col-sm-2 expenses-show-label">{% trans "Date" %}</div>
+        <div class="col-sm-10">
+            {{ expense.date|date:"c" }}
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-2 expenses-show-label">{% trans "Vendor" %}</div>
+        <div class="col-sm-10">
+            {{ expense.vendor }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2 expenses-show-label">{% trans "Category" %}</div>
+        <div class="col-sm-10">
+            {{ expense.category.html_link }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2 expenses-show-label">{% trans "Amount" %}</div>
+        <div class="col-sm-10 expenses-show-amount">
+            {% money expense.amount %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2 expenses-show-label">{% trans "Description" %}</div>
+        <div class="col-sm-10">
+            {{ expense.description }}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -2,8 +2,8 @@
 {% load i18n %}
 {% load expenses_extras %}
 {% block exp_toolbar %}
-    <a class="btn btn-info" href="{% url 'expenses:bill_editmeta' expense.id %}"><i class="fa fa-edit"></i> {% trans "Edit metadata" %}</a>
-    <a class="btn btn-danger" href="{% url 'expenses:bill_delete' expense.id %}"><i class="fa fa-trash-alt"></i> {% trans "Delete" %}</a>
+    <a class="btn btn-info" href="{% url 'expenses:bill_editmeta' expense.pk %}"><i class="fa fa-edit"></i> {% trans "Edit metadata" %}</a>
+    <a class="btn btn-danger" href="{% url 'expenses:bill_delete' expense.pk %}"><i class="fa fa-trash-alt"></i> {% trans "Delete" %}</a>
     <a href="{% url 'expenses:bill_convert' expense.pk %}" class="btn btn-light">{% trans "Convert to expense" %}</a>
 {% endblock %}
 {% block content %}

@@ -187,3 +187,17 @@ footer#footer {
     max-width: 0;
     text-align: right;
 }
+
+.expenses-show-list .row {
+    margin-bottom: 0.25rem;
+    vertical-align: middle;
+    line-height: 2rem;
+}
+
+.expenses-show-list .row:last-child {
+    margin-bottom: 0;
+}
+
+.expenses-show-label {
+    font-weight: bold;
+}

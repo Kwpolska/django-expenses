@@ -4,14 +4,9 @@
 {% block exp_toolbar %}
     {% if mode == 'add' %}
         {% expenses_add_toolbar pid %}
-    {% else %}
-        <a href="{% url 'expenses:expense_convert' expense.pk %}" class="btn btn-light">Convert to bill</a>
     {% endif %}
 {% endblock %}
 {% block content %}
-{% if saved %}
-<div class="alert alert-success fade show">{% trans "Changes saved." %} <button type="button" class="close" data-dismiss="alert">×</button></div>
-{% endif %}
 <form action="" method="POST">
     {% csrf_token %}
     {{ form.non_field_errors }}

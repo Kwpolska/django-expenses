@@ -19,6 +19,7 @@ urlpatterns = [
     path('expenses/', expenses.views.expense.expense_list, name='expense_list'),
     path('expenses/add/', expenses.views.expense.expense_add, name='expense_add'),
     path('expenses/<int:pk>/', expenses.views.expense.expense_show, name='expense_show'),
+    path('expenses/<int:pk>/edit/', expenses.views.expense.expense_edit, name='expense_edit'),
     path('expenses/<int:pk>/convert/', expenses.views.expense.expense_convert, name='expense_convert'),
     path('expenses/<int:pk>/delete/', expenses.views.expense.ExpenseDelete.as_view(), name='expense_delete'),
 

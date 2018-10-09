@@ -62,7 +62,7 @@ def expense_add(request):
             form.save_m2m()
             return HttpResponseRedirect(reverse('expenses:expense_list'))
 
-    return render(request, 'expenses/expense_add_show.html', {
+    return render(request, 'expenses/expense_add_edit.html', {
         'htmltitle': _("Add an expense"),
         'pid': 'expense_add',
         'form': form,
@@ -75,8 +75,19 @@ def expense_show(request, pk):
     expense = get_object_or_404(Expense, pk=pk, user=request.user)
     if expense.is_bill:
         return HttpResponseRedirect(expense.get_absolute_url())
+
+    return render(request, 'expenses/expense_show.html', {
+        'htmltitle': str(expense),
+        'pid': 'expense_show',
+        'expense': expense,
+    })
+
+@login_required
+def expense_edit(request, pk):
+    expense = get_object_or_404(Expense, pk=pk, user=request.user)
+    if expense.is_bill:
+        return HttpResponseRedirect(expense.get_absolute_url())
     form = ExpenseForm(instance=expense, user=request.user)
-    saved = False
 
     if request.method == "POST":
         form = ExpenseForm(request.POST, instance=expense, user=request.user)
@@ -86,15 +97,14 @@ def expense_show(request, pk):
             expense.is_bill = False
             expense.save()
             form.save_m2m()
-            saved = True
+            return HttpResponseRedirect(expense.get_absolute_url())
 
-    return render(request, 'expenses/expense_add_show.html', {
+    return render(request, 'expenses/expense_add_edit.html', {
         'htmltitle': str(expense),
-        'pid': 'expense_show',
+        'pid': 'expense_edit',
         'expense': expense,
         'form': form,
-        'mode': 'show',
-        'saved': saved,
+        'mode': 'edit',
     })
 
 
@@ -130,7 +140,6 @@ def expense_convert(request, pk):
             billitem.user = expense.user
             billitem.save()
             return HttpResponseRedirect(reverse('expenses:bill_show', args=[expense.pk]))
-        # TODO
 
     return render(request, 'expenses/expense_convert.html', {
         'pid': 'expense_convert',
