@@ -188,16 +188,37 @@ footer#footer {
     text-align: right;
 }
 
-.expenses-show-list .row {
+.expenses-show-list .row,
+.expenses-template-show-list .row {
     margin-bottom: 0.25rem;
     vertical-align: middle;
     line-height: 2rem;
 }
 
-.expenses-show-list .row:last-child {
+.expenses-show-list .row:last-child,
+.expenses-template-show-list .row:last-child {
     margin-bottom: 0;
 }
 
 .expenses-show-label {
     font-weight: bold;
 }
+
+.expenses-templatetable-name {
+    width: 65%;
+}
+
+.expenses-templatetable-amount {
+    width: 10%;
+    text-align: right;
+}
+
+.expenses-templatetable-actions {
+    width: 25%;
+    text-align: right;
+}
+
+.expenses-templatetable-actions form {
+    justify-content: flex-end;
+}
+

@@ -9,7 +9,6 @@ import pygal
 import pygal.style
 
 from django.conf import settings
-from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.db.models import Sum
@@ -20,9 +19,8 @@ from django.views.generic.edit import DeleteView
 from django.urls import reverse
 
 from expenses.utils import format_money, today_date, revchron
-from expenses.models import Expense, ExpenseTemplate, Category
+from expenses.models import Expense, Category
 from django.utils.translation import gettext as _
-
 
 @login_required
 def index(request):
@@ -94,20 +92,6 @@ class ExpDeleteView(DeleteView):
             'object': obj,
             'cancel_url': reverse(self.cancel_url, args=[getattr(obj, self.cancel_key)])
         }
-
-
-@login_required
-def template_list(request):
-    paginator = Paginator(
-        ExpenseTemplate.objects.filter(user=request.user).order_by('-date_added'),
-        settings.EXPENSES_PAGE_SIZE)
-    page = request.GET.get('page')
-    templates = paginator.get_page(page)
-    return render(request, 'expenses/template_list.html', {
-        'htmltitle': _("Templates"),
-        'pid': 'template_list',
-        'templates': templates,
-    })
 
 
 # TODO remove

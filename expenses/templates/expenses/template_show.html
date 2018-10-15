@@ -1,0 +1,71 @@
+{% extends "expenses/expbase.html" %}
+{% load i18n %}
+{% load expenses_extras %}
+{% block exp_toolbar %}
+    <a class="btn btn-info" href="{% url 'expenses:template_edit' template.pk %}"><i class="fa fa-edit"></i> {% trans "Edit" %}</a>
+    <a class="btn btn-danger" href="{% url 'expenses:template_delete' template.pk %}"><i class="fa fa-trash-alt"></i> {% trans "Delete" %}</a>
+{% endblock %}
+{% block content %}
+    <h1>{% trans "Details" %}</h1>
+    <div class="expenses-template-show-list">
+        <div class="row">
+            <div class="col-sm-2 expenses-show-label">{% trans "Name" %}</div>
+            <div class="col-sm-10">
+                {{ template.name }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2 expenses-show-label">{% trans "Type" %}</div>
+            <div class="col-sm-10">
+                {{ template.type_text }}
+            </div>
+        </div>
+
+        {% if template.comment %}
+            <div class="row">
+                <div class="col-sm-2 expenses-show-label">{% trans "Comment" %}</div>
+                <div class="col-sm-10">
+                    {{ template.comment }}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <h1>{% trans "Contents" %}</h1>
+    <div class="expenses-template-show-list">
+        <div class="row">
+            <div class="col-sm-2 expenses-show-label">{% trans "Vendor" %}</div>
+            <div class="col-sm-10">
+                {{ template.vendor }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2 expenses-show-label">{% trans "Category" %}</div>
+            <div class="col-sm-10">
+                {{ template.category.html_link }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2 expenses-show-label">{% trans "Amount" %}</div>
+            <div class="col-sm-10 expenses-show-amount">
+                {% money template.amount %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2 expenses-show-label">{% trans "Description" %}</div>
+            <div class="col-sm-10">
+                {{ template.description }}
+            </div>
+        </div>
+
+        <div class="row">
+    <div class="col-sm-10 offset-sm-2">
+        {% exp_template_actions template True %}
+    </div>
+    </div>
+    </div>
+{% endblock %}
+

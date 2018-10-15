@@ -1,0 +1,13 @@
+{% load i18n %}
+<form class="form-inline" action="{% url "expenses:template_run" template.pk %}" method="GET">
+    {% if template.type == "count" %}
+        <div class="input-group">
+            <input name="count" class="form-control" type="number" step="0.01" title="{% trans "Count" %}" placeholder="{% trans "Count" %}">
+            <div class="input-group-append">
+                <button class="btn btn-primary"><i class="fa fa-forward"></i>{% if show_text %} {% trans "Run" %}{% endif %}</button>
+            </div>
+        </div>
+    {% else %}
+        <button class="btn btn-primary"><i class="fa fa-forward"></i>{% if show_text %} {% trans "Run" %}{% endif %}</button>
+    {% endif %}
+</form>

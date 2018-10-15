@@ -11,6 +11,9 @@ More information can be found on GitHub in the `releases section
 Version History
 ===============
 
+0.2.1
+    * Initial implementation of expense templates
+
 0.2.0
     * Support adding items in bulk category editor
     * Various bill editor UX improvements

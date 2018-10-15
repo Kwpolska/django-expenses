@@ -25,7 +25,6 @@ def template_table(templates):
 @register.inclusion_tag('expenses/extras/exp_paginator.html')
 def exp_paginator(page):
     page_range = pagination(page.number, page.paginator.num_pages)
-
     return {'page': page, 'page_range': page_range}
 
 
@@ -42,3 +41,8 @@ def exp_category_toolbar(category, pid):
 @register.inclusion_tag('expenses/extras/exp_menu_link.html', takes_context=True)
 def exp_menu_link(context, title, url_name, link_pid):
     return {'title': title, 'url_name': url_name, 'link_pid': link_pid, 'current_pid': context.get('pid')}
+
+
+@register.inclusion_tag('expenses/extras/exp_template_actions.html')
+def exp_template_actions(the_template, show_text=False):
+    return {'template': the_template, 'show_text': show_text}

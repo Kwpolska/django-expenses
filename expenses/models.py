@@ -11,7 +11,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.text import slugify
-from django.utils.translation import gettext_lazy as _, gettext_lazy
+from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 
@@ -84,7 +84,7 @@ class Expense(models.Model):
         if self.description:
             return self.description
         if self.billitem_set.count() == 0:
-            return gettext_lazy("(empty)")
+            return _("(empty)")
         return ", ".join(i.product for i in self.billitem_set.all())
 
 
@@ -110,18 +110,28 @@ class BillItem(models.Model):
 
 
 class ExpenseTemplate(models.Model):
+    name = models.CharField(_("name"), max_length=40)
     vendor = models.CharField(_("vendor"), max_length=40)
     category = models.ForeignKey(Category, verbose_name=_("category"), on_delete=models.PROTECT)
     type = models.CharField(_("template type"), max_length=20, choices=(
         ('simple', _('Simple')),
         ('count', _('Multiplied by count')),
-    ))
+    ), default='simple')
     amount = models.DecimalField(_("amount"), max_digits=10, decimal_places=2, null=True)
     description = models.CharField(_("description (!count! tag accepted)"), max_length=80)
-    comment = models.TextField(_("comment"))
+    comment = models.TextField(_("comment"), blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
+
+    def get_absolute_url(self):
+        return reverse("expenses:template_show", args=[self.pk])
+
+    def type_text(self):
+        return _('Multiplied by count') if type == 'count' else _('Simple')
+
+    def html_link(self):
+        return format_html('<a href="{0}">{1}</a>', self.get_absolute_url(), self.name)
 
     def __str__(self):
         return '{0}: {1}'.format(self.description, self.amount)

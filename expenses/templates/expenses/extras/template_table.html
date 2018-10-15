@@ -1,18 +1,24 @@
 {% load i18n %}
 {% load expenses_extras %}
 {% if not templates %}
-<p class="expenses-empty">{% trans "No templates to show." %}</p>
+    <p class="expenses-empty">{% trans "No templates to show." %}</p>
 {% else %}
-<table class="table table-hover">
+    <table class="table table-hover expenses-table">
     <thead>
     <tr>
-        <th>{% trans "Fields TBD" %}</th>
+        <th class="expenses-templatetable-name">{% trans "Name" %}</th>
+        <th class="expenses-templatetable-amount">{% trans "Amount" %}</th>
+        <th class="expenses-templatetable-actions">{% trans "Actions" %}</th>
     </tr>
     </thead>
     <tbody>
     {% for template in templates %}
         <tr>
-            <td>Fields and actions TBD.</td>
+            <td class="expenses-templatetable-name">{{ template.html_link }}</td>
+            <td class="expenses-templatetable-amount">{% if template.type == "count" %}×{% endif %}{% money template.amount %}</td>
+            <td class="expenses-templatetable-actions">
+                {% exp_template_actions template False %}
+            </td>
         </tr>
     {% endfor %}
     </tbody>
