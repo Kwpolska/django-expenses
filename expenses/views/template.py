@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
 
 from expenses.forms import TemplateForm
@@ -39,7 +39,7 @@ def template_add(request):
             template.user = request.user
             template.save()
             form.save_m2m()
-            return HttpResponseRedirect(template.get_absolute_url())
+            return HttpResponseRedirect(reverse('expenses:template_list'))
 
     return render(request, 'expenses/template_add_edit.html', {
         'htmltitle': _("Add a template"),
@@ -108,6 +108,7 @@ def template_edit(request, pk):
         'form': form,
         'mode': 'edit',
     })
+
 
 class BillDelete(ExpDeleteView):
     model = ExpenseTemplate
