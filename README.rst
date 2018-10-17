@@ -19,6 +19,7 @@ Features
 To-do
 -----
 
+* Expense templates with month name, or description thing
 * Backdating expense templates
 * Autocomplete for expense templates?
 * i18n (Polish translation)
