@@ -3,24 +3,32 @@
 {% if not templates %}
     <p class="expenses-empty">{% trans "No templates to show." %}</p>
 {% else %}
-    <table class="table table-hover expenses-table">
-    <thead>
-    <tr>
-        <th class="expenses-templatetable-name">{% trans "Name" %}</th>
-        <th class="expenses-templatetable-amount">{% trans "Amount" %}</th>
-        <th class="expenses-templatetable-actions">{% trans "Actions" %}</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for template in templates %}
+    <table class="table table-hover expenses-table d-none d-md-table">
+        <thead>
         <tr>
-            <td class="expenses-templatetable-name">{{ template.html_link }}</td>
-            <td class="expenses-templatetable-amount">{% if template.type == "count" %}×{% endif %}{% money template.amount %}</td>
-            <td class="expenses-templatetable-actions">
-                {% exp_template_actions template False %}
-            </td>
+            <th class="expenses-templatetable-name">{% trans "Name" %}</th>
+            <th class="expenses-templatetable-amount">{% trans "Amount" %}</th>
+            <th class="expenses-templatetable-actions">{% trans "Actions" %}</th>
         </tr>
-    {% endfor %}
-    </tbody>
+        </thead>
+        <tbody>
+        {% for template in templates %}
+            <tr>
+                <td class="expenses-templatetable-name">{{ template.html_link }}</td>
+                <td class="expenses-templatetable-amount">{% if template.type == "count" %}×{% endif %}{% money template.amount %}</td>
+                <td class="expenses-templatetable-actions">
+                    {% exp_template_actions template False %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul class="d-block d-md-none list-unstyled expenses-templatelist">
+        {% for template in templates %}
+            <li><strong>{{ template.html_link }}</strong> ({% if template.type == "count" %}×{% endif %}{% money template.amount %})<br>
+                {% exp_template_actions template True %}
+            </li>
+        {% endfor %}
+    </ul>
 {% endif %}
-</table>

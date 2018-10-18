@@ -222,3 +222,10 @@ footer#footer {
     justify-content: flex-end;
 }
 
+ul.expenses-templatelist li {
+    margin-top: 1.5rem;
+}
+
+ul.expenses-templatelist li:first-child {
+    margin-top: 0;
+}
