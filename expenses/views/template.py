@@ -11,7 +11,7 @@ from django.utils.translation import gettext as _
 
 from expenses.forms import TemplateForm
 from expenses.models import ExpenseTemplate, Expense
-from expenses.utils import today_date
+from expenses.utils import today_date, round_money
 from expenses.views import ExpDeleteView
 
 
@@ -78,7 +78,7 @@ def template_run(request, pk):
             except ValueError:
                 return HttpResponseBadRequest()
 
-        expense.amount = template.amount * count
+        expense.amount = round_money(template.amount * count)
         expense.description = template.description.replace('!count!', str(count))
     else:
         expense.amount = template.amount

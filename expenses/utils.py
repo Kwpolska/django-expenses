@@ -4,6 +4,7 @@
 # See /LICENSE for licensing information.
 
 import babel.numbers
+import decimal
 from django.utils import timezone
 from django.conf import settings
 
@@ -25,3 +26,7 @@ def revchron(obj):
 
 def cat_objs(request):
     return Category.objects.filter(user=request.user).order_by('order')
+
+
+def round_money(amount):
+    return amount.quantize(decimal.Decimal('.01'), rounding=decimal.ROUND_HALF_UP)

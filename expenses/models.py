@@ -4,7 +4,7 @@
 # See /LICENSE for licensing information.
 
 import datetime
-import decimal
+from expenses.utils import round_money
 
 from django.conf import settings
 from django.dispatch import receiver
@@ -100,7 +100,7 @@ class BillItem(models.Model):
 
     @property
     def amount(self):
-        return (self.count * self.unit_price).quantize(decimal.Decimal('.01'), rounding=decimal.ROUND_DOWN)
+        return round_money(self.count * self.unit_price)
 
     def __str__(self):
         return self.product
