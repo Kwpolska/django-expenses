@@ -10,6 +10,7 @@ from django.conf import settings
 
 from expenses.models import Category
 
+
 def format_money(amount):
     if amount is None:
         amount = 0

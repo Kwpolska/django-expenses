@@ -4,7 +4,6 @@
 # See /LICENSE for licensing information.
 
 import datetime
-from expenses.utils import round_money
 
 from django.conf import settings
 from django.dispatch import receiver
@@ -86,6 +85,9 @@ class Expense(models.Model):
         if self.billitem_set.count() == 0:
             return _("(empty)")
         return ", ".join(i.product for i in self.billitem_set.all())
+
+
+from expenses.utils import round_money  # NOQA
 
 
 class BillItem(models.Model):
