@@ -15,7 +15,7 @@ from django.utils.translation import gettext as _
 
 from expenses.forms import ExpenseForm
 from expenses.models import Expense, BillItem
-from expenses.utils import revchron, cat_objs
+from expenses.utils import revchron, cat_objs, today_date
 from expenses.views import ExpDeleteView
 
 
@@ -147,3 +147,18 @@ def expense_convert(request, pk):
         'htmltitle': _("Convert"),
         'cancel_url': reverse('expenses:expense_show', args=[expense.pk]),
     })
+
+
+@login_required
+def expense_repeat(request, pk):
+    old_expense = get_object_or_404(Expense, pk=pk, user=request.user, is_bill=False)
+    new_expense = Expense(
+        date=today_date(),
+        vendor=old_expense.vendor,
+        category=old_expense.category,
+        amount=old_expense.amount,
+        description=old_expense.description,
+        user=request.user,
+        is_bill=False)
+    new_expense.save()
+    return HttpResponseRedirect(reverse('expenses:expense_show', args=[new_expense.pk]))

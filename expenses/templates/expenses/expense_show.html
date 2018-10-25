@@ -4,6 +4,10 @@
 {% block exp_toolbar %}
     <a class="btn btn-info" href="{% url 'expenses:expense_edit' expense.pk %}"><i class="fa fa-edit"></i> {% trans "Edit" %}</a>
     <a class="btn btn-danger" href="{% url 'expenses:expense_delete' expense.pk %}"><i class="fa fa-trash-alt"></i> {% trans "Delete" %}</a>
+    <form class="d-inline" action="{% url 'expenses:expense_repeat' expense.pk %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-light">Repeat</button>
+    </form>
     <a href="{% url 'expenses:expense_convert' expense.pk %}" class="btn btn-light">Convert to bill</a>
 {% endblock %}
 {% block content %}

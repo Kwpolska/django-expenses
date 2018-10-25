@@ -23,6 +23,7 @@ urlpatterns = [
     path('expenses/<int:pk>/', views.expense.expense_show, name='expense_show'),
     path('expenses/<int:pk>/edit/', views.expense.expense_edit, name='expense_edit'),
     path('expenses/<int:pk>/convert/', views.expense.expense_convert, name='expense_convert'),
+    path('expenses/<int:pk>/repeat/', views.expense.expense_repeat, name='expense_repeat'),
     path('expenses/<int:pk>/delete/', views.expense.ExpenseDelete.as_view(), name='expense_delete'),
 
     path('categories/', views.category.category_list, name='category_list'),
