@@ -35,7 +35,7 @@
   </button></div>
     {% endif %}
 
-    <form method="POST" action="{% url "expenses:bill_item_add" expense.pk %}" id="expenses-billtable-form">
+    <form method="POST" action="{% url "expenses:bill_item_add" expense.pk %}" id="expenses-billtable-form" autocomplete="off">
     <div id="expenses-billtable-deletions"></div>
         {% csrf_token %}
     <table class="table table-hover expenses-table" id="expenses-billtable">

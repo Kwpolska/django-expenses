@@ -16,7 +16,7 @@
         </thead>
         <tbody>
         {% if show_form %}
-            <form method="POST" action="{% url "expenses:expense_add" %}">
+            <form method="POST" action="{% url "expenses:expense_add" %}" autocomplete="off">
                 {% csrf_token %}
                 <tr>
                     <td class="expenses-table-date"><input name="date" class="form-control" placeholder="{% trans "Date" %}" value="{{ today|date:"Y-m-d" }}" required></td>

@@ -7,7 +7,7 @@
     {% endif %}
 {% endblock %}
 {% block content %}
-<form action="" method="POST">
+<form action="" method="POST" autocomplete="off">
     {% csrf_token %}
     {{ form.non_field_errors }}
         <div class="form-group row">
