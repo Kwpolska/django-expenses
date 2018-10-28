@@ -1,4 +1,4 @@
 {% load i18n %}
 <li class="nav-item{% if current_pid == link_pid %} active{% endif %}">
-    <a class="nav-link" href="{% url url_name %}">{% trans title %}</a>
+    <a class="nav-link" href="{% url url_name %}">{{ title }}</a>
 </li>

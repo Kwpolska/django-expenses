@@ -15,6 +15,7 @@ Features
 * Reasonable appearance on Desktop and Mobile
 * Autocomplete for expenses and bill items
 * Templates for expenses
+* i18n (Polish translation)
 
 To-do
 -----
@@ -22,7 +23,6 @@ To-do
 * Expense templates with month name, or description thing
 * Backdating expense templates
 * Autocomplete for expense templates?
-* i18n (Polish translation)
 * Pushing config (URLs, locale) to JS
 * Searching and filtering
 

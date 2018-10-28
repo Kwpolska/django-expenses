@@ -21,7 +21,11 @@ export default function setUpAutoComplete(input: string | HTMLInputElement,
     let id = 'acdl_' + name.replace('.', '');
     datalist.id = id;
     input.setAttribute('list', id);
-    input.parentElement.appendChild(datalist);
+    if (input.nextSibling) {
+        input.parentElement.insertBefore(datalist, input.nextSibling);
+    } else {
+        input.parentElement.appendChild(datalist);
+    }
     function buildCompletions(_event: Event) {
         let usedUrl: string; // need separate variable so we don’t end up with ?q=f&q=fo&q=foo…
         if (typeof url !== "string") {

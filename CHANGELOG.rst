@@ -11,6 +11,12 @@ More information can be found on GitHub in the `releases section
 Version History
 ===============
 
+0.2.2
+    * Add Polish translation
+    * Support repeating expenses
+    * Fix money rounding in some places
+    * Minor behavior and visual fixes
+
 0.2.1
     * Initial implementation of expense templates
 

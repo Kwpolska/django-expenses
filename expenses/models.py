@@ -19,10 +19,10 @@ class Category(models.Model):
         verbose_name = _("category")
         verbose_name_plural = _("categories")
 
-    name = models.CharField(_("name"), max_length=20)
-    slug = models.CharField(_("slug"), max_length=20)
-    slugbase = models.CharField(_("slug base"), max_length=20)
-    order = models.IntegerField(_("order"), default=1)
+    name = models.CharField(_("Name"), max_length=20)
+    slug = models.CharField(_("Slug"), max_length=20)
+    slugbase = models.CharField(_("Slug base"), max_length=20)
+    order = models.IntegerField(_("Order"), default=1)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
@@ -53,13 +53,13 @@ class Category(models.Model):
 
 
 class Expense(models.Model):
-    date = models.DateField(_("date"), default=datetime.date.today)
-    vendor = models.CharField(_("vendor"), max_length=40)
-    category = models.ForeignKey(Category, verbose_name=_("category"), on_delete=models.PROTECT)
-    amount = models.DecimalField(_("amount"), max_digits=10, decimal_places=2)
-    description = models.CharField(_("description"), max_length=80, blank=True)
+    date = models.DateField(_("Date"), default=datetime.date.today)
+    vendor = models.CharField(_("Vendor"), max_length=40)
+    category = models.ForeignKey(Category, verbose_name=_("Category"), on_delete=models.PROTECT)
+    amount = models.DecimalField(_("Amount"), max_digits=10, decimal_places=2)
+    description = models.CharField(_("Description"), max_length=80, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
-    is_bill = models.BooleanField(_("this is a bill"), default=False)
+    is_bill = models.BooleanField(_("This is a bill"), default=False)
     date_added = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
@@ -91,11 +91,11 @@ from expenses.utils import round_money  # NOQA
 
 
 class BillItem(models.Model):
-    bill = models.ForeignKey(Expense, verbose_name=_("bill"), on_delete=models.CASCADE)
-    product = models.CharField(_("product"), max_length=40)
-    serving = models.DecimalField(_("serving [g, L]"), max_digits=10, decimal_places=3)
-    count = models.DecimalField(_("count"), max_digits=10, decimal_places=3)  # weighted products
-    unit_price = models.DecimalField(_("unit price"), max_digits=10, decimal_places=2)
+    bill = models.ForeignKey(Expense, verbose_name=_("Bill"), on_delete=models.CASCADE)
+    product = models.CharField(_("Product"), max_length=40)
+    serving = models.DecimalField(_("Serving [g, L]"), max_digits=10, decimal_places=3)
+    count = models.DecimalField(_("Count"), max_digits=10, decimal_places=3)  # weighted products
+    unit_price = models.DecimalField(_("Unit price"), max_digits=10, decimal_places=2)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
@@ -112,16 +112,16 @@ class BillItem(models.Model):
 
 
 class ExpenseTemplate(models.Model):
-    name = models.CharField(_("name"), max_length=40)
-    vendor = models.CharField(_("vendor"), max_length=40)
-    category = models.ForeignKey(Category, verbose_name=_("category"), on_delete=models.PROTECT)
-    type = models.CharField(_("template type"), max_length=20, choices=(
+    name = models.CharField(_("Name"), max_length=40)
+    vendor = models.CharField(_("Vendor"), max_length=40)
+    category = models.ForeignKey(Category, verbose_name=_("Category"), on_delete=models.PROTECT)
+    type = models.CharField(_("Template type"), max_length=20, choices=(
         ('simple', _('Simple')),
         ('count', _('Multiplied by count')),
     ), default='simple')
-    amount = models.DecimalField(_("amount"), max_digits=10, decimal_places=2, null=True)
-    description = models.CharField(_("description (!count! tag accepted)"), max_length=80)
-    comment = models.TextField(_("comment"), blank=True)
+    amount = models.DecimalField(_("Amount"), max_digits=10, decimal_places=2, null=True)
+    description = models.CharField(_("Description (!count! tag accepted)"), max_length=80)
+    comment = models.TextField(_("Comment"), blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
