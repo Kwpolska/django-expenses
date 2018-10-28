@@ -141,10 +141,10 @@ class ExpenseTemplate(models.Model):
         return format_html('<a href="{0}">{1}</a>', self.get_absolute_url(), self.name)
 
     def __str__(self):
-        return '{0}: {1}'.format(self.description, self.amount)
+        return self.name
 
     def __repr__(self):
-        return '<ExpenseTemplate "{0}": {1}>'.format(self.description, self.amount)
+        return '<ExpenseTemplate "{0}">'.format(self.name)
 
 
 # Code from the Achieve project.

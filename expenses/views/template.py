@@ -118,7 +118,7 @@ def template_edit(request, pk):
     })
 
 
-class BillDelete(ExpDeleteView):
+class TemplateDelete(ExpDeleteView):
     model = ExpenseTemplate
     pid = 'template_delete'
     success_url = reverse_lazy('expenses:template_list')

@@ -93,8 +93,3 @@ class ExpDeleteView(DeleteView):
             'cancel_url': reverse(self.cancel_url, args=[getattr(obj, self.cancel_key)])
         }
 
-
-# TODO remove
-def vni(request):
-    from django.http import HttpResponse
-    return HttpResponse('<h1>View not implemented.</h1> <a href="{}">Back to dashboard</a>'.format(reverse('expenses:index')))

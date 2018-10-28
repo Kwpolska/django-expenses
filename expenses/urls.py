@@ -42,7 +42,7 @@ urlpatterns = [
     path('templates/<int:pk>/', views.template.template_show, name='template_show'),
     path('templates/<int:pk>/run/', views.template.template_run, name='template_run'),
     path('templates/<int:pk>/edit/', views.template.template_edit, name='template_edit'),
-    path('templates/<int:pk>/delete/', views.vni, name='template_delete'),
+    path('templates/<int:pk>/delete/', views.template.TemplateDelete.as_view(), name='template_delete'),
 
     path('bills/', views.bill.bill_list, name='bill_list'),
     path('bills/add/', views.bill.bill_add, name='bill_add'),
