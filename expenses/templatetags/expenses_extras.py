@@ -44,5 +44,5 @@ def exp_menu_link(context, title, url_name, link_pid):
 
 
 @register.inclusion_tag('expenses/extras/exp_template_actions.html')
-def exp_template_actions(the_template, expanded=False):
-    return {'template': the_template, 'expanded': expanded, 'today': today_date()}
+def exp_template_actions(the_template, show_title=False, show_date=False):
+    return {'template': the_template, 'show_title': show_title, 'show_date': show_date, 'today': today_date()}
