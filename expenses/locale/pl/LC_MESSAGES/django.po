@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-28 12:58+0100\n"
+"POT-Creation-Date: 2018-10-28 14:05+0100\n"
 "PO-Revision-Date: 2018-10-28 12:47+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -30,7 +30,7 @@ msgid "Date"
 msgstr "Data"
 
 #: expenses/forms.py:28 expenses/forms.py:49 expenses/forms.py:96
-#: expenses/models.py:57 expenses/models.py:116
+#: expenses/models.py:57 expenses/models.py:124
 #: expenses/templates/expenses/bill_add_editmeta.html:23
 #: expenses/templates/expenses/expense_add_edit.html:21
 #: expenses/templates/expenses/expense_show.html:24
@@ -42,9 +42,11 @@ msgid "Vendor"
 msgstr "Kontrahent"
 
 #: expenses/forms.py:30 expenses/forms.py:50 expenses/forms.py:98
-#: expenses/models.py:60 expenses/templates/expenses/bill_add_editmeta.html:37
+#: expenses/models.py:60 expenses/models.py:128
+#: expenses/templates/expenses/bill_add_editmeta.html:37
 #: expenses/templates/expenses/expense_add_edit.html:42
 #: expenses/templates/expenses/expense_show.html:45
+#: expenses/templates/expenses/extras/exp_template_actions.html:8
 #: expenses/templates/expenses/extras/expense_table.html:14
 #: expenses/templates/expenses/extras/expense_table.html:28
 #: expenses/templates/expenses/template_add_edit.html:37
@@ -70,11 +72,11 @@ msgstr "Porcja [g, L]"
 #: expenses/templates/expenses/bill_item_add_edit.html:23
 #: expenses/templates/expenses/bill_show.html:47
 #: expenses/templates/expenses/bill_show.html:72
-#: expenses/templates/expenses/extras/exp_template_actions.html:5
+#: expenses/templates/expenses/extras/exp_template_actions.html:6
 msgid "Count"
 msgstr "Ilość"
 
-#: expenses/forms.py:95 expenses/models.py:22 expenses/models.py:115
+#: expenses/forms.py:95 expenses/models.py:22 expenses/models.py:123
 #: expenses/templates/expenses/category_bulk_edit.html:14
 #: expenses/templates/expenses/category_list.html:18
 #: expenses/templates/expenses/extras/template_table.html:9
@@ -107,7 +109,7 @@ msgstr "Podstawa sluga"
 msgid "Order"
 msgstr "Kolejność"
 
-#: expenses/models.py:58 expenses/models.py:117
+#: expenses/models.py:58 expenses/models.py:125
 #: expenses/templates/expenses/bill_add_editmeta.html:30
 #: expenses/templates/expenses/expense_add_edit.html:28
 #: expenses/templates/expenses/expense_show.html:31
@@ -118,7 +120,7 @@ msgstr "Kolejność"
 msgid "Category"
 msgstr "Kategoria"
 
-#: expenses/models.py:59 expenses/models.py:122
+#: expenses/models.py:59 expenses/models.py:127
 #: expenses/templates/expenses/bill_show.html:48
 #: expenses/templates/expenses/expense_add_edit.html:35
 #: expenses/templates/expenses/expense_show.html:38
@@ -148,23 +150,23 @@ msgstr "Rachunek"
 msgid "Unit price"
 msgstr "Cena jednostkowa"
 
-#: expenses/models.py:118
-msgid "Template type"
-msgstr "Typ szablonu"
-
-#: expenses/models.py:119 expenses/models.py:133
+#: expenses/models.py:115
 msgid "Simple"
 msgstr "Prosty"
 
-#: expenses/models.py:120 expenses/models.py:133
+#: expenses/models.py:116
 msgid "Multiplied by count"
 msgstr "Mnożony przez ilość"
 
-#: expenses/models.py:123
-msgid "Description (!count! tag accepted)"
-msgstr "Opis (akceptowany tag !count!)"
+#: expenses/models.py:117
+msgid "With custom description"
+msgstr "Z własnym opisem"
 
-#: expenses/models.py:124 expenses/templates/expenses/template_add_edit.html:59
+#: expenses/models.py:126
+msgid "Template type"
+msgstr "Rodzaj szablonu"
+
+#: expenses/models.py:129 expenses/templates/expenses/template_add_edit.html:66
 #: expenses/templates/expenses/template_show.html:27
 msgid "Comment"
 msgstr "Komentarz"
@@ -190,7 +192,7 @@ msgstr "Zapisz i dodaj składniki"
 #: expenses/templates/expenses/bill_item_add_edit.html:37
 #: expenses/templates/expenses/bill_show.html:88
 #: expenses/templates/expenses/expense_add_edit.html:49
-#: expenses/templates/expenses/template_add_edit.html:66
+#: expenses/templates/expenses/template_add_edit.html:73
 msgid "Save changes"
 msgstr "Zapisz zmiany"
 
@@ -202,7 +204,7 @@ msgstr "Cena jednostkowa"
 
 #: expenses/templates/expenses/bill_item_add_edit.html:37
 #: expenses/templates/expenses/expense_add_edit.html:49
-#: expenses/templates/expenses/template_add_edit.html:66
+#: expenses/templates/expenses/template_add_edit.html:73
 msgid "Add expense"
 msgstr "Dodaj wydatek"
 
@@ -242,7 +244,6 @@ msgid "Description:"
 msgstr "Opis:"
 
 #: expenses/templates/expenses/bill_show.html:49
-#: expenses/templates/expenses/extras/template_table.html:11
 msgid "Actions"
 msgstr "Akcje"
 
@@ -525,8 +526,9 @@ msgstr "Poprzednia"
 msgid "Next"
 msgstr "Następna"
 
-#: expenses/templates/expenses/extras/exp_template_actions.html:7
 #: expenses/templates/expenses/extras/exp_template_actions.html:11
+#: expenses/templates/expenses/extras/exp_template_actions.html:15
+#: expenses/templates/expenses/extras/template_table.html:11
 msgid "Run"
 msgstr "Uruchom"
 
@@ -591,13 +593,29 @@ msgstr "Wykres kategorii"
 
 #: expenses/templates/expenses/template_add_edit.html:41
 msgid ""
-"When the template is executed, a <code>!count!</code> tag will be replaced "
-"with the count specified by the user."
+"When the template is executed, the following tags will be interpreted "
+"(depending on the type):"
 msgstr ""
-"Kiedy ten szablon zostanie wykonany, znacznik <code>!count!</count> zostanie "
-"zastąpiony podaną przez użytkownika ilością."
+"Kiedy ten szablon zostanie wykonany, następujące znaczniki zostaną "
+"zinterpretowane (zależnie od typu):"
 
-#: expenses/templates/expenses/template_add_edit.html:45
+#. Translators: Do not translate the !count! tag name
+#: expenses/templates/expenses/template_add_edit.html:44
+msgid ""
+"<code>!count!</code> will be replaced with the count specified by the user."
+msgstr ""
+"<code>!count!</code> zostanie zastąpiony podaną przez użytkownika ilością."
+
+#. Translators: Do not translate the !description! tag name
+#: expenses/templates/expenses/template_add_edit.html:46
+msgid ""
+"<code>!description!</code> will be replaced with the description provided by "
+"the user."
+msgstr ""
+"<code>!description!</code> zostanie zastąpiony podanym przez użytkownika "
+"opisem."
+
+#: expenses/templates/expenses/template_add_edit.html:52
 #: expenses/templates/expenses/template_show.html:19
 msgid "Type"
 msgstr "Rodzaj"
@@ -677,9 +695,12 @@ msgstr "Dodaj szablon"
 msgid "Template %s"
 msgstr "Szablon %s"
 
-#: expenses/views/template.py:106
+#: expenses/views/template.py:110
 msgid "Edit a template"
 msgstr "Edytuj szablon"
+
+#~ msgid "Description (!count! tag accepted)"
+#~ msgstr "Opis (akceptowany tag !count!)"
 
 #~ msgid "name"
 #~ msgstr "nazwa"
@@ -698,9 +719,6 @@ msgstr "Edytuj szablon"
 
 #~ msgid "amount"
 #~ msgstr "ilość"
-
-#~ msgid "description"
-#~ msgstr "opis"
 
 #~ msgid "bill"
 #~ msgstr "rachunek"

@@ -38,7 +38,14 @@
             <div class="col-sm-10">
                 {{ form.description }}
                 {{ form.description.errors }}
-                <small class="form-text text-muted">{% trans "When the template is executed, a <code>!count!</code> tag will be replaced with the count specified by the user." %}</small>
+                <small class="form-text text-muted">{% trans "When the template is executed, the following tags will be interpreted (depending on the type):" %}
+                    <ul>
+                        {# Translators: Do not translate the !count! tag name #}
+                        <li>{% trans "<code>!count!</code> will be replaced with the count specified by the user." %}</li>
+                        {# Translators: Do not translate the !description! tag name #}
+                        <li>{% trans "<code>!description!</code> will be replaced with the description provided by the user." %}</li>
+                    </ul>
+                </small>
             </div>
         </div>
         <div class="form-group row">

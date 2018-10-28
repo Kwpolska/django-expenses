@@ -111,16 +111,21 @@ class BillItem(models.Model):
         return '<BillItem "{0}" on bill {1}: {2}>'.format(self.product, self.bill_id, self.amount)
 
 
+TEMPLATE_TYPE_CHOICES = (
+    ('simple', _('Simple')),
+    ('count', _('Multiplied by count')),
+    ('description', _('With custom description')),
+)
+TEMPLATE_TYPE_CHOICES_LOOKUP = {k: v for k, v in TEMPLATE_TYPE_CHOICES}
+
+
 class ExpenseTemplate(models.Model):
     name = models.CharField(_("Name"), max_length=40)
     vendor = models.CharField(_("Vendor"), max_length=40)
     category = models.ForeignKey(Category, verbose_name=_("Category"), on_delete=models.PROTECT)
-    type = models.CharField(_("Template type"), max_length=20, choices=(
-        ('simple', _('Simple')),
-        ('count', _('Multiplied by count')),
-    ), default='simple')
+    type = models.CharField(_("Template type"), max_length=20, choices=TEMPLATE_TYPE_CHOICES, default='simple')
     amount = models.DecimalField(_("Amount"), max_digits=10, decimal_places=2, null=True)
-    description = models.CharField(_("Description (!count! tag accepted)"), max_length=80)
+    description = models.CharField(_("Description"), max_length=80)
     comment = models.TextField(_("Comment"), blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
@@ -130,7 +135,7 @@ class ExpenseTemplate(models.Model):
         return reverse("expenses:template_show", args=[self.pk])
 
     def type_text(self):
-        return _('Multiplied by count') if type == 'count' else _('Simple')
+        return TEMPLATE_TYPE_CHOICES_LOOKUP[self.type]
 
     def html_link(self):
         return format_html('<a href="{0}">{1}</a>', self.get_absolute_url(), self.name)

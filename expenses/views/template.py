@@ -80,6 +80,10 @@ def template_run(request, pk):
 
         expense.amount = round_money(template.amount * count)
         expense.description = template.description.replace('!count!', str(count))
+    elif template.type == 'description':
+        expense.amount = template.amount
+        expense.description = template.description.replace(
+            '!description!', request.GET['description'])
     else:
         expense.amount = template.amount
         expense.description = template.description

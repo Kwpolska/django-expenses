@@ -14,17 +14,16 @@ Features
 * Management of bills — expenses with multiple items, complete with an advanced interactive editor
 * Reasonable appearance on Desktop and Mobile
 * Autocomplete for expenses and bill items
-* Templates for expenses
+* Templates for expenses (with multiplication and custom description)
 * i18n (Polish translation)
 
 To-do
 -----
 
-* Expense templates with month name, or description thing
 * Backdating expense templates
 * Autocomplete for expense templates?
 * Pushing config (URLs, locale) to JS
-* Searching and filtering
+* Searching, filtering, reporting
 
 Configuration
 -------------
