@@ -11,6 +11,12 @@ More information can be found on GitHub in the `releases section
 Version History
 ===============
 
+0.3.0
+    * Searching and filtering data
+    * Stop using admin site
+    * Templates with custom descriptions and backdating
+    * Pass config and locale to JS
+
 0.2.2
     * Add Polish translation
     * Support repeating expenses
