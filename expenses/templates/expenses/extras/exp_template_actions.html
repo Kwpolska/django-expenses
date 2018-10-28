@@ -2,16 +2,26 @@
 <form class="form-inline" action="{% url "expenses:template_run" template.pk %}" method="GET">
     {% if template.type != "simple" %}
         <div class="input-group">
+            {% if expanded %}
+            <input name="date" class="form-control" title="{% trans "Date" %}" placeholder="{% trans "Date" %}" value="{{ today|date:"c" }}">
+            {% endif %}
             {% if template.type == "count" %}
                 <input name="count" class="form-control" title="{% trans "Count" %}" placeholder="{% trans "Count" %}">
             {% elif template.type == "description" %}
                 <input name="description" class="form-control" title="{% trans "Description" %}" placeholder="{% trans "Description" %}">
             {% endif %}
             <div class="input-group-append">
-                <button class="btn btn-primary"><i class="fa fa-forward"></i>{% if show_text %} {% trans "Run" %}{% endif %}</button>
+                <button class="btn btn-primary"><i class="fa fa-forward"></i>{% if expanded %} {% trans "Run" %}{% endif %}</button>
+            </div>
+        </div>
+    {% elif expanded %}
+        <div class="input-group">
+            <input name="date" class="form-control" title="{% trans "Date" %}" placeholder="{% trans "Date" %}" value="{{ today|date:"c" }}">
+            <div class="input-group-append">
+                <button class="btn btn-primary"><i class="fa fa-forward"></i>{% if expanded %} {% trans "Run" %}{% endif %}</button>
             </div>
         </div>
     {% else %}
-        <button class="btn btn-primary"><i class="fa fa-forward"></i>{% if show_text %} {% trans "Run" %}{% endif %}</button>
+        <button class="btn btn-primary"><i class="fa fa-forward"></i>{% if expanded %} {% trans "Run" %}{% endif %}</button>
     {% endif %}
 </form>

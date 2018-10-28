@@ -64,8 +64,12 @@ def template_run(request, pk):
     template = get_object_or_404(ExpenseTemplate, pk=pk, user=request.user)
     expense = Expense(
         vendor=template.vendor,
-        date=today_date(),
         category=template.category)
+    if 'date' in request.GET:
+        expense.date = request.GET['date']
+    else:
+        expense.date = today_date()
+
     if template.type == 'count':
         if 'count' not in request.GET:
             return HttpResponseBadRequest()

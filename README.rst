@@ -20,7 +20,6 @@ Features
 To-do
 -----
 
-* Backdating expense templates
 * Autocomplete for expense templates?
 * Pushing config (URLs, locale) to JS
 * Searching, filtering, reporting
