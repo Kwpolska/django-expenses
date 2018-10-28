@@ -2,6 +2,9 @@
 {% load i18n %}
 {% load expenses_extras %}
 {% block exp_toolbar %}
+    {% if has_query %}
+    <div class="d-block d-md-none"><a href="#search-results" class="btn btn-secondary" style="width: 100%;">{% trans "Jump to results" %}</a></div>
+    {% endif %}
     <form method="GET" id="expenses-search-form">
         <div class="row expenses-search-row">
             <div class="expenses-search-box col-md-3">
@@ -40,11 +43,11 @@
     {% if not has_query %}
         <p class="expenses-empty">{% trans "Type in a query above and press Search." %}</p>
     {% elif search_for == 'expenses' %}
-        <h1>{% trans "Search results" %}</h1>
+        <h1 id="search-results">{% trans "Search results" %}</h1>
         {% expense_table items %}
         {% exp_paginator items %}
     {% elif search_for == 'billitems' %}
-        <h1>{% trans "Search results" %}</h1>
+        <h1 id="search-results">{% trans "Search results" %}</h1>
         {% if items %}
             <table class="table table-hover expenses-table" id="expenses-billtable">
                 <thead>
