@@ -4,6 +4,7 @@
  */
 import initializeBillEditor from "./billeditor";
 import initializeBulkCatEditor from "./bulkcateditor";
+import initializeSearchForm from "./searchform";
 import setUpAutoComplete from "./autocomplete";
 
 function injectAutoComplete() {
@@ -32,6 +33,11 @@ function onDocReady() {
     let expCatForm = document.querySelector("#expenses-bulkcatedit-form");
     if (expCatForm !== null) {
         initializeBulkCatEditor();
+    }
+    
+    let searchForm = document.querySelector("#expenses-search-form");
+    if (searchForm !== null) {
+        initializeSearchForm();
     }
 
     // make navbar sticky for ExpensesWebView Android app

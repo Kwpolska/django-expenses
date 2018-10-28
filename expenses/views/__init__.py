@@ -10,6 +10,7 @@ import pygal.style
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.db import connection
 from django.db.models import Sum
 from django.shortcuts import render
@@ -18,8 +19,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic.edit import DeleteView
 from django.urls import reverse
 
-from expenses.utils import format_money, today_date, revchron
-from expenses.models import Expense, Category
+from expenses.utils import format_money, today_date, revchron, cat_objs, dict_overwrite
+from expenses.models import Expense, Category, BillItem
 from django.utils.translation import gettext as _
 
 @login_required
@@ -78,6 +79,88 @@ def index(request):
         'spending_per_category': spending_per_category,
         'category_chart': category_chart,
     })
+
+
+@login_required
+def search(request):
+    opt = {
+        'q': '',
+        'vendor': '',
+        'search_for': 'expenses',
+        'date_spec': 'any',
+        'date_start': '',
+        'date_end': ''
+    }
+    categories = cat_objs(request)
+    if 'q' in request.GET or 'vendor' in request.GET:
+        opt['has_query'] = True
+        # Set search options (will be copied into template)
+        dict_overwrite(opt, 'q', request.GET)
+        dict_overwrite(opt, 'vendor', request.GET)
+        dict_overwrite(opt, 'search_for', request.GET, 'for')
+        dict_overwrite(opt, 'date_spec', request.GET, 'date-spec')
+        dict_overwrite(opt, 'date_start', request.GET, 'date-start')
+        dict_overwrite(opt, 'date_end', request.GET, 'date-end')
+
+        includes = request.GET.getlist('include', [])
+        opt['include_expenses'] = 'expenses' in includes
+        opt['include_bills'] = 'bills' in includes
+
+        cat_pks = {int(i) for i in request.GET.getlist('category', [])}
+        categories_with_status = [(c, c.pk in cat_pks) for c in categories]
+
+        # Do the search
+        if opt['search_for'] == 'expenses':
+            items = Expense.objects.filter(user=request.user, category__in=cat_pks)
+            if opt['q']:
+                items = items.filter(description__contains=opt['q'])
+            if opt['vendor']:
+                items = items.filter(vendor__contains=opt['vendor'])
+
+            if opt['include_expenses'] and opt['include_bills']:
+                pass
+            elif opt['include_expenses']:
+                items = items.filter(is_bill=False)
+            elif opt['include_bills']:
+                items = items.filter(is_bill=True)
+
+            if opt['date_start'] and not opt['date_end']:
+                items = items.filter(date=opt['date_start'])
+            elif opt['date_start'] and opt['date_end']:
+                items = items.filter(date__gte=opt['date_start'], date__lte=opt['date_end'])
+
+            items = revchron(items)
+        else:
+            items = BillItem.objects.filter(user=request.user, bill__category__in=cat_pks)
+            if opt['q']:
+                items = items.filter(product__contains=opt['q'])
+            if opt['vendor']:
+                items = items.filter(bill__vendor__contains=opt['vendor'])
+
+            if opt['date_start'] and not opt['date_end']:
+                items = items.filter(bill__date=opt['date_start'])
+            elif opt['date_start'] and opt['date_end']:
+                items = items.filter(bill__date__gte=opt['date_start'], bill__date__lte=opt['date_end'])
+
+            items = items.order_by('date_added')
+    else:
+        opt['include_expenses'] = True
+        opt['include_bills'] = True
+        opt['has_query'] = False
+        categories_with_status = [(c, True) for c in categories]
+        items = None
+
+    context = {
+        'htmltitle': _('Search'),
+        'pid': 'search',
+        'categories_with_status': categories_with_status
+    }
+    context.update(opt)
+    if items is not None:
+        paginator = Paginator(items, settings.EXPENSES_PAGE_SIZE)
+        page = request.GET.get('page', '1')
+        context['items'] = paginator.get_page(page)
+    return render(request, 'expenses/search.html', context)
 
 
 @method_decorator(login_required, name='dispatch')

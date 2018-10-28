@@ -16,12 +16,12 @@ Features
 * Autocomplete for expenses and bill items
 * Templates for expenses (with multiplication and custom description)
 * i18n (Polish translation)
+* Searching and filtering data
 
 To-do
 -----
 
-* Autocomplete for expense templates?
-* Searching, filtering, reporting
+* Reports
 
 Configuration
 -------------

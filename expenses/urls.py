@@ -21,6 +21,8 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('jsi18n/', cache_page(86400, key_prefix='jsi18n')(JavaScriptCatalog.as_view(packages=['expenses'])), name='javascript-catalog'),
 
+    path('search/', views.search, name='search'),
+
     path('expenses/', views.expense.expense_list, name='expense_list'),
     path('expenses/add/', views.expense.expense_add, name='expense_add'),
     path('expenses/<int:pk>/', views.expense.expense_show, name='expense_show'),

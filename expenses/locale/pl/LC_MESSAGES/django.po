@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-28 15:12+0100\n"
+"POT-Creation-Date: 2018-10-28 22:51+0100\n"
 "PO-Revision-Date: 2018-10-28 12:47+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -38,6 +38,8 @@ msgstr "Data"
 #: expenses/templates/expenses/expense_show.html:24
 #: expenses/templates/expenses/extras/expense_table.html:11
 #: expenses/templates/expenses/extras/expense_table.html:23
+#: expenses/templates/expenses/search.html:34
+#: expenses/templates/expenses/search.html:51
 #: expenses/templates/expenses/template_add_edit.html:16
 #: expenses/templates/expenses/template_show.html:37
 msgid "Vendor"
@@ -60,6 +62,7 @@ msgstr "Opis"
 #: expenses/templates/expenses/bill_item_add_edit.html:9
 #: expenses/templates/expenses/bill_show.html:44
 #: expenses/templates/expenses/bill_show.html:69
+#: expenses/templates/expenses/search.html:52
 msgid "Product"
 msgstr "Produkt"
 
@@ -67,6 +70,7 @@ msgstr "Produkt"
 #: expenses/templates/expenses/bill_item_add_edit.html:16
 #: expenses/templates/expenses/bill_show.html:45
 #: expenses/templates/expenses/bill_show.html:70
+#: expenses/templates/expenses/search.html:53
 msgid "Serving [g, L]"
 msgstr "Porcja [g, L]"
 
@@ -201,6 +205,7 @@ msgstr "Zapisz zmiany"
 #: expenses/templates/expenses/bill_item_add_edit.html:30
 #: expenses/templates/expenses/bill_show.html:46
 #: expenses/templates/expenses/bill_show.html:71
+#: expenses/templates/expenses/search.html:54
 msgid "Unit Price"
 msgstr "Cena jednostkowa"
 
@@ -227,6 +232,7 @@ msgid "Bill editor"
 msgstr "Edytor rachunków"
 
 #: expenses/templates/expenses/bill_show.html:13
+#: expenses/templates/expenses/search.html:24
 msgid "Date:"
 msgstr "Data:"
 
@@ -447,7 +453,7 @@ msgstr "Usunięcie rachunku spowoduje usunięcie jego składników."
 #: expenses/templates/expenses/expbase.html:19
 #: expenses/templates/expenses/expbase.html:32
 #: expenses/templates/expenses/extras/exp_category_toolbar.html:5
-#: expenses/views/expense.py:30
+#: expenses/templates/expenses/search.html:14 expenses/views/expense.py:30
 msgid "Expenses"
 msgstr "Wydatki"
 
@@ -459,7 +465,8 @@ msgstr "Kokpit"
 msgid "Add Expense"
 msgstr "Dodaj wydatek"
 
-#: expenses/templates/expenses/expbase.html:34 expenses/views/expense.py:27
+#: expenses/templates/expenses/expbase.html:34
+#: expenses/templates/expenses/search.html:15 expenses/views/expense.py:27
 msgid "Bills"
 msgstr "Rachunki"
 
@@ -476,6 +483,11 @@ msgstr "Szablony"
 #: expenses/templates/expenses/expbase.html:37 expenses/views/category.py:30
 msgid "Categories"
 msgstr "Kategorie"
+
+#: expenses/templates/expenses/expbase.html:38
+#: expenses/templates/expenses/search.html:35 expenses/views/__init__.py:159
+msgid "Search"
+msgstr "Wyszukaj"
 
 #: expenses/templates/expenses/expense_convert.html:5
 #: expenses/views/expense.py:148
@@ -594,6 +606,59 @@ msgstr "Wydatki w kategoriach"
 msgid "Category chart"
 msgstr "Wykres kategorii"
 
+#: expenses/templates/expenses/search.html:8
+msgid "Search for:"
+msgstr "Wyszukaj:"
+
+#: expenses/templates/expenses/search.html:9
+msgid "Expenses/Bills"
+msgstr "Wydatki/Rachunki"
+
+#: expenses/templates/expenses/search.html:10
+msgid "Bill items"
+msgstr "Składniki rachunków"
+
+#: expenses/templates/expenses/search.html:13
+msgid "Include:"
+msgstr "Pokaż:"
+
+#: expenses/templates/expenses/search.html:18
+msgid "Categories:"
+msgstr "Kategorie:"
+
+#: expenses/templates/expenses/search.html:25
+msgid "Any"
+msgstr "Dowolna"
+
+#: expenses/templates/expenses/search.html:26
+msgid "Between:"
+msgstr "Pomiędzy:"
+
+#: expenses/templates/expenses/search.html:28
+msgid "Start"
+msgstr "Początek"
+
+#: expenses/templates/expenses/search.html:28
+msgid "End"
+msgstr "Koniec"
+
+#: expenses/templates/expenses/search.html:33
+msgid "Description/Product"
+msgstr "Opis/Produkt"
+
+#: expenses/templates/expenses/search.html:41
+msgid "Type in a query above and press Search."
+msgstr "Wpisz zapytanie powyżej i kliknij Szukaj."
+
+#: expenses/templates/expenses/search.html:43
+#: expenses/templates/expenses/search.html:46
+msgid "Search results"
+msgstr "Wyniki wyszukiwania"
+
+#: expenses/templates/expenses/search.html:69
+msgid "No bill items to show."
+msgstr "Brak składników rachunków do wyświetlenia."
+
 #: expenses/templates/expenses/template_add_edit.html:41
 msgid ""
 "When the template is executed, the following tags will be interpreted "
@@ -639,7 +704,7 @@ msgstr "Wartości"
 msgid "Expenses Dashboard"
 msgstr "Wydatki — Kokpit"
 
-#: expenses/views/__init__.py:90 expenses/views/bill_item.py:84
+#: expenses/views/__init__.py:176 expenses/views/bill_item.py:84
 #, python-format
 msgid "Delete %s"
 msgstr "Usuń %s"
@@ -701,36 +766,3 @@ msgstr "Szablon %s"
 #: expenses/views/template.py:114
 msgid "Edit a template"
 msgstr "Edytuj szablon"
-
-#~ msgid "Description (!count! tag accepted)"
-#~ msgstr "Opis (akceptowany tag !count!)"
-
-#~ msgid "name"
-#~ msgstr "nazwa"
-
-#~ msgid "slug"
-#~ msgstr "slug"
-
-#~ msgid "order"
-#~ msgstr "kolejność"
-
-#~ msgid "date"
-#~ msgstr "data"
-
-#~ msgid "vendor"
-#~ msgstr "kontrahent"
-
-#~ msgid "amount"
-#~ msgstr "ilość"
-
-#~ msgid "bill"
-#~ msgstr "rachunek"
-
-#~ msgid "product"
-#~ msgstr "produkt"
-
-#~ msgid "serving [g, L]"
-#~ msgstr "porcja [g, L]"
-
-#~ msgid "count"
-#~ msgstr "ilość"

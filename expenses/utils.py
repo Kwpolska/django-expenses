@@ -31,3 +31,7 @@ def cat_objs(request):
 
 def round_money(amount):
     return amount.quantize(decimal.Decimal('.01'), rounding=decimal.ROUND_HALF_UP)
+
+
+def dict_overwrite(destdict, destkey, srcdict, srckey=None):
+    destdict[destkey] = srcdict.get(srckey or destkey, destdict[destkey])

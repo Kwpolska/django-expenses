@@ -11,12 +11,19 @@ register = template.Library()
 register.simple_tag(format_money, name='money')
 
 
-@register.simple_tag(name='exp_config_json')
+@register.simple_tag()
 def exp_config_json():
     return mark_safe(json.dumps({
         'currencyCode': settings.EXPENSES_CURRENCY_CODE,
         'currencyLocale': settings.EXPENSES_CURRENCY_LOCALE
     }))
+
+
+@register.simple_tag(takes_context=True)
+def exp_set_page(context, page):
+    get = context['request'].GET.copy()
+    get['page'] = page
+    return '?' + get.urlencode()
 
 
 @register.inclusion_tag('expenses/extras/expense_table.html', takes_context=True)
@@ -34,10 +41,10 @@ def template_table(templates):
     return {'templates': templates}
 
 
-@register.inclusion_tag('expenses/extras/exp_paginator.html')
-def exp_paginator(page):
+@register.inclusion_tag('expenses/extras/exp_paginator.html', takes_context=True)
+def exp_paginator(context, page):
     page_range = pagination(page.number, page.paginator.num_pages)
-    return {'page': page, 'page_range': page_range}
+    return {'page': page, 'page_range': page_range, 'request': context['request']}
 
 
 @register.inclusion_tag('expenses/extras/expenses_add_toolbar.html')

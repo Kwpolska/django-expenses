@@ -229,3 +229,42 @@ ul.expenses-templatelist li {
 ul.expenses-templatelist li:first-child {
     margin-top: 0;
 }
+
+.expenses-search-box {
+    margin-bottom: 1rem;
+}
+
+.expenses-search-box label,
+.expenses-search-box .expenses-search-indented {
+    display: block;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+}
+
+.expenses-search-box .input-group {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    width: calc(100% - 3rem);
+}
+
+.expenses-search-box > label > input {
+    margin-right: 0.5rem;
+}
+
+.expenses-search-filter-input {
+    display: inline;
+    width: unset;
+    margin-left: 0.5rem;
+}
+
+.expenses-search-description {
+    font-weight: bold;
+    display: block;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.expenses-search-row {
+    margin-left: 0;
+    margin-right: 0;
+}

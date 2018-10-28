@@ -1,0 +1,74 @@
+{% extends "expenses/expbase.html" %}
+{% load i18n %}
+{% load expenses_extras %}
+{% block exp_toolbar %}
+    <form method="GET" id="expenses-search-form">
+        <div class="row expenses-search-row">
+            <div class="expenses-search-box col-md-3">
+                <div class="expenses-search-description">{% trans "Search for:" %}</div>
+                <label for="search-for-expenses"><input type="radio" name="for" value="expenses" id="search-for-expenses"{% if search_for == 'expenses' %} checked{% endif %}>{% trans "Expenses/Bills" %}</label>
+                <label for="search-for-billitems"><input type="radio" name="for" value="billitems" id="search-for-billitems"{% if search_for == 'billitems' %} checked{% endif %}>{% trans "Bill items" %}</label>
+            </div>
+            <div class="expenses-search-box col-md-3">
+                <div class="expenses-search-description">{% trans "Include:" %}</div>
+                <label for="search-include-expenses"><input type="checkbox" name="include" value="expenses" id="search-include-expenses"{% if search_for == 'billitems' %} checked disabled{% elif include_expenses %} checked{% endif %}>{% trans "Expenses" %}</label>
+                <label for="search-include-bills"><input type="checkbox" name="include" value="bills" id="search-include-bills"{% if search_for == 'billitems' %} checked disabled {% elif include_bills %} checked{% endif %}>{% trans "Bills" %}</label>
+            </div>
+            <div class="expenses-search-box col-md-3">
+                <div class="expenses-search-description">{% trans "Categories:" %}</div>
+                {% for category, status in categories_with_status %}
+                    <label for="search-category-{{ category.pk }}"><input type="checkbox" name="category" value="{{ category.pk }}" id="search-category-{{ category.pk }}"{% if status %} checked{% endif %}>{{ category.name }}</label>
+                {% endfor %}
+            </div>
+            <div class="expenses-search-box col-md-3">
+                <div class="expenses-search-description">{% trans "Date:" %}</div>
+                <label for="search-date-spec-any"><input type="radio" name="date-spec" value="any" id="search-date-spec-any"{% if date_spec == 'any' %} checked{% endif %}>{% trans "Any" %}</label>
+                <label for="search-date-spec-between"><input type="radio" name="date-spec" value="between" id="search-date-spec-between"{% if date_spec == 'between' %} checked{% endif %}>{% trans "Between:" %}</label>
+                <div class="input-group">
+                    <input class="form-control" id="search-date-start" name="date-start" placeholder="{% trans "Start" %}" value="{{ date_start }}"{% if date_spec == 'any' %} disabled{% endif %}><input class="form-control" id="search-date-end" name="date-end" placeholder="{% trans "End" %}" value="{{ date_end }}"{% if date_spec == 'any' %} disabled{% endif %}>
+                </div>
+            </div>
+        </div>
+        <div class="input-group">
+            <input name="q" class="form-control" placeholder="{% trans "Description/Product" %}" value="{{ q }}">
+            <input name="vendor" class="form-control" placeholder="{% trans "Vendor" %}" value="{{ vendor }}">
+            <div class="input-group-append"><button class="btn btn-primary" type="submit"><i class="fa fa-search"></i> {% trans "Search" %}</button></div>
+        </div>
+    </form>
+{% endblock %}
+{% block content %}
+    {% if not has_query %}
+        <p class="expenses-empty">{% trans "Type in a query above and press Search." %}</p>
+    {% elif search_for == 'expenses' %}
+        <h1>{% trans "Search results" %}</h1>
+        {% expense_table items %}
+        {% exp_paginator items %}
+    {% elif search_for == 'billitems' %}
+        <h1>{% trans "Search results" %}</h1>
+        {% if billitems %}
+            <table class="table table-hover expenses-table" id="expenses-billtable">
+                <thead>
+                <tr>
+                    <th class="expenses-billtable-vendor">{% trans "Vendor" %}</th>
+                    <th class="expenses-billtable-product">{% trans "Product" %}</th>
+                    <th class="expenses-billtable-serving">{% trans "Serving [g, L]" %}</th>
+                    <th class="expenses-billtable-unitprice">{% trans "Unit Price" %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for bi in items %}
+                    <tr>
+                        <td class="expenses-billtable-vendor">{{ bi.bill.vendor }}</td>
+                        <td class="expenses-billtable-product">{{ bi.product }}</td>
+                        <td class="expenses-billtable-serving">{{ bi.serving }}</td>
+                        <td class="expenses-billtable-unitprice">{% money bi.unit_price %}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% exp_paginator items %}
+        {% else %}
+            <p class="expenses-empty">{% trans "No bill items to show." %}</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}
