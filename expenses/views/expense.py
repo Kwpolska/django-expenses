@@ -30,7 +30,7 @@ def expense_list(request, bills_only=False):
         htmltitle = _('Expenses')
         pid = 'expense_list'
 
-    paginator = Paginator(exp.order_by('-id'), settings.EXPENSES_PAGE_SIZE)
+    paginator = Paginator(exp, settings.EXPENSES_PAGE_SIZE)
     page = request.GET.get('page', '1')
     expenses = paginator.get_page(page)
     if page == '1' and not bills_only:
@@ -81,6 +81,7 @@ def expense_show(request, pk):
         'pid': 'expense_show',
         'expense': expense,
     })
+
 
 @login_required
 def expense_edit(request, pk):
