@@ -3,7 +3,7 @@
  * Copyright © 2018, Chris Warrick. All rights reserved. License: 3-clause BSD.
  */
 
-import { getTrForEvent, getNewAIDForSelector } from './exputils';
+import { getTrForEvent, getNewAIDForSelector, formatMoney, gettext } from './exputils';
 import setUpAutoComplete from "./autocomplete";
 
 const NUMBER_CLASS_NAMES = ['expenses-billtable-serving', 'expenses-billtable-count', 'expenses-billtable-unitprice'];
@@ -27,11 +27,6 @@ class BillReOutput {
     unitprice: string;
 
     [key: string]: string;
-}
-
-function formatMoney(number: number): string {
-    if (isNaN(number)) return formatMoney(0);
-    return new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN' }).format(number);
 }
 
 function amountChangeHandler(event: Event) {
@@ -76,26 +71,26 @@ function getStdButtonGroup(buttonNames: string[]): HTMLDivElement {
     let stdButtons: {[id: string]: ButtonSpec} = {
         'edit': {
             'classNames': 'btn-info expenses-billtable-btn-edit',
-            'title': 'Edit',
+            'title': gettext('Edit'),
             'icon': 'fa-edit',
             'callback': editBtnHandler
 
         },
         'undo': {
             'classNames': 'btn-warning expenses-billtable-btn-undo',
-            'title': 'Undo Changes',
+            'title': gettext('Undo Changes'),
             'icon': 'fa-undo',
             'callback': undoChangesBtnHandler
         },
         'delete': {
             'classNames': 'btn-danger expenses-billtable-btn-delete',
-            'title': 'Delete',
+            'title': gettext('Delete'),
             'icon': 'fa-trash-alt',
             'callback': deleteBtnHandler
         },
         'accept': {
             'classNames': 'btn-success expenses-billtable-btn-accept',
-            'title': 'Accept',
+            'title': gettext('Accept'),
             'icon': 'fa-check',
             'callback': acceptChangesBtnHandler
         },

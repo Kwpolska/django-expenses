@@ -21,7 +21,6 @@ To-do
 -----
 
 * Autocomplete for expense templates?
-* Pushing config (URLs, locale) to JS
 * Searching, filtering, reporting
 
 Configuration

@@ -4,6 +4,8 @@
 # See /LICENSE for licensing information.
 
 from django.urls import path
+from django.views.decorators.cache import cache_page
+from django.views.i18n import JavaScriptCatalog
 
 import expenses.views.bill
 import expenses.views.bill_item
@@ -17,6 +19,7 @@ from expenses import views
 app_name = 'expenses'
 urlpatterns = [
     path('', views.index, name='index'),
+    path('jsi18n/', cache_page(86400, key_prefix='jsi18n')(JavaScriptCatalog.as_view(packages=['expenses'])), name='javascript-catalog'),
 
     path('expenses/', views.expense.expense_list, name='expense_list'),
     path('expenses/add/', views.expense.expense_add, name='expense_add'),

@@ -8,6 +8,8 @@
 <link rel="icon" href="{% static "expenses/expenses-favicon.ico" %}">
 {% endblock %}
 {% block extra_scripts %}
+    <script>var _expConfig_ = {% exp_config_json %};</script>
+    <script type="text/javascript" src="{% url 'expenses:javascript-catalog' %}"></script>
     <script src="{% static "expenses/expenses.js" %}"></script>
 {% endblock %}
 {% block navbar_container %}

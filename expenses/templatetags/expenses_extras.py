@@ -1,10 +1,22 @@
+import json
+
 from django import template
+from django.conf import settings
+from django.utils.html import mark_safe
 
 from expenses.pagination import pagination
 from expenses.utils import format_money, today_date
 
 register = template.Library()
 register.simple_tag(format_money, name='money')
+
+
+@register.simple_tag(name='exp_config_json')
+def exp_config_json():
+    return mark_safe(json.dumps({
+        'currencyCode': settings.EXPENSES_CURRENCY_CODE,
+        'currencyLocale': settings.EXPENSES_CURRENCY_LOCALE
+    }))
 
 
 @register.inclusion_tag('expenses/extras/expense_table.html', takes_context=True)

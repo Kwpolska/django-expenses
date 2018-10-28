@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-28 14:05+0100\n"
+"POT-Creation-Date: 2018-10-28 15:12+0100\n"
 "PO-Revision-Date: 2018-10-28 12:47+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -24,6 +24,8 @@ msgstr ""
 #: expenses/templates/expenses/bill_add_editmeta.html:16
 #: expenses/templates/expenses/expense_add_edit.html:14
 #: expenses/templates/expenses/expense_show.html:16
+#: expenses/templates/expenses/extras/exp_template_actions.html:6
+#: expenses/templates/expenses/extras/exp_template_actions.html:19
 #: expenses/templates/expenses/extras/expense_table.html:10
 #: expenses/templates/expenses/extras/expense_table.html:22
 msgid "Date"
@@ -46,7 +48,7 @@ msgstr "Kontrahent"
 #: expenses/templates/expenses/bill_add_editmeta.html:37
 #: expenses/templates/expenses/expense_add_edit.html:42
 #: expenses/templates/expenses/expense_show.html:45
-#: expenses/templates/expenses/extras/exp_template_actions.html:8
+#: expenses/templates/expenses/extras/exp_template_actions.html:11
 #: expenses/templates/expenses/extras/expense_table.html:14
 #: expenses/templates/expenses/extras/expense_table.html:28
 #: expenses/templates/expenses/template_add_edit.html:37
@@ -72,7 +74,7 @@ msgstr "Porcja [g, L]"
 #: expenses/templates/expenses/bill_item_add_edit.html:23
 #: expenses/templates/expenses/bill_show.html:47
 #: expenses/templates/expenses/bill_show.html:72
-#: expenses/templates/expenses/extras/exp_template_actions.html:6
+#: expenses/templates/expenses/extras/exp_template_actions.html:9
 msgid "Count"
 msgstr "Ilość"
 
@@ -442,41 +444,41 @@ msgstr "Suma z wszystkich danych"
 msgid "Removing a bill will also remove all its items."
 msgstr "Usunięcie rachunku spowoduje usunięcie jego składników."
 
-#: expenses/templates/expenses/expbase.html:17
-#: expenses/templates/expenses/expbase.html:30
+#: expenses/templates/expenses/expbase.html:19
+#: expenses/templates/expenses/expbase.html:32
 #: expenses/templates/expenses/extras/exp_category_toolbar.html:5
 #: expenses/views/expense.py:30
 msgid "Expenses"
 msgstr "Wydatki"
 
-#: expenses/templates/expenses/expbase.html:29
+#: expenses/templates/expenses/expbase.html:31
 msgid "Dashboard"
 msgstr "Kokpit"
 
-#: expenses/templates/expenses/expbase.html:31
+#: expenses/templates/expenses/expbase.html:33
 msgid "Add Expense"
 msgstr "Dodaj wydatek"
 
-#: expenses/templates/expenses/expbase.html:32 expenses/views/expense.py:27
+#: expenses/templates/expenses/expbase.html:34 expenses/views/expense.py:27
 msgid "Bills"
 msgstr "Rachunki"
 
-#: expenses/templates/expenses/expbase.html:33
+#: expenses/templates/expenses/expbase.html:35
 msgid "Add Bill"
 msgstr "Dodaj rachunek"
 
-#: expenses/templates/expenses/expbase.html:34
+#: expenses/templates/expenses/expbase.html:36
 #: expenses/templates/expenses/extras/exp_category_toolbar.html:6
 #: expenses/views/template.py:26
 msgid "Templates"
 msgstr "Szablony"
 
-#: expenses/templates/expenses/expbase.html:35 expenses/views/category.py:30
+#: expenses/templates/expenses/expbase.html:37 expenses/views/category.py:30
 msgid "Categories"
 msgstr "Kategorie"
 
 #: expenses/templates/expenses/expense_convert.html:5
-#: expenses/views/expense.py:147
+#: expenses/views/expense.py:148
 msgid "Convert"
 msgstr "Konwertuj"
 
@@ -526,8 +528,9 @@ msgstr "Poprzednia"
 msgid "Next"
 msgstr "Następna"
 
-#: expenses/templates/expenses/extras/exp_template_actions.html:11
-#: expenses/templates/expenses/extras/exp_template_actions.html:15
+#: expenses/templates/expenses/extras/exp_template_actions.html:14
+#: expenses/templates/expenses/extras/exp_template_actions.html:21
+#: expenses/templates/expenses/extras/exp_template_actions.html:25
 #: expenses/templates/expenses/extras/template_table.html:11
 msgid "Run"
 msgstr "Uruchom"
@@ -695,7 +698,7 @@ msgstr "Dodaj szablon"
 msgid "Template %s"
 msgstr "Szablon %s"
 
-#: expenses/views/template.py:110
+#: expenses/views/template.py:114
 msgid "Edit a template"
 msgstr "Edytuj szablon"
 
