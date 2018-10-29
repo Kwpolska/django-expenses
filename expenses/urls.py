@@ -11,6 +11,7 @@ import expenses.views.bill
 import expenses.views.bill_item
 import expenses.views.category
 import expenses.views.expense
+import expenses.views.search
 import expenses.views.template
 import expenses.views.api_autocomplete
 
@@ -21,7 +22,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('jsi18n/', cache_page(86400, key_prefix='jsi18n')(JavaScriptCatalog.as_view(packages=['expenses'])), name='javascript-catalog'),
 
-    path('search/', views.search, name='search'),
+    path('search/', expenses.views.search.search, name='search'),
 
     path('expenses/', views.expense.expense_list, name='expense_list'),
     path('expenses/add/', views.expense.expense_add, name='expense_add'),
