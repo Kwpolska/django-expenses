@@ -611,9 +611,9 @@ msgstr "Wydatki w kategoriach"
 msgid "Category chart"
 msgstr "Wykres kategorii"
 
-#: expenses/templates/expenses/search.html:6
-msgid "Jump to results"
-msgstr "Skocz do wyników"
+#: expenses/templates/expenses/search.html:5
+msgid "Filters"
+msgstr "Filtry"
 
 #: expenses/templates/expenses/search.html:11
 msgid "Search for:"

@@ -264,7 +264,24 @@ ul.expenses-templatelist li:first-child {
     margin-right: 0;
 }
 
-.expenses-search-row {
+#expenses-search-settings {
     margin-left: 0;
     margin-right: 0;
+}
+
+.expenses-search-toggle {
+    width: 100%;
+    margin-bottom: .5rem;
+}
+
+@media (max-width: 767px) {
+    .expenses-search-box {
+        padding: 0;
+    }
+}
+
+@media (min-width: 768px) {
+    #expenses-search-settings {
+        display: flex !important;
+    }
 }
