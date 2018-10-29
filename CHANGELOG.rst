@@ -11,6 +11,10 @@ More information can be found on GitHub in the `releases section
 Version History
 ===============
 
+0.3.1
+    * Searching for all purchases (both expenses and bills)
+    * Display date in searches and sort properly
+
 0.3.0
     * Searching and filtering data
     * Stop using admin site

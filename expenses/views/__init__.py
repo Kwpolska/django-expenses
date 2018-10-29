@@ -180,7 +180,7 @@ def search(request):
                         WHERE expenses_billitem.user_id = %s
                     ) AS d
                     WHERE d.category_id in ({cat_pks}) {date_clause}{query_clause}
-                    ORDER BY d.date, d.date_added DESC;""".format(
+                    ORDER BY d.date DESC, d.date_added DESC;""".format(
                     cat_pks=', '.join(str(i) for i in cat_pks), date_clause=date_clause, query_clause=query_clause),
                     [request.user.pk, request.user.pk] + date_args + query_args
                 )
