@@ -20,12 +20,12 @@ function handleDisableSearchDates(_event?: Event) {
 function handleDisableSearchIncludes(_event?: Event) {
     let includeExpenses = document.querySelector<HTMLInputElement>("#search-include-expenses");
     let includeBills = document.querySelector<HTMLInputElement>("#search-include-bills");
-    if (document.querySelector<HTMLInputElement>("#search-for-billitems").checked) {
-        includeExpenses.disabled = true;
-        includeBills.disabled = true;
-    } else {
+    if (document.querySelector<HTMLInputElement>("#search-for-expenses").checked) {
         includeExpenses.disabled = false;
         includeBills.disabled = false;
+    } else {
+        includeExpenses.disabled = true;
+        includeBills.disabled = true;
     }
 
 }

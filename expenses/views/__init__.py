@@ -23,6 +23,7 @@ from expenses.utils import format_money, today_date, revchron, cat_objs, dict_ov
 from expenses.models import Expense, Category, BillItem
 from django.utils.translation import gettext as _
 
+
 @login_required
 def index(request):
     last_n_expenses = revchron(Expense.objects.filter(user=request.user))[:settings.EXPENSES_INDEX_COUNT]
@@ -113,9 +114,9 @@ def search(request):
         if opt['search_for'] == 'expenses':
             items = Expense.objects.filter(user=request.user, category__in=cat_pks)
             if opt['q']:
-                items = items.filter(description__contains=opt['q'])
+                items = items.filter(description__icontains=opt['q'])
             if opt['vendor']:
-                items = items.filter(vendor__contains=opt['vendor'])
+                items = items.filter(vendor__icontains=opt['vendor'])
 
             if opt['include_expenses'] and opt['include_bills']:
                 pass
@@ -125,24 +126,68 @@ def search(request):
                 items = items.filter(is_bill=True)
 
             if opt['date_start'] and not opt['date_end']:
-                items = items.filter(date=opt['date_start'])
+                items = items.filter(date__gte=opt['date_start'])
             elif opt['date_start'] and opt['date_end']:
                 items = items.filter(date__gte=opt['date_start'], date__lte=opt['date_end'])
 
             items = revchron(items)
-        else:
+        elif opt['search_for'] == 'billitems':
             items = BillItem.objects.filter(user=request.user, bill__category__in=cat_pks)
             if opt['q']:
-                items = items.filter(product__contains=opt['q'])
+                items = items.filter(product__icontains=opt['q'])
             if opt['vendor']:
-                items = items.filter(bill__vendor__contains=opt['vendor'])
+                items = items.filter(bill__vendor__icontains=opt['vendor'])
 
             if opt['date_start'] and not opt['date_end']:
-                items = items.filter(bill__date=opt['date_start'])
+                items = items.filter(bill__date__gte=opt['date_start'])
             elif opt['date_start'] and opt['date_end']:
                 items = items.filter(bill__date__gte=opt['date_start'], bill__date__lte=opt['date_end'])
 
             items = items.order_by('-date_added')
+        elif opt['search_for'] == 'purchases':
+            cat_pks = {int(i) for i in request.GET.getlist('category', [])}
+
+            if opt['date_start'] and not opt['date_end']:
+                date_clause = 'AND d.date >= %s'
+                date_args = [opt['date_start']]
+            elif opt['date_start'] and opt['date_end']:
+                date_clause = 'AND d.date BETWEEN %s AND %s'
+                date_args = [opt['date_start'], opt['date_end']]
+            else:
+                date_clause = ''
+                date_args = []
+
+            ilike_word = 'LIKE' if connection.settings_dict['ENGINE'] == 'django.db.backends.sqlite3' else 'ILIKE'
+
+            query_clause = ''
+            query_args = []
+            if opt['q']:
+                query_clause += ' AND d.product ' + ilike_word + ' %s'
+                query_args.append('%' + opt['q'] + '%')
+            if opt['vendor']:
+                query_clause += ' AND d.vendor ' + ilike_word + ' %s'
+                query_args.append('%' + opt['vendor'] + '%')
+
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT d.date, d.vendor, d.product, d.unit_price FROM (
+                        SELECT date, vendor, description AS product, amount AS unit_price, category_id, date_added
+                        FROM expenses_expense WHERE is_bill = false AND user_id = %s
+                    UNION
+                        SELECT date, vendor, product, unit_price, category_id, expenses_billitem.date_added
+                        FROM expenses_billitem
+                        LEFT JOIN expenses_expense ON expenses_billitem.bill_id = expenses_expense.id
+                        WHERE expenses_billitem.user_id = %s
+                    ) AS d
+                    WHERE d.category_id in ({cat_pks}) {date_clause}{query_clause}
+                    ORDER BY d.date, d.date_added DESC;""".format(
+                    cat_pks=', '.join(str(i) for i in cat_pks), date_clause=date_clause, query_clause=query_clause),
+                    [request.user.pk, request.user.pk] + date_args + query_args
+                )
+                items = cursor.fetchall()
+                # TODO better pagination performance
+        else:
+            raise Exception("Unknown search type")
     else:
         opt['include_expenses'] = True
         opt['include_bills'] = True
@@ -175,4 +220,3 @@ class ExpDeleteView(DeleteView):
             'object': obj,
             'cancel_url': reverse(self.cancel_url, args=[getattr(obj, self.cancel_key)])
         }
-

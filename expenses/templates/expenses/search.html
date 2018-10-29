@@ -11,6 +11,7 @@
                 <div class="expenses-search-description">{% trans "Search for:" %}</div>
                 <label for="search-for-expenses"><input type="radio" name="for" value="expenses" id="search-for-expenses"{% if search_for == 'expenses' %} checked{% endif %}>{% trans "Expenses/Bills" %}</label>
                 <label for="search-for-billitems"><input type="radio" name="for" value="billitems" id="search-for-billitems"{% if search_for == 'billitems' %} checked{% endif %}>{% trans "Bill items" %}</label>
+                <label for="search-for-purchases"><input type="radio" name="for" value="purchases" id="search-for-purchases"{% if search_for == 'purchases' %} checked{% endif %}>{% trans "All purchases" %}</label>
             </div>
             <div class="expenses-search-box col-md-3">
                 <div class="expenses-search-description">{% trans "Include:" %}</div>
@@ -52,20 +53,48 @@
             <table class="table table-hover expenses-table" id="expenses-billtable">
                 <thead>
                 <tr>
-                    <th class="expenses-billtable-vendor">{% trans "Vendor" %}</th>
-                    <th class="expenses-billtable-product">{% trans "Product" %}</th>
-                    <th class="expenses-billtable-serving">{% trans "Serving [g, L]" %}</th>
-                    <th class="expenses-billtable-unitprice">{% trans "Unit Price" %}</th>
+                    <th class="expenses-search-billitemtable-date">{% trans "Date" %}</th>
+                    <th class="expenses-search-billitemtable-vendor">{% trans "Vendor" %}</th>
+                    <th class="expenses-search-billitemtable-product">{% trans "Product" %}</th>
+                    <th class="expenses-search-billitemtable-serving">{% trans "Serving [g, L]" %}</th>
+                    <th class="expenses-search-billitemtable-unitprice">{% trans "Unit Price" %}</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for bi in items %}
                     <tr>
-                        <td class="expenses-billtable-date">{{ bi.bill.date|date:"c" }}</td>
-                        <td class="expenses-billtable-vendor">{{ bi.bill.vendor }}</td>
-                        <td class="expenses-billtable-product">{{ bi.product }}</td>
-                        <td class="expenses-billtable-serving">{{ bi.serving }}</td>
-                        <td class="expenses-billtable-unitprice">{% money bi.unit_price %}</td>
+                        <td class="expenses-search-billitemtable-date">{{ bi.bill.date|date:"c" }}</td>
+                        <td class="expenses-search-billitemtable-vendor">{{ bi.bill.vendor }}</td>
+                        <td class="expenses-search-billitemtable-product">{{ bi.product }}</td>
+                        <td class="expenses-search-billitemtable-serving">{{ bi.serving }}</td>
+                        <td class="expenses-search-billitemtable-unitprice">{% money bi.unit_price %}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% exp_paginator items %}
+        {% else %}
+            <p class="expenses-empty">{% trans "No bill items to show." %}</p>
+        {% endif %}
+    {% elif search_for == 'purchases' %}
+        <h1 id="search-results">{% trans "Search results" %}</h1>
+        {% if items %}
+            <table class="table table-hover expenses-table" id="expenses-billtable">
+                <thead>
+                <tr>
+                    <th class="expenses-search-purchasetable-date">{% trans "Date" %}</th>
+                    <th class="expenses-search-purchasetable-vendor">{% trans "Vendor" %}</th>
+                    <th class="expenses-search-purchasetable-product">{% trans "Product" %}</th>
+                    <th class="expenses-search-purchasetable-unitprice">{% trans "Unit Price" %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item_date, vendor, product, unit_price in items %}
+                    <tr>
+                        <td class="expenses-search-purchasetable-date">{{ item_date|date:"c" }}</td>
+                        <td class="expenses-search-purchasetable-vendor">{{ vendor }}</td>
+                        <td class="expenses-search-purchasetable-product">{{ product }}</td>
+                        <td class="expenses-search-purchasetable-unitprice">{% money unit_price %}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
