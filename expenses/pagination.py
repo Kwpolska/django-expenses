@@ -9,7 +9,7 @@ from itertools import zip_longest
 def pagination(num, maxpage):
     """Generate a pretty pagination."""
     if maxpage <= 5:
-        return list(range(num, maxpage + 1))
+        return list(range(1, maxpage + 1))
 
     page_range = []
     if num == 1:
