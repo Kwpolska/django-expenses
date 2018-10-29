@@ -61,6 +61,7 @@
                 <tbody>
                 {% for bi in items %}
                     <tr>
+                        <td class="expenses-billtable-date">{{ bi.bill.date|date:"c" }}</td>
                         <td class="expenses-billtable-vendor">{{ bi.bill.vendor }}</td>
                         <td class="expenses-billtable-product">{{ bi.product }}</td>
                         <td class="expenses-billtable-serving">{{ bi.serving }}</td>
