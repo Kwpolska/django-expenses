@@ -3,7 +3,7 @@
  * Copyright © 2018, Chris Warrick. All rights reserved. License: 3-clause BSD.
  */
 
-import { getTrForEvent, getNewAIDForSelector, formatMoney, gettext } from './exputils';
+import { getTrForEvent, getNewAIDForSelector, formatMoney } from './exputils';
 import setUpAutoComplete from "./autocomplete";
 
 const NUMBER_CLASS_NAMES = ['expenses-billtable-serving', 'expenses-billtable-count', 'expenses-billtable-unitprice'];
@@ -368,7 +368,7 @@ export default function initializeBillEditor() {
         null,
         () => {
             let vendorName = document.querySelector<HTMLSpanElement>("#expenses-bill-meta-vendor").innerText;
-            return "/expenses/api/autocomplete/bill/item/?vendor=" + encodeURIComponent(vendorName);
+            return _expConfig_.baseUrl + "api/autocomplete/bill/item/?vendor=" + encodeURIComponent(vendorName);
         },
         3,
         (data) => {

@@ -1,11 +1,4 @@
 /* Utilities for Expenses scripts */
-declare namespace _expConfig_ {
-    let currencyCode: string;
-    let currencyLocale: string;
-}
-
-export declare function gettext(text: string): string;
-
 export function getNewAIDForSelector(selector: string): number {
     let form = document.querySelector<HTMLFormElement>(selector);
     let id = parseInt(form.dataset['last_aid']) + 1;

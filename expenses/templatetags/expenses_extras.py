@@ -3,6 +3,7 @@ import json
 from django import template
 from django.conf import settings
 from django.utils.html import mark_safe
+from django.urls import reverse
 
 from expenses.pagination import pagination
 from expenses.utils import format_money, today_date
@@ -14,6 +15,7 @@ register.simple_tag(format_money, name='money')
 @register.simple_tag()
 def exp_config_json():
     return mark_safe(json.dumps({
+        'baseUrl': reverse('expenses:index'),
         'currencyCode': settings.EXPENSES_CURRENCY_CODE,
         'currencyLocale': settings.EXPENSES_CURRENCY_LOCALE
     }))

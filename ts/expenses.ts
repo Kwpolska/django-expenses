@@ -8,14 +8,15 @@ import initializeSearchForm from "./searchform";
 import setUpAutoComplete from "./autocomplete";
 
 function injectAutoComplete() {
-    setUpAutoComplete(".expenses-addform-vendor", "vendor", "/expenses/api/autocomplete/expense/vendor/");
-    setUpAutoComplete(".expenses-billaddform-vendor", "vendor", "/expenses/api/autocomplete/bill/vendor/");
+    let baseUrl = _expConfig_.baseUrl;
+    setUpAutoComplete(".expenses-addform-vendor", "vendor", baseUrl + "api/autocomplete/expense/vendor/");
+    setUpAutoComplete(".expenses-billaddform-vendor", "vendor", baseUrl + "api/autocomplete/bill/vendor/");
     setUpAutoComplete(".expenses-addform-description", "description", () => {
         let vendorName = document.querySelector<HTMLInputElement>(".expenses-addform-vendor").value.trim();
         if (vendorName.length == 0) {
-            return "/expenses/api/autocomplete/expense/description/";
+            return baseUrl + "api/autocomplete/expense/description/";
         }
-        return "/expenses/api/autocomplete/expense/description/?vendor=" + encodeURIComponent(vendorName);
+        return baseUrl + "api/autocomplete/expense/description/?vendor=" + encodeURIComponent(vendorName);
     });
 }
 
