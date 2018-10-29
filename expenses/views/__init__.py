@@ -142,7 +142,7 @@ def search(request):
             elif opt['date_start'] and opt['date_end']:
                 items = items.filter(bill__date__gte=opt['date_start'], bill__date__lte=opt['date_end'])
 
-            items = items.order_by('date_added')
+            items = items.order_by('-date_added')
     else:
         opt['include_expenses'] = True
         opt['include_bills'] = True
