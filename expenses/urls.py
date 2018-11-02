@@ -14,6 +14,7 @@ import expenses.views.expense
 import expenses.views.search
 import expenses.views.template
 import expenses.views.api_autocomplete
+import expenses.views.api_sync
 
 from expenses import views
 
@@ -61,4 +62,11 @@ urlpatterns = [
     path('api/autocomplete/expense/description/', views.api_autocomplete.expense_description, name='api_autocomplete__expense_description'),
     path('api/autocomplete/bill/vendor/', views.api_autocomplete.bill_vendor, name='api_autocomplete__bill_vendor'),
     path('api/autocomplete/bill/item/', views.api_autocomplete.bill_item, name='api_autocomplete__bill_item'),
+
+    path('api/sync/hello/', views.api_sync.hello, name='api_sync__hello'),
+    path('api/sync/profile/', views.api_sync.profile, name='api_sync__profile'),
+    path('api/sync/run/', views.api_sync.RunEndpoint.as_view(), name='api_sync__run'),
+    path('api/sync/category/add/', views.api_sync.CategoryAddEndpoint.as_view(), name='api_sync__category_add'),
+    path('api/sync/category/edit/', views.api_sync.CategoryEditEndpoint.as_view(), name='api_sync__category_edit'),
+    path('api/sync/category/delete/', views.api_sync.CategoryDeleteEndpoint.as_view(), name='api_sync__category_delete'),
 ]

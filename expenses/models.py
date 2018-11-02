@@ -14,7 +14,52 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 
-class Category(models.Model):
+from expenses.utils import round_money, serialize_dt, serialize_date, serialize_decimal, \
+    parse_dt, parse_date, parse_decimal
+
+
+class ExpensesModel(models.Model):
+    class Meta:
+        abstract = True
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
+
+    def to_json(self) -> dict:
+        output = {
+            "id": self.pk,
+            "date_added": serialize_dt(self.date_added),
+            "date_modified": serialize_dt(self.date_modified),
+        }
+        output.update(self.fields_to_json())
+        return output
+
+    def from_json(self, data: dict, date_modified: datetime.datetime) -> None:
+        if data.get("id") is None:
+            self.date_added = parse_dt(data["date_added"])
+        elif data["id"] != self.pk:
+            raise ValueError("Data dict does not match")
+        self.date_modified = date_modified
+        self.fields_from_json(data)
+
+    def fields_to_json(self) -> dict:
+        return {}
+
+    def fields_from_json(self, data: dict) -> None:
+        pass
+
+    def delete_at(self, date: datetime.datetime):
+        dr = DeletionRecord(
+            model=MODEL_TO_STR_MAP[self.__class__],
+            object_pk=self.pk,
+            user=self.user,
+            date=date)
+        dr.save()
+        self.delete()
+
+
+class Category(ExpensesModel):
     class Meta:
         verbose_name = _("category")
         verbose_name_plural = _("categories")
@@ -23,9 +68,6 @@ class Category(models.Model):
     slug = models.CharField(_("Slug"), max_length=20)
     slugbase = models.CharField(_("Slug base"), max_length=20)
     order = models.IntegerField(_("Order"), default=1)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
-    date_added = models.DateTimeField(auto_now_add=True)
-    date_modified = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
         return reverse("expenses:category_show", args=[self.slug])
@@ -65,16 +107,24 @@ class Category(models.Model):
         except (Category.DoesNotExist, ValueError):
             return False
 
-class Expense(models.Model):
+    def fields_to_json(self) -> dict:
+        return {
+            "name": self.name,
+            "order": self.order,
+        }
+
+    def fields_from_json(self, data: dict) -> None:
+        self.name = data["name"]
+        self.order = data["order"]
+
+
+class Expense(ExpensesModel):
     date = models.DateField(_("Date"), default=datetime.date.today)
     vendor = models.CharField(_("Vendor"), max_length=40)
     category = models.ForeignKey(Category, verbose_name=_("Category"), on_delete=models.PROTECT)
     amount = models.DecimalField(_("Amount"), max_digits=10, decimal_places=2)
     description = models.CharField(_("Description"), max_length=80, blank=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
     is_bill = models.BooleanField(_("This is a bill"), default=False)
-    date_added = models.DateTimeField(auto_now_add=True)
-    date_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return '{0}: {1}'.format(self.desc_auto, self.amount)
@@ -99,19 +149,31 @@ class Expense(models.Model):
             return _("(empty)")
         return ", ".join(i.product for i in self.billitem_set.all())
 
+    def fields_to_json(self):
+        return {
+            "date": serialize_date(self.date),
+            "vendor": self.vendor,
+            "category": self.category_id,
+            "amount": serialize_decimal(self.amount),
+            "description": self.description,
+            "is_bill": self.is_bill,
+        }
 
-from expenses.utils import round_money  # NOQA
+    def fields_from_json(self, data: dict) -> None:
+        self.date = parse_date(data["date"])
+        self.vendor = data["vendor"]
+        self.category_id = data["category"]
+        self.amount = parse_decimal(data["amount"])
+        self.description = data["description"]
+        self.is_bill = data["is_bill"]
 
 
-class BillItem(models.Model):
+class BillItem(ExpensesModel):
     bill = models.ForeignKey(Expense, verbose_name=_("Bill"), on_delete=models.CASCADE)
     product = models.CharField(_("Product"), max_length=40)
     serving = models.DecimalField(_("Serving [g, L]"), max_digits=10, decimal_places=3)
     count = models.DecimalField(_("Count"), max_digits=10, decimal_places=3)  # weighted products
     unit_price = models.DecimalField(_("Unit price"), max_digits=10, decimal_places=2)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
-    date_added = models.DateTimeField(auto_now_add=True)
-    date_modified = models.DateTimeField(auto_now=True)
 
     @property
     def amount(self):
@@ -123,6 +185,22 @@ class BillItem(models.Model):
     def __repr__(self):
         return '<BillItem "{0}" on bill {1}: {2}>'.format(self.product, self.bill_id, self.amount)
 
+    def fields_to_json(self) -> dict:
+        return {
+            "bill": self.bill_id,
+            "product": self.product,
+            "serving": serialize_decimal(self.serving),
+            "count": serialize_decimal(self.count),
+            "unit_price": serialize_decimal(self.unit_price),
+        }
+
+    def fields_from_json(self, data: dict) -> None:
+        self.bill_id = data["bill"]
+        self.product = data["product"]
+        self.serving = parse_decimal(data["serving"])
+        self.count = parse_decimal(data["count"])
+        self.unit_price = parse_decimal(data["unit_price"])
+
 
 TEMPLATE_TYPE_CHOICES = (
     ('simple', _('Simple')),
@@ -132,7 +210,7 @@ TEMPLATE_TYPE_CHOICES = (
 TEMPLATE_TYPE_CHOICES_LOOKUP = {k: v for k, v in TEMPLATE_TYPE_CHOICES}
 
 
-class ExpenseTemplate(models.Model):
+class ExpenseTemplate(ExpensesModel):
     name = models.CharField(_("Name"), max_length=40)
     vendor = models.CharField(_("Vendor"), max_length=40)
     category = models.ForeignKey(Category, verbose_name=_("Category"), on_delete=models.PROTECT)
@@ -140,9 +218,6 @@ class ExpenseTemplate(models.Model):
     amount = models.DecimalField(_("Amount"), max_digits=10, decimal_places=2, null=True)
     description = models.CharField(_("Description"), max_length=80)
     comment = models.TextField(_("Comment"), blank=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
-    date_added = models.DateTimeField(auto_now_add=True)
-    date_modified = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
         return reverse("expenses:template_show", args=[self.pk])
@@ -158,6 +233,26 @@ class ExpenseTemplate(models.Model):
 
     def __repr__(self):
         return '<ExpenseTemplate "{0}">'.format(self.name)
+
+    def fields_to_json(self) -> dict:
+        return {
+            "name": self.name,
+            "vendor": self.vendor,
+            "category": self.category_id,
+            "type": self.type,
+            "amount": serialize_decimal(self.amount),
+            "description": self.description,
+            "comment": self.comment,
+        }
+
+    def fields_from_json(self, data: dict) -> None:
+        self.name = data["name"]
+        self.vendor = data["vendor"]
+        self.category_id = data["category_id"]
+        self.type = data["type"]
+        self.amount = parse_decimal(data["amount"])
+        self.description = data["description"]
+        self.comment = data["comment"]
 
 
 DR_MODEL_CHOICES = (
@@ -183,6 +278,26 @@ class DeletionRecord(models.Model):
             "object": self.object_pk,
             "date": self.date
         }
+
+
+STR_TO_MODEL_MAP = {
+    'category': Category,
+    'expense': Expense,
+    'billitem': BillItem,
+    'expensetemplate': ExpenseTemplate,
+    'deletionrecord': DeletionRecord
+}
+MODEL_TO_STR_MAP = {v: k for k, v in STR_TO_MODEL_MAP.items()}
+
+DATA_MODELS = (
+    (Category, 'category'),
+    (Expense, 'expense'),
+    (BillItem, 'billitem'),
+    (ExpenseTemplate, 'expensetemplate')
+)
+
+DATA_MODELS_STR = ['category', 'expense', 'billitem', 'expensetemplate']
+STR_TO_DATA_MODEL_MAP = {k: v for k, v in STR_TO_MODEL_MAP.items() if k != 'deletionrecord'}
 
 
 # Code from the Achieve project.
@@ -235,6 +350,8 @@ def update_bill_amount_on_bill_save(instance: Expense, **kwargs):
 @receiver(models.signals.pre_delete, sender=BillItem)
 @receiver(models.signals.pre_delete, sender=ExpenseTemplate)
 def create_deletion_record(instance, sender, **kwargs):
-    dr = DeletionRecord(model=MODEL_TO_STR_MAP[sender], object_pk=instance.pk, user=instance.user)
-    dr.save()
+    DeletionRecord.objects.get_or_create(
+        model=MODEL_TO_STR_MAP[sender],
+        object_pk=instance.pk,
+        user=instance.user)
 

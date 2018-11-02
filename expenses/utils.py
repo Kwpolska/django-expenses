@@ -6,7 +6,10 @@
 """Assorted Expenses utilities."""
 
 import babel.numbers
+import datetime
 import decimal
+import iso8601
+import pytz
 import typing
 from django.utils import timezone
 from django.conf import settings
@@ -37,3 +40,33 @@ def round_money(amount: decimal.Decimal) -> decimal.Decimal:
 def dict_overwrite(destdict: dict, destkey, srcdict: dict, srckey=None) -> None:
     """Override a dict key with one taken from another dict."""
     destdict[destkey] = srcdict.get(srckey or destkey, destdict[destkey])
+
+
+def serialize_date(date: datetime.date) -> str:
+    """Serialize a datetime."""
+    return date.isoformat()
+
+
+def serialize_dt(dt: datetime.datetime) -> str:
+    """Serialize a datetime."""
+    return dt.isoformat()
+
+
+def serialize_decimal(amount: decimal.Decimal) -> str:
+    """Serialize a decimal value."""
+    return str(amount)
+
+
+def parse_date(date_str: str) -> datetime.date:
+    """Parse an ISO 8601 date."""
+    return iso8601.parse_date(date_str).date()
+
+
+def parse_dt(dt_str: str) -> datetime.datetime:
+    """Parse an ISO 8601 datetime."""
+    return iso8601.parse_date(dt_str)
+
+
+def parse_decimal(amount_str: str) -> decimal.Decimal:
+    """Parse a decimal object."""
+    return decimal.Decimal(amount_str)
