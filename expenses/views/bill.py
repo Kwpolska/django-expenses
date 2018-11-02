@@ -13,7 +13,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _, ngettext
 
-from expenses.forms import BillForm, BillItemForm
+from expenses.forms import BillForm
 from expenses.models import Expense, BillItem
 from expenses.views import ExpDeleteView
 from expenses.views.expense import expense_list as _expense_list
@@ -141,14 +141,11 @@ def bill_show(request, pk):
         elif err:
             status_type = 'alert-danger'
 
-    form = BillItemForm()  # TODO
-
     return render(request, 'expenses/bill_show.html', {
         'htmltitle': str(expense),
         'pid': 'bill_show',
         'expense': expense,
         'items': expense.billitem_set.order_by('date_added'),
-        'form': form,
         'status_msg': status_msg,
         'status_type': status_type,
     })
