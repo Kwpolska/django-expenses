@@ -147,6 +147,31 @@ class ExpenseTemplate(models.Model):
         return '<ExpenseTemplate "{0}">'.format(self.name)
 
 
+DR_MODEL_CHOICES = (
+    ('category', 'category'),
+    ('expense', 'expense'),
+    ('billitem', 'billitem'),
+    ('expensetemplate', 'expensetemplate'),
+)
+
+
+class DeletionRecord(models.Model):
+    model = models.CharField(max_length=20, choices=DR_MODEL_CHOICES)
+    object_pk = models.IntegerField()
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "<DeletionRecord {} #{}>".format(self.model, self.object_pk)
+
+    def to_json_dict(self):
+        return {
+            "model": self.model,
+            "object": self.object_pk,
+            "date": self.date
+        }
+
+
 # Code from the Achieve project.
 @receiver(models.signals.pre_save, sender=Category)
 def update_slug(sender, instance: Category, **kwargs):  # NOQA
@@ -190,3 +215,13 @@ def update_bill_amount_on_billitem_change(instance: BillItem, **kwargs):
 def update_bill_amount_on_bill_save(instance: Expense, **kwargs):
     if instance.is_bill:
         instance.amount = instance.calculate_bill_total()
+
+
+@receiver(models.signals.pre_delete, sender=Category)
+@receiver(models.signals.pre_delete, sender=Expense)
+@receiver(models.signals.pre_delete, sender=BillItem)
+@receiver(models.signals.pre_delete, sender=ExpenseTemplate)
+def create_deletion_record(instance, sender, **kwargs):
+    dr = DeletionRecord(model=MODEL_TO_STR_MAP[sender], object_pk=instance.pk, user=instance.user)
+    dr.save()
+
