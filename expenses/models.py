@@ -51,6 +51,14 @@ class Category(models.Model):
     def __repr__(self):
         return "<Category {0} (order {1})>".format(self.name, self.order)
 
+    def prepare_deletion(self, dest, user):
+        try:
+            new_cat = Category.objects.get(pk=int(dest), user=user)
+            self.expense_set.update(category=new_cat)
+            self.expensetemplate_set.update(category=new_cat)
+            return True
+        except (Category.DoesNotExist, ValueError):
+            return False
 
 class Expense(models.Model):
     date = models.DateField(_("Date"), default=datetime.date.today)

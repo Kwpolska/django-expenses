@@ -107,18 +107,13 @@ def category_edit(request, slug):
 @login_required
 def category_delete(request, slug):
     category = get_object_or_404(Category, slug=slug, user=request.user)
-    deletion_failed = False
+    move_succeeded = True
     if request.method == "POST":
         if category.total_count != 0:
             dest = request.POST.get('move_destination')
-            try:
-                new_cat = Category.objects.get(pk=int(dest), user=request.user)
-                category.expense_set.update(category=new_cat)
-                category.expensetemplate_set.update(category=new_cat)
-            except (Category.DoesNotExist, ValueError):
-                deletion_failed = True
+            move_succeeded = category.prepare_deletion(dest, request.user)
 
-        if not deletion_failed:
+        if move_succeeded:
             category.delete()
             return HttpResponseRedirect(reverse('expenses:category_list'))
 
@@ -129,7 +124,7 @@ def category_delete(request, slug):
 
     return render(request, 'expenses/category_delete.html', {
         'object': category,
-        'deletion_failed': deletion_failed,
+        'deletion_failed': not move_succeeded,
         'htmltitle': _('Delete category %s') % category.name,
         'pid': 'category_delete',
         'categories': categories,
@@ -164,7 +159,7 @@ def category_bulk_edit(request):
             else:
                 failure_count += 1
                 failure_list.append(cat.name)
-        
+
         additions = defaultdict(dict)
         print(request.POST)
         for k, v in request.POST.items():
@@ -172,7 +167,7 @@ def category_bulk_edit(request):
                 print(k, v)
                 _add, aid, key = k.split('_')
                 additions[aid][key] = v
-        
+
         for k, fields in additions.items():
             new_name = fields.get('name')
             new_order = fields.get('order')
