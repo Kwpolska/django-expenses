@@ -11,6 +11,11 @@ More information can be found on GitHub in the `releases section
 Version History
 ===============
 
+0.4.0
+    * Add Synchronization API
+    * Record all deletions in the database (for sync API)
+    * Optimize search pagination
+
 0.3.1
     * Searching for all purchases (both expenses and bills)
     * Display date in searches and sort properly
