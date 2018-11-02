@@ -11,9 +11,8 @@ from django.db import connection
 from django.shortcuts import render
 from django.utils.translation import gettext as _
 
-from expenses.models import Expense, BillItem
+from expenses.models import Expense, BillItem, Category
 from expenses.utils import dict_overwrite, revchron
-from expenses.queries import cat_objs
 
 
 class RawQueryWithSlicing:
@@ -66,7 +65,7 @@ def search(request):
         'date_start': '',
         'date_end': ''
     }
-    categories = cat_objs(request)
+    categories = Category.user_objects(request)
     if 'q' in request.GET or 'vendor' in request.GET:
         opt['has_query'] = True
         # Set search options (will be copied into template)

@@ -51,6 +51,11 @@ class Category(models.Model):
     def __repr__(self):
         return "<Category {0} (order {1})>".format(self.name, self.order)
 
+    @classmethod
+    def user_objects(cls, request):
+        """Get ordered category objects for a user."""
+        return cls.objects.filter(user=request.user).order_by('order')
+
     def prepare_deletion(self, dest, user):
         try:
             new_cat = Category.objects.get(pk=int(dest), user=user)

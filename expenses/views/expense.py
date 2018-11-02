@@ -14,9 +14,8 @@ from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _
 
 from expenses.forms import ExpenseForm
-from expenses.models import Expense, BillItem
+from expenses.models import Expense, BillItem, Category
 from expenses.utils import revchron, today_date
-from expenses.queries import cat_objs
 from expenses.views import ExpDeleteView
 
 
@@ -36,7 +35,7 @@ def expense_list(request, bills_only=False):
     expenses = paginator.get_page(page)
     if page == '1' and not bills_only:
         show_form = True
-        categories = cat_objs(request)
+        categories = Category.user_objects(request)
     else:
         show_form = False
         categories = None

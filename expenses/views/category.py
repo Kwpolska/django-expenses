@@ -17,13 +17,12 @@ from django.utils.translation import gettext as _
 from expenses.forms import CategoryForm
 from expenses.models import Category, Expense, ExpenseTemplate
 from expenses.utils import revchron
-from expenses.queries import cat_objs
 
 
 @login_required
 def category_list(request):
     paginator = Paginator(
-        cat_objs(request),
+        Category.user_objects(request),
         settings.EXPENSES_PAGE_SIZE)
     page = request.GET.get('page')
     categories = paginator.get_page(page)
@@ -117,7 +116,7 @@ def category_delete(request, slug):
             category.delete()
             return HttpResponseRedirect(reverse('expenses:category_list'))
 
-    categories = cat_objs(request)
+    categories = Category.user_objects(request)
     show_del_button = True
     if categories.count == 1 and category.total_count > 0:
         show_del_button = False
@@ -134,7 +133,7 @@ def category_delete(request, slug):
 
 @login_required
 def category_bulk_edit(request):
-    categories = cat_objs(request)
+    categories = Category.user_objects(request)
     if request.method == 'POST':
         added_count = 0
         changed_count = 0
