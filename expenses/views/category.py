@@ -16,7 +16,8 @@ from django.utils.translation import gettext as _
 
 from expenses.forms import CategoryForm
 from expenses.models import Category, Expense, ExpenseTemplate
-from expenses.utils import cat_objs, revchron
+from expenses.utils import revchron
+from expenses.queries import cat_objs
 
 
 @login_required

@@ -15,7 +15,8 @@ from django.utils.translation import gettext as _
 
 from expenses.forms import ExpenseForm
 from expenses.models import Expense, BillItem
-from expenses.utils import revchron, cat_objs, today_date
+from expenses.utils import revchron, today_date
+from expenses.queries import cat_objs
 from expenses.views import ExpDeleteView
 
 

@@ -12,7 +12,8 @@ from django.shortcuts import render
 from django.utils.translation import gettext as _
 
 from expenses.models import Expense, BillItem
-from expenses.utils import cat_objs, dict_overwrite, revchron
+from expenses.utils import dict_overwrite, revchron
+from expenses.queries import cat_objs
 
 
 class RawQueryWithSlicing:
