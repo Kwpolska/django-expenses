@@ -1,5 +1,5 @@
 # Django-Expenses
-# Copyright © 2018, Chris Warrick.
+# Copyright © 2018-2019, Chris Warrick.
 # All rights reserved.
 # See /LICENSE for licensing information.
 
@@ -51,9 +51,21 @@ def profile(request):
     })
 
 
+# Input 1: {"last_sync": null, "sync_date": str}
+# Input 2: {"last_sync": str, "sync_date": str,
+#           "deletions": [{"model": str, "id": int}]
+#           "changes": {"expense": […], "billitem": […], "expensetemplate": […]}
+#          }
+# Output: {"sync_date": str,
+#          "deletions": {new|ack|not_found: […]},
+#          "changes": {"new": {model: [data]},
+#                      "ack": {model: [{"local_id": int, "id": int}]}}
 class RunEndpoint(PostJsonEndpoint):
     def get_response(self, request, req_data: dict):
-        now = timezone.now()
+        if "sync_date" in req_data:
+            now = parse_dt(req_data["sync_date"])
+        else:
+            now = timezone.now()
         out = {
             "sync_date": now.isoformat(),
             "deletions": {
@@ -78,7 +90,7 @@ class RunEndpoint(PostJsonEndpoint):
             for model, model_str in DATA_MODELS:
                 queryset = model.objects.filter(user=request.user, date_modified__lte=now).order_by('id')
                 out["changes"]["new"][model_str] = [o.to_json() for o in queryset]
-            return JsonResponse(out)
+            return out, 200
 
         last_sync = parse_dt(req_data["last_sync"])
         # Find deletions
@@ -125,6 +137,7 @@ class RunEndpoint(PostJsonEndpoint):
                         continue
 
                 obj.from_json(change, now)
+                # TODO handle bill_local_id
                 obj.save()
                 out["changes"]["ack"][model_str].append({
                     "local_id": change["local_id"],

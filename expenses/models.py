@@ -1,5 +1,5 @@
 # Django-Expenses
-# Copyright © 2018, Chris Warrick.
+# Copyright © 2018-2019, Chris Warrick.
 # All rights reserved.
 # See /LICENSE for licensing information.
 
@@ -40,8 +40,9 @@ class ExpensesModel(models.Model):
             self.date_added = parse_dt(data["date_added"])
         elif data["id"] != self.pk:
             raise ValueError("Data dict does not match")
-        self.date_modified = date_modified
-        self.fields_from_json(data)
+        if not self.pk or self.date_modified > date_modified:
+            self.date_modified = date_modified
+            self.fields_from_json(data)
 
     def fields_to_json(self) -> dict:
         return {}

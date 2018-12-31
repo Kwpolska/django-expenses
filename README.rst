@@ -54,7 +54,7 @@ urls.py
     urlpatterns = [
         # ...
         path('expenses/', include(expenses.urls)),
-        path('_oauth/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+        path('__oauth__/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     ]
 
 If you intend to use the API, OAuth applications can be set up at
