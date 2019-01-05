@@ -18,17 +18,22 @@ from expenses.utils import dict_overwrite, revchron
 class RawQueryWithSlicing:
     COUNT_QUERY = "COUNT(*)"
 
-    def __init__(self, sql, args, selected_fields):
+    def __init__(self, sql, args, selected_fields, order_clause):
         self.sql = sql
         self.args = args
         self.selected_fields = selected_fields
+        self.order_clause = order_clause
 
     def run(self, count=False, limit=''):
         with connection.cursor() as cursor:
             if count:
-                return cursor.execute(self.sql.format(selected_fields=self.COUNT_QUERY, limit_clause=limit), self.args).fetchone()
+                q = self.sql.format(selected_fields=self.COUNT_QUERY, limit_clause=limit, order_clause='')
+                cursor.execute(q, self.args)
+                return cursor.fetchone()
             else:
-                return cursor.execute(self.sql.format(selected_fields=self.selected_fields, limit_clause=limit), self.args).fetchall()
+                q = self.sql.format(selected_fields=self.selected_fields, limit_clause=limit, order_clause=self.order_clause)
+                cursor.execute(q, self.args)
+                return cursor.fetchall()
 
     def count(self):
         return self.run(count=True)[0]
@@ -152,10 +157,11 @@ def search(request):
                     WHERE expenses_billitem.user_id = %s
                 ) AS d
                 WHERE d.category_id in ({cat_pks}) {date_clause}{query_clause}
-                ORDER BY d.date DESC, d.date_added DESC {{limit_clause}};""".format(
+                {{order_clause}} {{limit_clause}};""".format(
                 cat_pks=', '.join(str(i) for i in cat_pks), date_clause=date_clause, query_clause=query_clause),
                 [request.user.pk, request.user.pk] + date_args + query_args,
-                "d.date, d.vendor, d.product, d.unit_price"
+                "d.date, d.vendor, d.product, d.unit_price",
+                "ORDER BY d.date DESC, d.date_added DESC"
             )
         else:
             raise Exception("Unknown search type")
