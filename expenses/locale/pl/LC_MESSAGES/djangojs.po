@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-08 18:29+0100\n"
+"POT-Creation-Date: 2019-02-08 23:07+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,3 +35,7 @@ msgstr "Usuń"
 #: expenses/static/expenses/expenses.js:14
 msgid "Accept"
 msgstr "Zaakceptuj"
+
+#: expenses/static/expenses/expenses.js:14
+msgid "Item actions"
+msgstr "Akcje dla pozycji"

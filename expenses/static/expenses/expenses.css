@@ -280,6 +280,53 @@ ul.expenses-templatelist li:first-child {
     }
 }
 
+@media (max-width: 575px) {
+    #expenses-billtable {
+        margin-left: -15px;
+        margin-right: -15px;
+        width: calc(100% + 30px);
+    }
+
+    #expenses-billtable th {
+        font-size: 0.7rem;
+    }
+
+    #expenses-billtable td, #expenses-billtable input,
+    #expenses-billtable a, #expenses-billtable button {
+        font-size: 0.85rem;
+    }
+
+    #expenses-billtable input {
+        height: calc((2.25 * 0.85rem) + 2px);
+        padding: 0.15rem;
+    }
+
+    #expenses-billtable th, #expenses-billtable td,
+    #expenses-billtable a, #expenses-billtable button {
+        padding: .15rem;
+    }
+
+    #expenses-billtable .fa, #expenses-billtable .fa-fw {
+        width: 1rem;
+        line-height: 0.85rem;
+    }
+    .expenses-billtable-product {
+        width: 30%;
+    }
+
+    .expenses-billtable-count {
+        width: 10%;
+    }
+
+    .expenses-billtable-actions {
+        width: 1%;
+    }
+
+    #expenses-billtable-btn-add {
+        width: 2rem;
+    }
+}
+
 @media (min-width: 768px) {
     #expenses-search-settings {
         display: flex !important;

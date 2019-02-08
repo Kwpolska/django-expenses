@@ -36,7 +36,7 @@
         <thead>
         <tr>
             <th class="expenses-billtable-product">{% trans "Product" %}</th>
-            <th class="expenses-billtable-serving">{% trans "Serving [g, L]" %}</th>
+            <th class="expenses-billtable-serving">{% trans "Serving [g,&nbsp;L]" %}</th>
             <th class="expenses-billtable-unitprice">{% trans "Unit Price" %}</th>
             <th class="expenses-billtable-count">{% trans "Count" %}</th>
             <th class="expenses-billtable-amount">{% trans "Amount" %}</th>
@@ -66,7 +66,7 @@
                 <td class="expenses-billtable-count"><input name="count" class="form-control" placeholder="{% trans "Count" %}" step="0.001" type="number" value="1" data-default="1" required></td>
                 <td class="expenses-billtable-amount">—</td>
                 <td class="expenses-billtable-actions">
-                    <button class="btn btn-primary" id="expenses-billtable-btn-add" type="submit" title="{% trans "Add an item" %}"><i class="fas fa-plus-circle"></i> {% trans "Add" %}</button>
+                    <button class="btn btn-primary" id="expenses-billtable-btn-add" type="submit" title="{% trans "Add an item" %}"><i class="fas fa-plus-circle"></i><span class="d-none d-md-inline"> {% trans "Add" %}</span></button>
                 </td>
             </tr>
         </tbody>
