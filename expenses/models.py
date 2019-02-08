@@ -217,7 +217,7 @@ class ExpenseTemplate(ExpensesModel):
     category = models.ForeignKey(Category, verbose_name=_("Category"), on_delete=models.PROTECT)
     type = models.CharField(_("Template type"), max_length=20, choices=TEMPLATE_TYPE_CHOICES, default='simple')
     amount = models.DecimalField(_("Amount"), max_digits=10, decimal_places=2, null=True)
-    description = models.CharField(_("Description"), max_length=80)
+    description = models.CharField(_("Description"), max_length=400)
     comment = models.TextField(_("Comment"), blank=True)
 
     def get_absolute_url(self):
