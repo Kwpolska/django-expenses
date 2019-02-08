@@ -47,6 +47,17 @@ and also set the following options:
 * ``EXPENSES_CURRENCY_CODE`` — currency code, eg. ``PLN``
 * ``EXPENSES_CURRENCY_LOCALE`` — currency locale, eg. ``pl_PL``
 
+The following ``MESSAGE_TAGS`` is recommended for the default templates:
+
+.. code:: python
+
+   from django.contrib.messages import constants as messages
+   MESSAGE_TAGS = {
+       messages.ERROR: 'danger',
+       messages.DEBUG: 'secondary'
+   }
+
+
 urls.py
 ~~~~~~~
 

@@ -9,9 +9,11 @@ import pygal
 import pygal.style
 
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.db.models import Sum
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.utils.html import mark_safe
 from django.utils.decorators import method_decorator
@@ -84,6 +86,14 @@ def index(request):
 @method_decorator(login_required, name='dispatch')
 class ExpDeleteView(DeleteView):
     template_name = 'expenses/exp_confirm_delete.html'
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.delete()
+        messages.add_message(request, messages.SUCCESS,
+        _("%s has been deleted.") % self.object)
+        return HttpResponseRedirect(success_url)
 
     def get_context_data(self, **kwargs):
         obj = kwargs['object']

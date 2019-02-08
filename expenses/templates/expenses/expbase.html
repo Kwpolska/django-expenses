@@ -56,5 +56,12 @@
     <div id="cookiebox"></div>
     <div class="expenses-container">
         {% block content %}{% endblock %}
+        {% if messages %}
+            <div id="snackbar-container">
+                {% for message in messages %}
+                    <div class="snackbar alert-{{ message.tags }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

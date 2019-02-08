@@ -6,6 +6,7 @@
 """Expense views."""
 
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
@@ -162,4 +163,6 @@ def expense_repeat(request, pk):
         user=request.user,
         is_bill=False)
     new_expense.save()
+    messages.add_message(request, messages.SUCCESS,
+                         _("Expense has been repeated successfully."))
     return HttpResponseRedirect(reverse('expenses:expense_show', args=[new_expense.pk]))

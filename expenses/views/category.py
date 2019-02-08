@@ -7,6 +7,7 @@
 
 from collections import defaultdict
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
@@ -114,6 +115,8 @@ def category_delete(request, slug):
 
         if move_succeeded:
             category.delete()
+            messages.add_message(request, messages.SUCCESS,
+                                 _("%s has been deleted.") % category.name)
             return HttpResponseRedirect(reverse('expenses:category_list'))
 
     categories = Category.user_objects(request)
@@ -178,8 +181,8 @@ def category_bulk_edit(request):
                 c.save()
                 added_count += 1
             else:
-                failures_count += 1
-                failures_list.append("+{}/{}".format(new_name, new_order))
+                failure_count += 1
+                failure_list.append("+{}/{}".format(new_name, new_order))
 
         return render(request, 'expenses/category_bulk_edit_results.html', {
             'htmltitle': _('Edit categories'),

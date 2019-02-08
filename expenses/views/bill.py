@@ -7,6 +7,7 @@
 
 import collections
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -76,8 +77,6 @@ def bill_show(request, pk):
     if not expense.is_bill:
         return HttpResponseRedirect(expense.get_absolute_url())
 
-    status_msg = None
-    status_type = None
     if request.method == 'POST':
         # Bill item editor
         # 1__field → edit, a1__field → add, d__1 → delete
@@ -133,21 +132,20 @@ def bill_show(request, pk):
                 'Failed to change %(count)d items.',
                 err) % {'count': err})
 
-        status_msg = ' '.join(status_msgs)
+        status_type = messages.ERROR
         if ok and err:
-            status_type = 'alert-warning'
+            status_type = messages.WARNING
         elif ok:
-            status_type = 'alert-success'
-        elif err:
-            status_type = 'alert-danger'
+            status_type = messages.SUCCESS
+
+        if status_msgs:
+            messages.add_message(request, status_type, ' '.join(status_msgs))
 
     return render(request, 'expenses/bill_show.html', {
         'htmltitle': str(expense),
         'pid': 'bill_show',
         'expense': expense,
         'items': expense.billitem_set.order_by('date_added'),
-        'status_msg': status_msg,
-        'status_type': status_type,
     })
 
 

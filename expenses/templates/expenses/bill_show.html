@@ -29,12 +29,6 @@
         {% endif %}
     </div>
 
-    {% if status_msg %}
-        <div class="alert {{ status_type }} alert-dismissible fade show" role="alert">{{ status_msg }}   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button></div>
-    {% endif %}
-
     <form method="POST" action="{% url "expenses:bill_item_add" expense.pk %}" id="expenses-billtable-form" autocomplete="off">
     <div id="expenses-billtable-deletions"></div>
         {% csrf_token %}
