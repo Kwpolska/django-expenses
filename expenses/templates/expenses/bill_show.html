@@ -47,10 +47,10 @@
         {% for item in items %}
             <tr class="expenses-billtable-row" data-id="{{ item.id }}">
                 <td class="expenses-billtable-product">{{ item.product }}</td>
-                <td class="expenses-billtable-serving">{{ item.serving|floatformat:"-3" }}</td>
-                <td class="expenses-billtable-unitprice" data-value="{{ item.unit_price|floatformat:"2" }}">{% money item.unit_price %}</td>
-                <td class="expenses-billtable-count">{{ item.count|floatformat:"-3" }}</td>
-                <td class="expenses-billtable-amount" data-value="{{ item.amount|floatformat:"2" }}">{% money item.amount %}</td>
+                <td class="expenses-billtable-serving" data-value="{{ item.serving|floatformatll:"-3" }}">{{ item.serving|floatformat:"-3" }}</td>
+                <td class="expenses-billtable-unitprice" data-value="{{ item.unit_price|floatformatll:"2" }}">{% money item.unit_price %}</td>
+                <td class="expenses-billtable-count" data-value="{{ item.count|floatformatll:"-3" }}">{{ item.count|floatformat:"-3" }}</td>
+                <td class="expenses-billtable-amount" data-value="{{ item.amount|floatformatll:"2" }}">{% money item.amount %}</td>
                 <td class="expenses-billtable-actions">
                     <div class="btn-group" role="group" aria-label="{% trans "Item actions" %}">
                         <a href="{% url 'expenses:bill_item_edit' expense.pk item.pk %}" class="btn btn-info expenses-billtable-btn-edit" title="{% trans "Edit" %}"><i class="fa fa-fw fa-edit"></i></a>

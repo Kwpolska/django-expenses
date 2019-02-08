@@ -1,7 +1,9 @@
 import json
+import decimal
 
 from django import template
 from django.conf import settings
+from django.utils import formats
 from django.utils.html import mark_safe
 from django.urls import reverse
 
@@ -67,3 +69,70 @@ def exp_menu_link(context, title, url_name, link_pid):
 @register.inclusion_tag('expenses/extras/exp_template_actions.html')
 def exp_template_actions(the_template, show_title=False, show_date=False):
     return {'template': the_template, 'show_title': show_title, 'show_date': show_date, 'today': today_date()}
+
+
+# A modified version of Django’s floatformat, with locale-independent output.
+# https://github.com/django/django/blob/e7fd69d051eaa67cb17f172a39b57253e9cb831a/django/template/defaultfilters.py#L94
+@register.filter(is_safe=True)
+def floatformatll(text, arg=-1):
+    """
+    Display a float to a specified number of decimal places.
+    If called without an argument, display the floating point number with one
+    decimal place -- but only if there's a decimal place to be displayed:
+    * num1 = 34.23234
+    * num2 = 34.00000
+    * num3 = 34.26000
+    * {{ num1|floatformat }} displays "34.2"
+    * {{ num2|floatformat }} displays "34"
+    * {{ num3|floatformat }} displays "34.3"
+    If arg is positive, always display exactly arg number of decimal places:
+    * {{ num1|floatformat:3 }} displays "34.232"
+    * {{ num2|floatformat:3 }} displays "34.000"
+    * {{ num3|floatformat:3 }} displays "34.260"
+    If arg is negative, display arg number of decimal places -- but only if
+    there are places to be displayed:
+    * {{ num1|floatformat:"-3" }} displays "34.232"
+    * {{ num2|floatformat:"-3" }} displays "34"
+    * {{ num3|floatformat:"-3" }} displays "34.260"
+    If the input float is infinity or NaN, display the string representation
+    of that value.
+    """
+    input_val = repr(text)
+    try:
+        d = decimal.Decimal(input_val)
+    except decimal.InvalidOperation:
+        try:
+            d = decimal.Decimal(str(float(text)))
+        except (ValueError, decimal.InvalidOperation, TypeError):
+            return ''
+    try:
+        p = int(arg)
+    except ValueError:
+        return input_val
+
+    try:
+        m = int(d) - d
+    except (ValueError, OverflowError, decimal.InvalidOperation):
+        return input_val
+
+    if not m and p < 0:
+        return mark_safe(formats.number_format('%d' % (int(d)), 0, use_l10n=False))
+
+    exp = decimal.Decimal(1).scaleb(-abs(p))
+    # Set the precision high enough to avoid an exception (#15789).
+    tupl = d.as_tuple()
+    units = len(tupl[1])
+    units += -tupl[2] if m else tupl[2]
+    prec = abs(p) + units + 1
+
+    # Avoid conversion to scientific notation by accessing `sign`, `digits`,
+    # and `exponent` from Decimal.as_tuple() directly.
+    sign, digits, exponent = d.quantize(exp, decimal.ROUND_HALF_UP, decimal.Context(prec=prec)).as_tuple()
+    digits = [str(digit) for digit in reversed(digits)]
+    while len(digits) <= abs(exponent):
+        digits.append('0')
+    digits.insert(-exponent, '.')
+    if sign:
+        digits.append('-')
+    number = ''.join(reversed(digits))
+    return mark_safe(formats.number_format(number, abs(p), use_l10n=False))
