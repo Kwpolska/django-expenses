@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-29 16:47+0100\n"
-"PO-Revision-Date: 2018-10-28 12:47+0100\n"
+"POT-Creation-Date: 2019-02-08 18:29+0100\n"
+"PO-Revision-Date: 2019-02-08 18:28+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -20,7 +20,7 @@ msgstr ""
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: Poedit 2.2\n"
 
-#: expenses/forms.py:27 expenses/forms.py:48 expenses/models.py:56
+#: expenses/forms.py:27 expenses/forms.py:48 expenses/models.py:123
 #: expenses/templates/expenses/bill_add_editmeta.html:16
 #: expenses/templates/expenses/expense_add_edit.html:14
 #: expenses/templates/expenses/expense_show.html:16
@@ -28,28 +28,28 @@ msgstr ""
 #: expenses/templates/expenses/extras/exp_template_actions.html:19
 #: expenses/templates/expenses/extras/expense_table.html:10
 #: expenses/templates/expenses/extras/expense_table.html:22
-#: expenses/templates/expenses/search.html:56
-#: expenses/templates/expenses/search.html:85
+#: expenses/templates/expenses/search.html:54
+#: expenses/templates/expenses/search.html:83
 msgid "Date"
 msgstr "Data"
 
 #: expenses/forms.py:28 expenses/forms.py:49 expenses/forms.py:96
-#: expenses/models.py:57 expenses/models.py:124
+#: expenses/models.py:124 expenses/models.py:216
 #: expenses/templates/expenses/bill_add_editmeta.html:23
 #: expenses/templates/expenses/expense_add_edit.html:21
 #: expenses/templates/expenses/expense_show.html:24
 #: expenses/templates/expenses/extras/expense_table.html:11
 #: expenses/templates/expenses/extras/expense_table.html:23
-#: expenses/templates/expenses/search.html:38
-#: expenses/templates/expenses/search.html:57
-#: expenses/templates/expenses/search.html:86
+#: expenses/templates/expenses/search.html:36
+#: expenses/templates/expenses/search.html:55
+#: expenses/templates/expenses/search.html:84
 #: expenses/templates/expenses/template_add_edit.html:16
 #: expenses/templates/expenses/template_show.html:37
 msgid "Vendor"
 msgstr "Kontrahent"
 
 #: expenses/forms.py:30 expenses/forms.py:50 expenses/forms.py:98
-#: expenses/models.py:60 expenses/models.py:128
+#: expenses/models.py:127 expenses/models.py:220
 #: expenses/templates/expenses/bill_add_editmeta.html:37
 #: expenses/templates/expenses/expense_add_edit.html:42
 #: expenses/templates/expenses/expense_show.html:45
@@ -61,24 +61,24 @@ msgstr "Kontrahent"
 msgid "Description"
 msgstr "Opis"
 
-#: expenses/forms.py:64 expenses/models.py:95
+#: expenses/forms.py:64 expenses/models.py:174
 #: expenses/templates/expenses/bill_item_add_edit.html:9
 #: expenses/templates/expenses/bill_show.html:44
 #: expenses/templates/expenses/bill_show.html:69
-#: expenses/templates/expenses/search.html:58
-#: expenses/templates/expenses/search.html:87
+#: expenses/templates/expenses/search.html:56
+#: expenses/templates/expenses/search.html:85
 msgid "Product"
 msgstr "Produkt"
 
-#: expenses/forms.py:65 expenses/models.py:96
+#: expenses/forms.py:65 expenses/models.py:175
 #: expenses/templates/expenses/bill_item_add_edit.html:16
 #: expenses/templates/expenses/bill_show.html:45
 #: expenses/templates/expenses/bill_show.html:70
-#: expenses/templates/expenses/search.html:59
+#: expenses/templates/expenses/search.html:57
 msgid "Serving [g, L]"
 msgstr "Porcja [g, L]"
 
-#: expenses/forms.py:66 expenses/models.py:97
+#: expenses/forms.py:66 expenses/models.py:176
 #: expenses/templates/expenses/bill_item_add_edit.html:23
 #: expenses/templates/expenses/bill_show.html:47
 #: expenses/templates/expenses/bill_show.html:72
@@ -86,7 +86,7 @@ msgstr "Porcja [g, L]"
 msgid "Count"
 msgstr "Ilość"
 
-#: expenses/forms.py:95 expenses/models.py:22 expenses/models.py:123
+#: expenses/forms.py:95 expenses/models.py:68 expenses/models.py:215
 #: expenses/templates/expenses/category_bulk_edit.html:14
 #: expenses/templates/expenses/category_list.html:18
 #: expenses/templates/expenses/extras/template_table.html:9
@@ -99,27 +99,27 @@ msgstr "Nazwa"
 msgid "Comment (optional)"
 msgstr "Komentarz (opcjonalnie)"
 
-#: expenses/models.py:19
+#: expenses/models.py:65
 msgid "category"
 msgstr "kategoria"
 
-#: expenses/models.py:20
+#: expenses/models.py:66
 msgid "categories"
 msgstr "kategorie"
 
-#: expenses/models.py:23
+#: expenses/models.py:69
 msgid "Slug"
 msgstr "Slug"
 
-#: expenses/models.py:24
+#: expenses/models.py:70
 msgid "Slug base"
 msgstr "Podstawa sluga"
 
-#: expenses/models.py:25 expenses/templates/expenses/category_bulk_edit.html:15
+#: expenses/models.py:71 expenses/templates/expenses/category_bulk_edit.html:15
 msgid "Order"
 msgstr "Kolejność"
 
-#: expenses/models.py:58 expenses/models.py:125
+#: expenses/models.py:125 expenses/models.py:217
 #: expenses/templates/expenses/bill_add_editmeta.html:30
 #: expenses/templates/expenses/expense_add_edit.html:28
 #: expenses/templates/expenses/expense_show.html:31
@@ -130,7 +130,7 @@ msgstr "Kolejność"
 msgid "Category"
 msgstr "Kategoria"
 
-#: expenses/models.py:59 expenses/models.py:127
+#: expenses/models.py:126 expenses/models.py:219
 #: expenses/templates/expenses/bill_show.html:48
 #: expenses/templates/expenses/expense_add_edit.html:35
 #: expenses/templates/expenses/expense_show.html:38
@@ -142,41 +142,41 @@ msgstr "Kategoria"
 msgid "Amount"
 msgstr "Wartość"
 
-#: expenses/models.py:62
+#: expenses/models.py:128
 msgid "This is a bill"
 msgstr "To jest rachunek"
 
-#: expenses/models.py:86
+#: expenses/models.py:150
 msgid "(empty)"
 msgstr "(pusty)"
 
-#: expenses/models.py:94
+#: expenses/models.py:173
 #: expenses/templates/expenses/extras/expense_table.html:43
 #: expenses/templates/expenses/extras/expense_table.html:59
 msgid "Bill"
 msgstr "Rachunek"
 
-#: expenses/models.py:98
+#: expenses/models.py:177
 msgid "Unit price"
 msgstr "Cena jednostkowa"
 
-#: expenses/models.py:115
+#: expenses/models.py:207
 msgid "Simple"
 msgstr "Prosty"
 
-#: expenses/models.py:116
+#: expenses/models.py:208
 msgid "Multiplied by count"
 msgstr "Mnożony przez ilość"
 
-#: expenses/models.py:117
+#: expenses/models.py:209
 msgid "With custom description"
 msgstr "Z własnym opisem"
 
-#: expenses/models.py:126
+#: expenses/models.py:218
 msgid "Template type"
 msgstr "Rodzaj szablonu"
 
-#: expenses/models.py:129 expenses/templates/expenses/template_add_edit.html:66
+#: expenses/models.py:221 expenses/templates/expenses/template_add_edit.html:66
 #: expenses/templates/expenses/template_show.html:27
 msgid "Comment"
 msgstr "Komentarz"
@@ -192,11 +192,11 @@ msgid ""
 "based on bill items."
 msgstr ""
 "Jeżeli zostawisz to pole puste, opis zostanie wygenerowany automatycznie na "
-"podstawie składników rachunku."
+"podstawie pozycji na rachunku."
 
 #: expenses/templates/expenses/bill_add_editmeta.html:45
 msgid "Save and add items"
-msgstr "Zapisz i dodaj składniki"
+msgstr "Zapisz i dodaj pozycje"
 
 #: expenses/templates/expenses/bill_add_editmeta.html:45
 #: expenses/templates/expenses/bill_item_add_edit.html:37
@@ -209,8 +209,8 @@ msgstr "Zapisz zmiany"
 #: expenses/templates/expenses/bill_item_add_edit.html:30
 #: expenses/templates/expenses/bill_show.html:46
 #: expenses/templates/expenses/bill_show.html:71
-#: expenses/templates/expenses/search.html:60
-#: expenses/templates/expenses/search.html:88
+#: expenses/templates/expenses/search.html:58
+#: expenses/templates/expenses/search.html:86
 msgid "Unit Price"
 msgstr "Cena jednostkowa"
 
@@ -237,7 +237,7 @@ msgid "Bill editor"
 msgstr "Edytor rachunków"
 
 #: expenses/templates/expenses/bill_show.html:13
-#: expenses/templates/expenses/search.html:28
+#: expenses/templates/expenses/search.html:26
 msgid "Date:"
 msgstr "Data:"
 
@@ -262,7 +262,7 @@ msgstr "Akcje"
 
 #: expenses/templates/expenses/bill_show.html:61
 msgid "Item actions"
-msgstr "Akcje składników"
+msgstr "Akcje dla pozycji"
 
 #: expenses/templates/expenses/bill_show.html:62
 #: expenses/templates/expenses/expense_show.html:5
@@ -273,7 +273,7 @@ msgstr "Edytuj"
 
 #: expenses/templates/expenses/bill_show.html:75
 msgid "Add an item"
-msgstr "Dodaj składnik"
+msgstr "Dodaj pozycję"
 
 #: expenses/templates/expenses/bill_show.html:75
 msgid "Add"
@@ -453,12 +453,12 @@ msgstr "Suma z wszystkich danych"
 
 #: expenses/templates/expenses/exp_confirm_delete.html:6
 msgid "Removing a bill will also remove all its items."
-msgstr "Usunięcie rachunku spowoduje usunięcie jego składników."
+msgstr "Usunięcie rachunku spowoduje usunięcie pozycji na nim zawartych."
 
 #: expenses/templates/expenses/expbase.html:19
 #: expenses/templates/expenses/expbase.html:32
 #: expenses/templates/expenses/extras/exp_category_toolbar.html:5
-#: expenses/templates/expenses/search.html:18 expenses/views/expense.py:30
+#: expenses/templates/expenses/search.html:16 expenses/views/expense.py:30
 msgid "Expenses"
 msgstr "Wydatki"
 
@@ -471,7 +471,7 @@ msgid "Add Expense"
 msgstr "Dodaj wydatek"
 
 #: expenses/templates/expenses/expbase.html:34
-#: expenses/templates/expenses/search.html:19 expenses/views/expense.py:27
+#: expenses/templates/expenses/search.html:17 expenses/views/expense.py:27
 msgid "Bills"
 msgstr "Rachunki"
 
@@ -490,7 +490,7 @@ msgid "Categories"
 msgstr "Kategorie"
 
 #: expenses/templates/expenses/expbase.html:38
-#: expenses/templates/expenses/search.html:39 expenses/views/__init__.py:199
+#: expenses/templates/expenses/search.html:37 expenses/views/search.py:176
 msgid "Search"
 msgstr "Wyszukaj"
 
@@ -504,8 +504,8 @@ msgid ""
 "Conversion will remove all bill items permanently and turn the bill into an "
 "expense with the same amount as the sum of its items."
 msgstr ""
-"Konwersja nieodwracalnie usunie wszystkie składniki i zamieni rachunek na "
-"wydatek o takiej samej kwocie jak suma składników."
+"Konwersja nieodwracalnie usunie wszystkie pozycje i zamieni rachunek na "
+"wydatek o takiej samej kwocie jak suma pozycji."
 
 #: expenses/templates/expenses/expense_convert.html:9
 msgid "Are you sure you want to convert this bill to an expense?"
@@ -516,12 +516,20 @@ msgid ""
 "Conversion will turn this expense into a bill and add one item with the same "
 "amount as this expense currently has."
 msgstr ""
-"Konwersja przekształci ten wydatek na rachunek i doda jeden składnik o "
-"takiej samej kwocie, jaką wydatek ma obecnie."
+"Konwersja przekształci ten wydatek na rachunek i doda jedną pozycję o takiej "
+"samej kwocie, jaką wydatek ma obecnie."
 
 #: expenses/templates/expenses/expense_convert.html:12
 msgid "Are you sure you want to convert this expense to a bill?"
 msgstr "Czy na pewno chcesz przekonwertować ten wydatek na rachunek?"
+
+#: expenses/templates/expenses/expense_show.html:9
+msgid "Repeat"
+msgstr "Ponów"
+
+#: expenses/templates/expenses/expense_show.html:11
+msgid "Convert to bill"
+msgstr "Przekonwertuj na rachunek"
 
 #: expenses/templates/expenses/extras/exp_category_toolbar.html:4
 msgid "Type selection"
@@ -615,64 +623,64 @@ msgstr "Wykres kategorii"
 msgid "Filters"
 msgstr "Filtry"
 
-#: expenses/templates/expenses/search.html:11
+#: expenses/templates/expenses/search.html:9
 msgid "Search for:"
 msgstr "Wyszukaj:"
 
-#: expenses/templates/expenses/search.html:12
+#: expenses/templates/expenses/search.html:10
 msgid "Expenses/Bills"
 msgstr "Wydatki/Rachunki"
 
-#: expenses/templates/expenses/search.html:13
+#: expenses/templates/expenses/search.html:11
 msgid "Bill items"
-msgstr "Składniki rachunków"
+msgstr "Pozycje na rachunkach"
 
-#: expenses/templates/expenses/search.html:14
+#: expenses/templates/expenses/search.html:12
 msgid "All purchases"
 msgstr "Wszystkie zakupy"
 
-#: expenses/templates/expenses/search.html:17
+#: expenses/templates/expenses/search.html:15
 msgid "Include:"
 msgstr "Pokaż:"
 
-#: expenses/templates/expenses/search.html:22
+#: expenses/templates/expenses/search.html:20
 msgid "Categories:"
 msgstr "Kategorie:"
 
-#: expenses/templates/expenses/search.html:29
+#: expenses/templates/expenses/search.html:27
 msgid "Any"
 msgstr "Dowolna"
 
-#: expenses/templates/expenses/search.html:30
+#: expenses/templates/expenses/search.html:28
 msgid "Between:"
 msgstr "Pomiędzy:"
 
-#: expenses/templates/expenses/search.html:32
+#: expenses/templates/expenses/search.html:30
 msgid "Start"
 msgstr "Początek"
 
-#: expenses/templates/expenses/search.html:32
+#: expenses/templates/expenses/search.html:30
 msgid "End"
 msgstr "Koniec"
 
-#: expenses/templates/expenses/search.html:37
+#: expenses/templates/expenses/search.html:35
 msgid "Description/Product"
 msgstr "Opis/Produkt"
 
-#: expenses/templates/expenses/search.html:45
+#: expenses/templates/expenses/search.html:43
 msgid "Type in a query above and press Search."
 msgstr "Wpisz zapytanie powyżej i kliknij Szukaj."
 
-#: expenses/templates/expenses/search.html:47
-#: expenses/templates/expenses/search.html:51
-#: expenses/templates/expenses/search.html:80
+#: expenses/templates/expenses/search.html:45
+#: expenses/templates/expenses/search.html:49
+#: expenses/templates/expenses/search.html:78
 msgid "Search results"
 msgstr "Wyniki wyszukiwania"
 
-#: expenses/templates/expenses/search.html:77
-#: expenses/templates/expenses/search.html:104
+#: expenses/templates/expenses/search.html:75
+#: expenses/templates/expenses/search.html:102
 msgid "No bill items to show."
-msgstr "Brak składników rachunków do wyświetlenia."
+msgstr "Brak pozycji na rachunkach do wyświetlenia."
 
 #: expenses/templates/expenses/template_add_edit.html:41
 msgid ""
@@ -715,11 +723,11 @@ msgstr "Szczegóły"
 msgid "Values"
 msgstr "Wartości"
 
-#: expenses/views/__init__.py:72
+#: expenses/views/__init__.py:71
 msgid "Expenses Dashboard"
 msgstr "Wydatki — Kokpit"
 
-#: expenses/views/__init__.py:218 expenses/views/bill_item.py:84
+#: expenses/views/__init__.py:91 expenses/views/bill_item.py:84
 #, python-format
 msgid "Delete %s"
 msgstr "Usuń %s"
@@ -728,27 +736,27 @@ msgstr "Usuń %s"
 #, python-format
 msgid "Saved changes to %(count)d item."
 msgid_plural "Saved changes to %(count)d items."
-msgstr[0] "Zapisano zmiany w %(count)d składniku."
-msgstr[1] "Zapisano zmiany w %(count)d składnikach."
-msgstr[2] "Zapisano zmiany w %(count)d składnikach."
+msgstr[0] "Zapisano zmiany w %(count)d pozycji."
+msgstr[1] "Zapisano zmiany w %(count)d pozycjach."
+msgstr[2] "Zapisano zmiany w %(count)d pozycjach."
 msgstr[3] ""
 
 #: expenses/views/bill.py:132
 #, python-format
 msgid "Failed to change %(count)d item."
 msgid_plural "Failed to change %(count)d items."
-msgstr[0] "Nie udało się zapisać zmian w %(count)d składniku."
-msgstr[1] "Nie udało się zapisać zmian w %(count)d składnikach."
-msgstr[2] "Nie udało się zapisać zmian w %(count)d składnikach."
+msgstr[0] "Nie udało się zapisać zmian w %(count)d pozycji."
+msgstr[1] "Nie udało się zapisać zmian w %(count)d pozycjach."
+msgstr[2] "Nie udało się zapisać zmian w %(count)d pozycjach."
 msgstr[3] ""
 
 #: expenses/views/bill_item.py:36
 msgid "Add bill item"
-msgstr "Dodaj składnik rachunku"
+msgstr "Dodaj pozycję do rachunku"
 
 #: expenses/views/bill_item.py:63
 msgid "Edit bill item"
-msgstr "Edytuj składnik rachunku"
+msgstr "Edytuj pozycję na rachunku"
 
 #: expenses/views/category.py:100
 #, python-format
@@ -759,13 +767,13 @@ msgstr "Edytuj kategorię %s"
 msgid "Edit category"
 msgstr "Edytuj kategorię"
 
-#: expenses/views/category.py:132
+#: expenses/views/category.py:127
 #, python-format
 msgid "Delete category %s"
 msgstr "Usuń kategorię %s"
 
-#: expenses/views/category.py:190 expenses/views/category.py:191
-#: expenses/views/category.py:202 expenses/views/category.py:203
+#: expenses/views/category.py:185 expenses/views/category.py:186
+#: expenses/views/category.py:197 expenses/views/category.py:198
 msgid "Edit categories"
 msgstr "Edytuj kategorie"
 
