@@ -103,7 +103,7 @@ function getButtonGroup(buttons: ButtonSpec[]): HTMLDivElement {
     let div = <HTMLDivElement>document.createElement('div');
     div.className = "btn-group";
     div.setAttribute('role', 'group');
-    div.setAttribute('aria-label', 'Item actions'); // todo translatability
+    div.setAttribute('aria-label', gettext('Item actions'));
     buttons.forEach(buttonSpec => {
         let btn = <HTMLButtonElement>document.createElement('button');
         btn.type = 'button';
@@ -146,6 +146,9 @@ function addBtnHandler(_event?: Event) {
            input.value = '';
        }
     });
+
+    // delete value from the amount field, it would confuse the sum
+    delete addForm.querySelector<HTMLElement>(".expenses-billtable-amount").dataset['value'];
 
     activateSaveChanges();
     focusAddProduct();
