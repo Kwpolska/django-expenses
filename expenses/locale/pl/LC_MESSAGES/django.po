@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-08 20:54+0100\n"
-"PO-Revision-Date: 2019-02-08 20:56+0100\n"
+"POT-Creation-Date: 2019-02-08 22:22+0100\n"
+"PO-Revision-Date: 2019-02-08 22:23+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -23,7 +23,7 @@ msgstr ""
 #: expenses/forms.py:27 expenses/forms.py:48 expenses/models.py:123
 #: expenses/templates/expenses/bill_add_editmeta.html:16
 #: expenses/templates/expenses/expense_add_edit.html:14
-#: expenses/templates/expenses/expense_show.html:20
+#: expenses/templates/expenses/expense_show.html:16
 #: expenses/templates/expenses/extras/exp_template_actions.html:6
 #: expenses/templates/expenses/extras/exp_template_actions.html:19
 #: expenses/templates/expenses/extras/expense_table.html:10
@@ -37,7 +37,7 @@ msgstr "Data"
 #: expenses/models.py:124 expenses/models.py:216
 #: expenses/templates/expenses/bill_add_editmeta.html:23
 #: expenses/templates/expenses/expense_add_edit.html:21
-#: expenses/templates/expenses/expense_show.html:28
+#: expenses/templates/expenses/expense_show.html:24
 #: expenses/templates/expenses/extras/expense_table.html:11
 #: expenses/templates/expenses/extras/expense_table.html:23
 #: expenses/templates/expenses/search.html:36
@@ -52,7 +52,7 @@ msgstr "Kontrahent"
 #: expenses/models.py:127 expenses/models.py:220
 #: expenses/templates/expenses/bill_add_editmeta.html:37
 #: expenses/templates/expenses/expense_add_edit.html:42
-#: expenses/templates/expenses/expense_show.html:49
+#: expenses/templates/expenses/expense_show.html:45
 #: expenses/templates/expenses/extras/exp_template_actions.html:11
 #: expenses/templates/expenses/extras/expense_table.html:14
 #: expenses/templates/expenses/extras/expense_table.html:28
@@ -122,7 +122,7 @@ msgstr "Kolejność"
 #: expenses/models.py:125 expenses/models.py:217
 #: expenses/templates/expenses/bill_add_editmeta.html:30
 #: expenses/templates/expenses/expense_add_edit.html:28
-#: expenses/templates/expenses/expense_show.html:35
+#: expenses/templates/expenses/expense_show.html:31
 #: expenses/templates/expenses/extras/expense_table.html:12
 #: expenses/templates/expenses/extras/expense_table.html:24
 #: expenses/templates/expenses/template_add_edit.html:23
@@ -133,7 +133,7 @@ msgstr "Kategoria"
 #: expenses/models.py:126 expenses/models.py:219
 #: expenses/templates/expenses/bill_show.html:42
 #: expenses/templates/expenses/expense_add_edit.html:35
-#: expenses/templates/expenses/expense_show.html:42
+#: expenses/templates/expenses/expense_show.html:38
 #: expenses/templates/expenses/extras/expense_table.html:13
 #: expenses/templates/expenses/extras/expense_table.html:26
 #: expenses/templates/expenses/extras/template_table.html:10
@@ -176,7 +176,7 @@ msgstr "Z własnym opisem"
 msgid "Template type"
 msgstr "Rodzaj szablonu"
 
-#: expenses/models.py:221 expenses/templates/expenses/template_add_edit.html:66
+#: expenses/models.py:221 expenses/templates/expenses/template_add_edit.html:67
 #: expenses/templates/expenses/template_show.html:27
 msgid "Comment"
 msgstr "Komentarz"
@@ -202,7 +202,7 @@ msgstr "Zapisz i dodaj pozycje"
 #: expenses/templates/expenses/bill_item_add_edit.html:37
 #: expenses/templates/expenses/bill_show.html:82
 #: expenses/templates/expenses/expense_add_edit.html:49
-#: expenses/templates/expenses/template_add_edit.html:73
+#: expenses/templates/expenses/template_add_edit.html:74
 msgid "Save changes"
 msgstr "Zapisz zmiany"
 
@@ -216,7 +216,7 @@ msgstr "Cena jednostkowa"
 
 #: expenses/templates/expenses/bill_item_add_edit.html:37
 #: expenses/templates/expenses/expense_add_edit.html:49
-#: expenses/templates/expenses/template_add_edit.html:73
+#: expenses/templates/expenses/template_add_edit.html:74
 msgid "Add expense"
 msgstr "Dodaj wydatek"
 
@@ -706,7 +706,19 @@ msgstr ""
 "<code>!description!</code> zostanie zastąpiony podanym przez użytkownika "
 "opisem."
 
-#: expenses/templates/expenses/template_add_edit.html:52
+#: expenses/templates/expenses/template_add_edit.html:48
+msgid ""
+"If there are multiple description lines, and the type is “Multiplied by "
+"count”, those will be used as plural forms. For English, provide two forms "
+"(one, many). For Polish, provide three or four forms (one, two, five, "
+"fraction)."
+msgstr ""
+"Jeżeli podano wiele linii opisu, a szablon jest typu „Mnożony przez ilość”, "
+"zostaną one wykorzystane jako formy liczby mnogiej. Dla języka angielskiego, "
+"podaj dwie formy (jeden, wiele). Dla języka polskiego, podaj trzy albo "
+"cztery formy (jeden, dwa, pięć, ułamek)."
+
+#: expenses/templates/expenses/template_add_edit.html:53
 #: expenses/templates/expenses/template_show.html:19
 msgid "Type"
 msgstr "Rodzaj"
@@ -795,6 +807,6 @@ msgstr "Dodaj szablon"
 msgid "Template %s"
 msgstr "Szablon %s"
 
-#: expenses/views/template.py:114
+#: expenses/views/template.py:138
 msgid "Edit a template"
 msgstr "Edytuj szablon"

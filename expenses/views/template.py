@@ -76,14 +76,35 @@ def template_run(request, pk):
 
         try:
             count = decimal.Decimal(request.GET['count'])
-        except ValueError:
+        except decimal.InvalidOperation:
             try:
                 count = decimal.Decimal(request.GET['count'].replace(',', '.'))
             except ValueError:
                 return HttpResponseBadRequest()
 
         expense.amount = round_money(template.amount * count)
-        expense.description = template.description.replace('!count!', str(count))
+        desc_lines = template.description.strip().split("\n")
+        desc_possibilities = len(desc_lines)
+        desc = desc_lines[0]
+        if count % 1 != 0:
+            # Is decimal, use last possibility
+            desc = desc_lines[desc_possibilities - 1]
+        elif desc_possibilities == 2:
+            # 0 → 1, 1 → anything else (English)
+            desc = desc_lines[int(count != 1)]
+        elif desc_possibilities in {3, 4}:
+            # Polish scheme
+            if count == 1:
+                desc = desc_lines[0]
+            else:
+                # Expression from gettext
+                desc = desc_lines[
+                    1 if
+                    (count % 10 >= 2 and count % 10 <= 4 and (
+                        count % 100 < 10 or count % 100 >= 20))
+                    else 2]
+
+        expense.description = desc.replace('!count!', str(count))
     elif template.type == 'description':
         expense.amount = template.amount
         expense.description = template.description.replace(

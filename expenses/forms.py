@@ -95,7 +95,7 @@ class TemplateForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': gettext_lazy("Name")}),
             'vendor': forms.TextInput(attrs={'class': 'form-control expenses-tmplform-vendor', 'placeholder': gettext_lazy("Vendor")}),
             'amount': forms.TextInput(attrs={'class': 'form-control form-control-lg', 'type': 'number', 'step': '0.01', 'placeholder': "0.00"}),
-            'description': forms.TextInput(attrs={'class': 'form-control expenses-tmplform-description', 'placeholder': gettext_lazy("Description")}),
+            'description': forms.Textarea(attrs={'class': 'form-control expenses-tmplform-description', 'rows': '4', 'placeholder': gettext_lazy("Description")}),
             'type': forms.RadioSelect(),
             'comment': forms.Textarea(attrs={'class': 'form-control expenses-tmplform-comment', 'rows': '3', 'placeholder': gettext_lazy("Comment (optional)")})
         }
