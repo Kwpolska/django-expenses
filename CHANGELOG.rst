@@ -11,6 +11,13 @@ More information can be found on GitHub in the `releases section
 Version History
 ===============
 
+0.4.1
+    * Improve bill editor usability on mobile
+    * Support for plural forms in templates
+    * Fix a counting glitch in bill editor
+    * Ensure locale-independent numbers in bill editor
+    * Add messages (snackbars) to deletes and repeats
+
 0.4.0
     * Add Synchronization API
     * Record all deletions in the database (for sync API)
