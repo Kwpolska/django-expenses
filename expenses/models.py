@@ -157,12 +157,6 @@ class Expense(ExpensesModel):
 
     @property
     def desc_auto(self):
-        if self.description:
-            return self.description
-        elif self.description_cache:
-            return self.description_cache
-
-        self.description_cache = self.generate_bill_description()
         return self.description_cache
 
     def fields_to_json(self):
@@ -352,15 +346,21 @@ def update_slug(sender, instance: Category, **kwargs):  # NOQA
 def update_bill_info_on_billitem_change(instance: BillItem, **kwargs):
     bill = instance.bill
     bill.amount = bill.calculate_bill_total()
-    bill.description_cache = bill.generate_bill_description()
+    if not bill.description:
+        bill.description_cache = bill.generate_bill_description()
+    else:
+        bill.description_cache = bill.description
     bill.save()
 
 
 @receiver(models.signals.pre_save, sender=Expense)
 def update_bill_info_on_bill_save(instance: Expense, **kwargs):
+    instance.description_cache = instance.description
     if instance.is_bill:
         instance.amount = instance.calculate_bill_total()
         instance.description_cache = instance.generate_bill_description()
+        if not instance.description:
+            instance.description = instance.description_cache
 
 
 @receiver(models.signals.pre_delete, sender=Category)

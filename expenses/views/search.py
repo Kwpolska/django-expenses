@@ -92,7 +92,7 @@ def search(request):
         if opt['search_for'] == 'expenses':
             items = Expense.objects.filter(user=request.user, category__in=cat_pks)
             if opt['q']:
-                items = items.filter(description__icontains=opt['q'])
+                items = items.filter(description_cache__icontains=opt['q'])
             if opt['vendor']:
                 items = items.filter(vendor__icontains=opt['vendor'])
 
