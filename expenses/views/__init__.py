@@ -27,7 +27,7 @@ from django.utils.translation import gettext as _
 
 @login_required
 def index(request):
-    last_n_expenses = revchron(Expense.objects.filter(user=request.user))[:settings.EXPENSES_INDEX_COUNT]
+    last_n_expenses = revchron(Expense.objects.filter(user=request.user).select_related('category'))[:settings.EXPENSES_INDEX_COUNT]
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT date, SUM(amount)
@@ -51,8 +51,9 @@ def index(request):
     previous_months_total = Expense.objects.filter(user=request.user, date__year=prev_year, date__month=prev_month).aggregate(Sum('amount'))['amount__sum'] or 0
 
     spending_per_category_qs = Expense.objects.filter(user=request.user).values('category').annotate(sum=Sum('amount')).order_by('-sum')
+    categories = {cat.pk: cat for cat in Category.objects.filter(user=request.user)}
     spending_per_category = [
-        (Category.objects.get(pk=i['category']), i['sum'])
+        (categories[i['category']], i['sum'])
         for i in spending_per_category_qs
     ]
 

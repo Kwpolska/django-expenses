@@ -37,7 +37,7 @@ urlpatterns = [
     path('categories/add/', views.category.category_add, name='category_add'),
     path('categories/bulk_edit/', views.category.category_bulk_edit, name='category_bulk_edit'),
     path('categories/<slug:slug>/', views.category.category_show, name='category_show'),
-    path('categories/<slug:slug>/templates', views.category.category_show_templates, name='category_show_templates'),
+    path('categories/<slug:slug>/templates/', views.category.category_show_templates, name='category_show_templates'),
     path('categories/<slug:slug>/edit/', views.category.category_edit, name='category_edit'),
     path('categories/<slug:slug>/delete/', views.category.category_delete, name='category_delete'),
 

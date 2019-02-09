@@ -22,7 +22,7 @@ from expenses.views import ExpDeleteView
 
 @login_required
 def expense_list(request, bills_only=False):
-    exp = revchron(Expense.objects.filter(user=request.user))
+    exp = revchron(Expense.objects.filter(user=request.user).select_related('category'))
     if bills_only:
         exp = exp.filter(is_bill=True)
         htmltitle = _('Bills')

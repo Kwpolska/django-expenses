@@ -38,7 +38,7 @@ def category_list(request):
 def category_show(request, slug):
     category = get_object_or_404(Category, slug=slug, user=request.user)
     paginator = Paginator(
-        revchron(Expense.objects.filter(user=request.user, category=category)),
+        revchron(Expense.objects.filter(user=request.user, category=category).select_related('category')),
         settings.EXPENSES_PAGE_SIZE)
     page = request.GET.get('page')
     expenses = paginator.get_page(page)
@@ -53,7 +53,7 @@ def category_show(request, slug):
 def category_show_templates(request, slug):
     category = get_object_or_404(Category, slug=slug, user=request.user)
     paginator = Paginator(
-        ExpenseTemplate.objects.filter(user=request.user, category=category).order_by('-date_added'),
+        ExpenseTemplate.objects.filter(user=request.user, category=category).order_by('-date_added').select_related('category'),
         settings.EXPENSES_PAGE_SIZE)
     page = request.GET.get('page')
     templates = paginator.get_page(page)

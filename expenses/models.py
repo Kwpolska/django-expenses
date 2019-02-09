@@ -84,7 +84,7 @@ class Category(ExpensesModel):
 
     def monthly_sum(self):
         today = datetime.date.today()
-        return self.expense_set.filter(
+        return self.expense_set.select_related('category').filter(
             date__year=today.year, date__month=today.month).aggregate(models.Sum('amount'))['amount__sum']
 
     @property

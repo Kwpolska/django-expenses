@@ -90,7 +90,8 @@ def search(request):
 
         # Do the search
         if opt['search_for'] == 'expenses':
-            items = Expense.objects.filter(user=request.user, category__in=cat_pks)
+            items = Expense.objects.filter(user=request.user,
+                    category__in=cat_pks).select_related('category')
             if opt['q']:
                 items = items.filter(description_cache__icontains=opt['q'])
             if opt['vendor']:
@@ -110,7 +111,8 @@ def search(request):
 
             items = revchron(items)
         elif opt['search_for'] == 'billitems':
-            items = BillItem.objects.filter(user=request.user, bill__category__in=cat_pks)
+            items = BillItem.objects.filter(user=request.user,
+                    bill__category__in=cat_pks).select_related('bill')
             if opt['q']:
                 items = items.filter(product__icontains=opt['q'])
             if opt['vendor']:
