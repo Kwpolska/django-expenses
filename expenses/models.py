@@ -64,6 +64,9 @@ class Category(ExpensesModel):
     class Meta:
         verbose_name = _("category")
         verbose_name_plural = _("categories")
+        indexes = [
+            models.Index(fields=['slug', 'user'])
+        ]
 
     name = models.CharField(_("Name"), max_length=20)
     slug = models.CharField(_("Slug"), max_length=20)
