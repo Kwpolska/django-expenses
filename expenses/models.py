@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.text import slugify, Truncator
 from django.utils.translation import gettext_lazy as _
-from django.db import models
+from django.db import models, connection
 
 
 from expenses.utils import round_money, serialize_dt, serialize_date, serialize_decimal, \
@@ -80,7 +80,11 @@ class Category(ExpensesModel):
         return format_html('<a href="{0}">{1}</a>', self.get_absolute_url(), self.name)
 
     def all_time_sum(self):
-        return self.expense_set.aggregate(models.Sum('amount'))['amount__sum']
+        with connection.cursor() as cursor:
+            cursor.execute("""
+            SELECT SUM(amount) FROM expenses_expense WHERE category_id = %s
+            """, [self.pk])
+            return cursor.fetchone()[0]
 
     def monthly_sum(self):
         today = datetime.date.today()
@@ -89,7 +93,13 @@ class Category(ExpensesModel):
 
     @property
     def total_count(self):
-        return self.expense_set.count() + self.expensetemplate_set.count()
+        with connection.cursor() as cursor:
+            cursor.execute("""
+            SELECT c1 + c2 AS sum FROM
+            (SELECT COUNT(*) AS c1 FROM expenses_expense WHERE category_id = %s) AS d1,
+            (SELECT COUNT(*) AS c2 FROM expenses_expensetemplate WHERE category_id = %s) AS d2
+            """, [self.pk, self.pk])
+            return cursor.fetchone()[0]
 
     def __str__(self):
         return self.name
