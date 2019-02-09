@@ -166,6 +166,7 @@ class Expense(ExpensesModel):
             "category": self.category_id,
             "amount": serialize_decimal(self.amount),
             "description": self.description,
+            "description_cache": self.description_cache,
             "is_bill": self.is_bill,
         }
 
@@ -176,6 +177,7 @@ class Expense(ExpensesModel):
         self.amount = parse_decimal(data["amount"])
         self.description = data["description"]
         self.is_bill = data["is_bill"]
+        # description_cache should not be included and will be auto-generated on save
 
 
 class BillItem(ExpensesModel):
