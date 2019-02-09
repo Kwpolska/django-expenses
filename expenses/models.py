@@ -216,6 +216,7 @@ TEMPLATE_TYPE_CHOICES = (
     ('simple', _('Simple')),
     ('count', _('Multiplied by count')),
     ('description', _('With custom description')),
+    ('desc_select', _('With description selected from list'))
 )
 TEMPLATE_TYPE_CHOICES_LOOKUP = {k: v for k, v in TEMPLATE_TYPE_CHOICES}
 
@@ -243,6 +244,9 @@ class ExpenseTemplate(ExpensesModel):
 
     def __repr__(self):
         return '<ExpenseTemplate "{0}">'.format(self.name)
+
+    def description_choices(self):
+        return self.description.split('\n')[1:]
 
     def fields_to_json(self) -> dict:
         return {

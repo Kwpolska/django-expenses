@@ -97,10 +97,10 @@ def template_run(request, pk):
             if count == 1:
                 desc = desc_lines[0]
             else:
-                # Expression from gettext
+                # Expression from gettext, simplified
                 desc = desc_lines[
                     1 if
-                    (count % 10 >= 2 and count % 10 <= 4 and (
+                    (2 <= count % 10 <= 4 and (
                         count % 100 < 10 or count % 100 >= 20))
                     else 2]
 
@@ -108,6 +108,10 @@ def template_run(request, pk):
     elif template.type == 'description':
         expense.amount = template.amount
         expense.description = template.description.replace(
+            '!description!', request.GET['description'])
+    elif template.type == 'desc_select':
+        expense.amount = template.amount
+        expense.description = template.description.split('\n', 1)[0].replace(
             '!description!', request.GET['description'])
     else:
         expense.amount = template.amount

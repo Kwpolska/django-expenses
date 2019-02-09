@@ -218,6 +218,10 @@ footer#footer {
     text-align: right;
 }
 
+.expenses-templatetable-actions .input-group {
+    width: 100%;
+}
+
 .expenses-templatetable-actions form {
     justify-content: flex-end;
 }
