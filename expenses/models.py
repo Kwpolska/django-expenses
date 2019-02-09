@@ -9,7 +9,7 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.html import format_html
-from django.utils.text import slugify
+from django.utils.text import slugify, Truncator
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 
@@ -129,6 +129,7 @@ class Expense(ExpensesModel):
     amount = models.DecimalField(_("Amount"), max_digits=10, decimal_places=2)
     description = models.CharField(_("Description"), max_length=80, blank=True)
     is_bill = models.BooleanField(_("This is a bill"), default=False)
+    description_cache = models.CharField(_("Description (cache)"), max_length=300, blank=True)
 
     def __str__(self):
         return '{0}: {1}'.format(self.desc_auto, self.amount)
@@ -145,13 +146,24 @@ class Expense(ExpensesModel):
             sum += b.amount
         return sum
 
+    def generate_bill_description_full(self):
+        if self.billitem_set.count() == 0:
+            return _("(empty)")
+        return ", ".join(i.product for i in self.billitem_set.all())
+
+    def generate_bill_description(self):
+        """Generate a bill description, truncating it to the database limit."""
+        return Truncator(self.generate_bill_description_full()).chars(300)
+
     @property
     def desc_auto(self):
         if self.description:
             return self.description
-        if self.billitem_set.count() == 0:
-            return _("(empty)")
-        return ", ".join(i.product for i in self.billitem_set.all())
+        elif self.description_cache:
+            return self.description_cache
+
+        self.description_cache = self.generate_bill_description()
+        return self.description_cache
 
     def fields_to_json(self):
         return {
@@ -337,16 +349,18 @@ def update_slug(sender, instance: Category, **kwargs):  # NOQA
 
 @receiver(models.signals.post_save, sender=BillItem)
 @receiver(models.signals.post_delete, sender=BillItem)
-def update_bill_amount_on_billitem_change(instance: BillItem, **kwargs):
+def update_bill_info_on_billitem_change(instance: BillItem, **kwargs):
     bill = instance.bill
     bill.amount = bill.calculate_bill_total()
+    bill.description_cache = bill.generate_bill_description()
     bill.save()
 
 
 @receiver(models.signals.pre_save, sender=Expense)
-def update_bill_amount_on_bill_save(instance: Expense, **kwargs):
+def update_bill_info_on_bill_save(instance: Expense, **kwargs):
     if instance.is_bill:
         instance.amount = instance.calculate_bill_total()
+        instance.description_cache = instance.generate_bill_description()
 
 
 @receiver(models.signals.pre_delete, sender=Category)
