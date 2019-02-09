@@ -4,7 +4,7 @@ import io
 from setuptools import setup, find_packages
 
 setup(name='django-expenses',
-      version='0.4.1',
+      version='0.4.2',
       description='A comprehensive system for managing expenses',
       keywords='django,expenses',
       author='Chris Warrick',
@@ -15,9 +15,13 @@ setup(name='django-expenses',
       platforms='any',
       zip_safe=False,
       # http://pypi.python.org/pypi?%3Aaction=list_classifiers
-      classifiers=['Development Status :: 2 - Alpha',
+      classifiers=['Development Status :: 5 - Production/Stable',
                    'Programming Language :: Python',
-                   'Programming Language :: Python :: 3'],
+                   'Programming Language :: Python :: 3',
+                   'Framework :: Django',
+                   'License :: OSI Approved :: BSD License',
+                   'Topic :: Office/Business :: Financial'
+                   ],
       packages=find_packages(),
       install_requires=[
           'Django>=2.1', 'Babel', 'pygal',

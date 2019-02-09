@@ -11,6 +11,10 @@ More information can be found on GitHub in the `releases section
 Version History
 ===============
 
+0.4.2
+    * Improve performance by caching bill descriptions
+    * Support templates with custom description selected from list
+
 0.4.1
     * Improve bill editor usability on mobile
     * Support for plural forms in templates
