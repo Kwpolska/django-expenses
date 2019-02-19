@@ -1,0 +1,117 @@
+/*! Expenses Print CSS, partially based on Bootstrap 4 */
+$font-family-base: -apple-system,BlinkMacSystemFont,Roboto,"Segoe UI","Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+$font-family-monospace: Consolas,SFMono-Regular,Menlo,"DejaVu Sans Mono",monospace;
+$body-color: #000;
+$body-bg: #fff;
+$link-color: #000;
+$link-decoration: none;
+$link-hover-color: #000;
+$link-hover-decoration: none;
+$table-cell-padding: 0.25rem;
+$primary: #0ad;
+
+@mixin font-size($fs) {
+    font-size: $fs;
+}
+@mixin hover {
+    &:hover { @content; }
+}
+@mixin hover-focus {
+    &:hover,
+    &:focus {
+        @content;
+    }
+}
+
+@import "variables";
+@import "reboot";
+
+$table-border-color: $gray-500;
+
+html {
+    font-size: 12pt;
+}
+
+
+body {
+    margin: 1rem;
+}
+
+.table {
+    margin-bottom: $spacer;
+    border: $table-border-width solid $table-border-color;
+
+    th,
+    td {
+        padding: $table-cell-padding;
+        vertical-align: top;
+        border-top: $table-border-width solid $table-border-color;
+        border: $table-border-width solid $table-border-color;
+    }
+
+    thead th {
+        vertical-align: bottom;
+        border-bottom: (2 * $table-border-width) solid $table-border-color;
+    }
+
+    tbody + tbody {
+        border-top: (2 * $table-border-width) solid $table-border-color;
+    }
+
+    thead {
+        th,
+        td {
+            border-bottom-width: 2 * $table-border-width;
+        }
+    }
+}
+
+.expenses-report-table > tbody > tr:last-child > td:first-child {
+    font-weight: bold;
+}
+
+.expenses-report-table > tbody > tr:last-child > td {
+    border-top-width: 2px;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.expenses-report-footer {
+    color: $gray-600;
+    font-size: 0.75rem;
+}
+
+.expenses-report-title, .expenses-report-heading, .expenses-report-footer {
+    text-align: center;
+}
+
+.expenses-report-table {
+    margin-left: auto;
+    margin-right: auto;
+    width: unset;
+}
+
+.expenses-report-heading {
+    margin-bottom: 0.25rem;
+}
+
+.expenses-report-back-btn-box {
+    margin: 0.5rem;
+    text-align: center;
+}
+
+@media print {
+    .expenses-report-back-btn-box {
+        display: none;
+    }
+}

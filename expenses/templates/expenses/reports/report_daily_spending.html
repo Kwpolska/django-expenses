@@ -1,0 +1,67 @@
+{% load i18n %}
+{% load expenses_extras %}
+<p class="align-center">{% blocktrans count all_days=days.all_days trimmed %}
+    Between the first and last expense, <strong><var>d<sub>A</sub></var> = {{ all_days }}</strong> day passed.
+{% plural %}Between the first and last expense, <strong><var>d<sub>A</sub></var> = {{ all_days }}</strong> days passed.{% endblocktrans %}<br>{% blocktrans count expense_days=days.expense_days trimmed %}
+    Out of these, <strong><var>d<sub>E</sub></var> = {{ expense_days }}</strong> day had expenses.
+{% plural %}Out of these, <strong><var>d<sub>E</sub></var> = {{ expense_days }}</strong> days had expenses.{% endblocktrans %}</p>
+<h2 class="expenses-report-heading">{% trans "Daily spending (all categories)" %}</h2>
+<table class="table table-bordered table-hover expenses-report-table">
+    <thead><tr>
+        <th class="align-right">{% trans "Time scale" %}</th>
+        <th colspan="2" class="align-center">{% blocktrans count days=days.expense_days trimmed %}
+            Per <var>d<sub>E</sub></var> = {{ days }} day
+        {% plural %}
+            Per <var>d<sub>E</sub></var> = {{ days }} days{% endblocktrans %}</th>
+        <th colspan="2" class="align-center">{% blocktrans count days=days.all_days trimmed %}
+            Per <var>d<sub>A</sub></var> = {{ days }} day
+        {% plural %}
+            Per <var>d<sub>A</sub></var> = {{ days }} days{% endblocktrans %}</th>
+    </tr>
+    <tr>
+        <th class="align-right">{% trans "Property" %}</th>
+        <th class="align-center">{% trans "Count" %}</th>
+        <th class="align-center">{% trans "Amount" %}</th>
+        <th class="align-center">{% trans "Count" %}</th>
+        <th class="align-center">{% trans "Amount" %}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in daily_data %}
+        <tr>
+            {% for col in row %}
+                <td class="align-right">{{ col }}</td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% for title, results in cat_tables %}
+    <h2 class="expenses-report-heading">{{ title }}</h2>
+    <table class="table table-bordered table-hover expenses-report-table">
+        <thead><tr>
+            <th class="align-right">{% trans "Category" %}</th>
+            {% for cat_link in cat_links %}
+                <th colspan="2" class="align-center">{{ cat_link }}</th>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th class="align-right">{% trans "Property" %}</th>
+            {% for cat_link in cat_links %}
+            <th class="align-center">{% trans "Count" %}</th>
+            <th class="align-center">{% trans "Amount" %}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in results %}
+            <tr>
+                {% for col in row %}
+                    <td class="align-right">{{ col }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}

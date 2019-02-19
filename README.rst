@@ -20,11 +20,23 @@ Features
 * A synchronization API, perfect for mobile apps (one of which is in the
   making)
 
-To-do
+Work in Progress
+----------------
+
+**Reports**: the basic functionality is here, and there are three reports that
+*generally* work well. The following items still need to be done:
+
+* Code cleanup
+* Report: Product price history
+* Exporting reports to spreadsheet-friendly formats (CSV? XLSX? ODS?)
+
+* Reports (done in 75%)
+
+To do
 -----
 
-* Reports
-
+* Monthly goals
+* More?
 
 Configuration
 -------------

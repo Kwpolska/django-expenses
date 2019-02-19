@@ -11,6 +11,7 @@ import expenses.views.bill
 import expenses.views.bill_item
 import expenses.views.category
 import expenses.views.expense
+import expenses.views.reports
 import expenses.views.search
 import expenses.views.template
 import expenses.views.api_autocomplete
@@ -57,6 +58,11 @@ urlpatterns = [
     path('bills/<int:pk>/delete/', views.bill.BillDelete.as_view(), name='bill_delete'),
     path('bills/<int:bill_pk>/item/<int:item_pk>/', views.bill_item.bill_item_edit, name='bill_item_edit'),
     path('bills/<int:bill_pk>/item/<int:item_pk>/delete/', views.bill_item.bill_item_delete, name='bill_item_delete'),
+
+
+    path('reports/', views.reports.report_list, name='report_list'),
+    path('reports/<slug:slug>/', views.reports.report_setup, name='report_setup'),
+    path('reports/<slug:slug>/run/', views.reports.report_run, name='report_run'),
 
     path('api/autocomplete/expense/vendor/', views.api_autocomplete.expense_vendor, name='api_autocomplete__expense_vendor'),
     path('api/autocomplete/expense/description/', views.api_autocomplete.expense_description, name='api_autocomplete__expense_description'),

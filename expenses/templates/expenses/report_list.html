@@ -1,0 +1,14 @@
+{% extends "expenses/expbase.html" %}
+{% load i18n %}
+{% load expenses_extras %}
+{% block content %}
+    <h1>{% trans "Choose a report" %}</h1>
+    <ul>
+        {% for r in reports %}
+            <li>
+                <a href="{% url "expenses:report_setup" r.slug %}" class="expenses-reportlist-name">{{ r.name }}</a>
+                <p>{{ r.description }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

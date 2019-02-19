@@ -1,0 +1,39 @@
+{% extends "expenses/expbase.html" %}
+{% load i18n %}
+{% load expenses_extras %}
+{% block content %}
+    <h1>{{ report.name }}</h1>
+    {{ report.description }}
+    <h2>{% trans "Set up report" %}</h2>
+
+    <form action="{% url "expenses:report_run" report.slug %}" method="POST">
+        {% for optgroup in report.options %}
+            <div class="expenses-setup-box">
+            <div class="expenses-setup-description">{{ optgroup.name }}</div>
+            {% for option in optgroup.options %}
+                {% if option.type == "text" %}
+                    {% if option.enabler %}
+                        <label><input type="checkbox" class="expenses-field-enabler" data-target="er__{{ option.option_id }}" name="{{ option.option_id }}__enabled" {% if option.enabled_by_default %}checked{% endif %}> {{ option.enabler }}</label>
+                    {% else %}
+                        <label for="er__{{ option.option_id }}">{{ option.name }}</label>
+                    {% endif %}
+                    <input class="form-control expenses-setup-box-indented" type="text" name="{{ option.option_id }}" id="er__{{ option.option_id }}" placeholder="{{ option.name }}" {% if option.required %}required{% endif %}>
+                {% elif optgroup.type == "check" %}
+                    <label><input type="checkbox" name="{{ option.option_id }}"> {{ option.name }}</label>
+                {% else %}
+                    <label><input type="radio" name="{{ optgroup.option_id }}" value="{{ option.option_id }}" required {% if forloop.first %}checked{% endif %}> {{ option.name }}</label>
+                {% endif %}
+            {% endfor %}
+            </div>
+        {% endfor %}
+    <div class="expenses-setup-box">
+        <div class="expenses-setup-description">{% trans "Output format" %}</div>
+        <label><input type="radio" name="output_format" value="html" checked> {% trans "Web page (default)" %}</label>
+        <label><input type="radio" name="output_format" value="print"> {% trans "Printable version" %}</label>
+    </div>
+        {% csrf_token %}
+        <p class="expenses-buttons">
+            <button type="submit" value="Run" class="btn btn-primary"><i class="fa fa-play"></i> {% trans "Run Report" %}</button>
+        </p>
+    </form>
+{% endblock %}

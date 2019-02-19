@@ -20,6 +20,13 @@ function injectAutoComplete() {
     });
 }
 
+function handleFieldEnabler(event: Event) {
+    let target = <HTMLInputElement>event.target;
+    let input = <HTMLInputElement>document.getElementById(target.dataset.target);
+    input.disabled = !target.checked;
+    if (target.checked) input.focus();
+}
+
 function onDocReady() {
     // AutoComplete
     injectAutoComplete();
@@ -41,6 +48,14 @@ function onDocReady() {
     if (searchForm !== null) {
         initializeSearchForm();
     }
+
+    // enable field enablers
+    let fieldEnablers = document.querySelectorAll(".expenses-field-enabler");
+    fieldEnablers.forEach((target: HTMLInputElement) => {
+        target.addEventListener("click", handleFieldEnabler);
+        let input = <HTMLInputElement>document.getElementById(target.dataset.target);
+        input.disabled = !target.checked;
+    });
 
     // make navbar sticky for ExpensesWebView Android app
     if (navigator.userAgent.indexOf("ExpensesWebView") != -1) {

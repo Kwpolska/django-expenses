@@ -9,10 +9,11 @@ import babel.numbers
 import datetime
 import decimal
 import iso8601
-import pytz
+import itertools
 import typing
 from django.utils import timezone
 from django.conf import settings
+from django.utils.translation import get_language
 
 
 def format_money(amount: typing.Union[int, float, decimal.Decimal]) -> str:
@@ -70,3 +71,21 @@ def parse_dt(dt_str: str) -> datetime.datetime:
 def parse_decimal(amount_str: str) -> decimal.Decimal:
     """Parse a decimal object."""
     return decimal.Decimal(amount_str)
+
+
+def get_babel_locale() -> str:
+    """Get a babel-friendly locale name."""
+    lang, region = get_language().split('-')
+    return f"{lang}_{region.upper()}"
+
+
+T = typing.TypeVar('T')
+
+
+def peek(iterable: typing.Iterable[T]) -> (T, typing.Iterable[T]):
+    """Peek at the first row of an iterable.
+
+    Returns (first row, iterable with first row)."""
+    iterator = iter(iterable)
+    first_row = next(iterator)
+    return first_row, itertools.chain([first_row], iterator)

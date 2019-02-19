@@ -85,7 +85,10 @@ def search(request):
         opt['include_expenses'] = 'expenses' in includes
         opt['include_bills'] = 'bills' in includes
 
-        cat_pks = {int(i) for i in request.GET.getlist('category', [])}
+        if request.GET.get('category_all'):
+            cat_pks = {cat.pk for cat in categories}
+        else:
+            cat_pks = {int(i) for i in request.GET.getlist('category', [])}
         categories_with_status = [(c, c.pk in cat_pks) for c in categories]
 
         # Do the search

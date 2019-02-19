@@ -1,0 +1,15 @@
+{% extends "expenses/expbase.html" %}
+{% load i18n %}
+{% load expenses_extras %}
+{% block exp_toolbar %}
+    <form action="" method="POST">
+    <a href="{% url 'expenses:report_setup' report.slug %}" class="btn btn-light"><i class="fa fa-cog"></i> Back to setup</a>
+    {% csrf_token %}{% for name, value in postfields %}<input name="{{ name }}" value="{{ value }}" type="hidden">{% endfor %}<button type="submit" name="output_format" value="print" class="btn btn-secondary"><i class="fa fa-print"></i> Printable version</button>
+    </form>
+{% endblock %}
+{% block content %}
+    <h1 class="expenses-report-title">{{ report.name }}</h1>
+    {{ report_html }}
+    <div class="text-muted expenses-report-footer">{% blocktrans with t=time|floatformat:3 %}Calculated in {{ t }} seconds.{% endblocktrans %}</div>
+{% endblock %}
+

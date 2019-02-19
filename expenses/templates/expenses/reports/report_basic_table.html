@@ -1,0 +1,16 @@
+<table class="table table-bordered table-hover expenses-report-table">
+    <thead><tr>
+    {% for col, alignment in column_headers_with_alignment %}
+        <th class="align-{{ alignment }}">{{ col }}</th>
+    {% endfor %}
+    </tr></thead>
+    <tbody>
+    {% for row in results_with_alignment %}
+        <tr>
+        {% for col, alignment in row %}
+            <td class="align-{{ alignment }}">{{ col }}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

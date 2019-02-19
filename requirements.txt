@@ -3,3 +3,4 @@ Babel
 pygal
 django-oauth-toolkit
 iso8601
+attrs

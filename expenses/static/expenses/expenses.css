@@ -278,6 +278,28 @@ ul.expenses-templatelist li:first-child {
     margin-bottom: .5rem;
 }
 
+.expenses-reportlist-name {
+    font-size: 1.25rem;
+}
+
+.expenses-report-title, .expenses-report-heading, .expenses-report-footer {
+    text-align: center;
+}
+
+.expenses-report-table {
+    margin-left: auto;
+    margin-right: auto;
+    width: unset;
+}
+
+.expenses-report-table > tbody > tr:last-child > td:first-child {
+    font-weight: bold;
+}
+
+.expenses-report-table > tbody > tr:last-child > td {
+    border-top-width: 2px;
+}
+
 @media (max-width: 767px) {
     .expenses-setup-box {
         padding: 0;

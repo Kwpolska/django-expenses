@@ -25,6 +25,6 @@ setup(name='django-expenses',
       packages=find_packages(),
       install_requires=[
           'Django>=2.1', 'Babel', 'pygal',
-          'django-oauth-toolkit', 'iso8601'
+          'django-oauth-toolkit', 'iso8601', 'attrs'
       ],
       )
