@@ -375,8 +375,6 @@ def update_bill_info_on_bill_save(instance: Expense, **kwargs):
     if instance.is_bill:
         instance.amount = instance.calculate_bill_total()
         instance.description_cache = instance.generate_bill_description()
-        if not instance.description:
-            instance.description = instance.description_cache
 
 
 @receiver(models.signals.pre_delete, sender=Category)
