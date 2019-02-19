@@ -248,7 +248,8 @@ class MonthCategoryBreakdown(SimpleSQLReport):
                 row.append(format_money(row_total))
                 yield row
 
-            yield [_("Grand Total")] + [format_money(i) for i in cat_totals] + [format_money(sum(cat_totals))]
+            cat_totals_values = list(cat_totals.values())
+            yield [_("Grand Total")] + [format_money(i) for i in cat_totals_values] + [format_money(sum(cat_totals_values))]
 
         elif self.query_type == "month":
             total = 0
@@ -315,8 +316,8 @@ class DailySpending(SimpleSQLReport):
         ORDER BY "expenses_category"."order", category_id;
         """},
         "day_counts": {
-            Engine.SQLITE3: "SELECT COUNT(DISTINCT date), MIN(julianday(date)), MAX(julianday(date)) FROM expenses_expense WHERE user_id=%s;",
-            Engine.POSTGRESQL: "SELECT COUNT(DISTINCT date), MIN(date), MAX(date) FROM expenses_expense WHERE user_id=%s;"
+            Engine.SQLITE3: "SELECT COUNT(DISTINCT date), MAX(julianday(date)) - MIN(julianday(date)) FROM expenses_expense WHERE user_id=%s;",
+            Engine.POSTGRESQL: "SELECT COUNT(DISTINCT date), MAX(date) - MIN(date) FROM expenses_expense WHERE user_id=%s;"
         }
     }
 
@@ -328,9 +329,9 @@ class DailySpending(SimpleSQLReport):
         with connection.cursor() as cursor:
             sql: str = self.get_query("day_counts", engine)
             cursor.execute(sql, [self.request.user.id])
-            expense_days, first, last = cursor.fetchone()
+            expense_days, all_days = cursor.fetchone()
             days["expense_days"] = int(expense_days)
-            days["all_days"] = int(last - first)
+            days["all_days"] = int(all_days)
 
             sql: str = self.get_query("data", engine)
             cursor.execute(sql, [self.request.user.id])
@@ -416,6 +417,32 @@ class DailySpending(SimpleSQLReport):
         cat_tables = zip(cat_tables_headings, cat_tables_contents)
 
         return cat_tables
+
+
+""" POOR MAN'S COMMENTING
+class ProductPriceHistory(Report):
+    name = _("Product price history")
+    slug = "product_price_history"
+    description = _("Get price history for a product.")
+    options = [
+        OptionGroup(_("Customize data included in report"), "product_box", [
+            TextFieldOption(_("Product name"), "product"),
+            TextFieldOption(_("Vendor"), "vendor", True, _("Filter by vendor")),
+            # TODO more filtering options
+        ], type="text")
+    ]
+
+    def run(self):
+        print(self.settings)
+        product = self.settings[self.options[0][0]]
+        vendor = self.settings.get(self.options[0][1], '')
+        return format_html(
+            '<div style="text-align: center; font-size: 1.5rem;">This report is currently unavailable. '
+            'In the meantime, you can use <a href="{0}">the search functionality.</a></div>',
+            '{url}?for=billitems&category_all=true&date-spec=any&q={q}&vendor={vendor}'.format(
+                url=reverse('expenses:search'), q=urllib.parse.quote_plus(product), vendor=urllib.parse.quote_plus(vendor)
+            ))
+"""
 
 
 def no_results_to_show():

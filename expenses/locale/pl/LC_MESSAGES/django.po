@@ -271,7 +271,7 @@ msgstr "Na rok (365 dni)"
 
 #: expenses/reports.py:380 expenses/reports.py:409
 msgid "All time"
-msgstr "Cały okres czasu"
+msgstr "Za cały czas"
 
 #: expenses/reports.py:389
 msgid "Category spending per expense-day (<var>d<sub>E</sub></var> = {})"
