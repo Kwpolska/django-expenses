@@ -234,24 +234,24 @@ ul.expenses-templatelist li:first-child {
     margin-top: 0;
 }
 
-.expenses-search-box {
+.expenses-setup-box {
     margin-bottom: 1rem;
 }
 
-.expenses-search-box label,
-.expenses-search-box .expenses-search-indented {
+.expenses-setup-box label,
+.expenses-setup-box .expenses-setup-box-indented {
     display: block;
     margin-left: 1.5rem;
     margin-right: 1.5rem;
 }
 
-.expenses-search-box .input-group {
+.expenses-setup-box .input-group {
     margin-left: 1.5rem;
     margin-right: 1.5rem;
     width: calc(100% - 3rem);
 }
 
-.expenses-search-box > label > input {
+.expenses-setup-box > label > input {
     margin-right: 0.5rem;
 }
 
@@ -261,7 +261,7 @@ ul.expenses-templatelist li:first-child {
     margin-left: 0.5rem;
 }
 
-.expenses-search-description {
+.expenses-setup-description {
     font-weight: bold;
     display: block;
     margin-left: 0;
@@ -279,7 +279,7 @@ ul.expenses-templatelist li:first-child {
 }
 
 @media (max-width: 767px) {
-    .expenses-search-box {
+    .expenses-setup-box {
         padding: 0;
     }
 }

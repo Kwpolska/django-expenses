@@ -5,25 +5,25 @@
     <div class="d-block d-md-none"><a href="#expenses-search-settings" class="btn btn-secondary expenses-search-toggle" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="expenses-search-settings"><i class="fa fa-filter"></i> {% trans "Filters" %}</a></div>
     <form method="GET" id="expenses-search-form">
         <div class="row collapse" id="expenses-search-settings">
-            <div class="expenses-search-box col-md-3">
-                <div class="expenses-search-description">{% trans "Search for:" %}</div>
+            <div class="expenses-search-box expenses-setup-box col-md-3">
+                <div class="expenses-setup-description">{% trans "Search for:" %}</div>
                 <label for="search-for-expenses"><input type="radio" name="for" value="expenses" id="search-for-expenses"{% if search_for == 'expenses' %} checked{% endif %}>{% trans "Expenses/Bills" %}</label>
                 <label for="search-for-billitems"><input type="radio" name="for" value="billitems" id="search-for-billitems"{% if search_for == 'billitems' %} checked{% endif %}>{% trans "Bill items" %}</label>
                 <label for="search-for-purchases"><input type="radio" name="for" value="purchases" id="search-for-purchases"{% if search_for == 'purchases' %} checked{% endif %}>{% trans "All purchases" %}</label>
             </div>
-            <div class="expenses-search-box col-md-3">
-                <div class="expenses-search-description">{% trans "Include:" %}</div>
+            <div class="expenses-search-box expenses-setup-box col-md-3">
+                <div class="expenses-setup-description">{% trans "Include:" %}</div>
                 <label for="search-include-expenses"><input type="checkbox" name="include" value="expenses" id="search-include-expenses"{% if search_for == 'billitems' %} checked disabled{% elif include_expenses %} checked{% endif %}>{% trans "Expenses" %}</label>
                 <label for="search-include-bills"><input type="checkbox" name="include" value="bills" id="search-include-bills"{% if search_for == 'billitems' %} checked disabled {% elif include_bills %} checked{% endif %}>{% trans "Bills" %}</label>
             </div>
-            <div class="expenses-search-box col-md-3">
-                <div class="expenses-search-description">{% trans "Categories:" %}</div>
+            <div class="expenses-search-box expenses-setup-box col-md-3">
+                <div class="expenses-setup-description">{% trans "Categories:" %}</div>
                 {% for category, status in categories_with_status %}
                     <label for="search-category-{{ category.pk }}"><input type="checkbox" name="category" value="{{ category.pk }}" id="search-category-{{ category.pk }}"{% if status %} checked{% endif %}>{{ category.name }}</label>
                 {% endfor %}
             </div>
-            <div class="expenses-search-box col-md-3">
-                <div class="expenses-search-description">{% trans "Date:" %}</div>
+            <div class="expenses-search-box expenses-setup-box col-md-3">
+                <div class="expenses-setup-description">{% trans "Date:" %}</div>
                 <label for="search-date-spec-any"><input type="radio" name="date-spec" value="any" id="search-date-spec-any"{% if date_spec == 'any' %} checked{% endif %}>{% trans "Any" %}</label>
                 <label for="search-date-spec-between"><input type="radio" name="date-spec" value="between" id="search-date-spec-between"{% if date_spec == 'between' %} checked{% endif %}>{% trans "Between:" %}</label>
                 <div class="input-group">
