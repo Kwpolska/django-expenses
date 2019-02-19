@@ -1,10 +1,14 @@
 {% load i18n %}
 {% load expenses_extras %}
+{% if all_days == 1 %}
+{% trans "There is only <strong><var>d<sub>A</sub></var> = <var>d<sub>E</sub></var> = 1</strong> day with recorded expenses." %}
+{% else %}
 <p class="align-center">{% blocktrans count all_days=days.all_days trimmed %}
     Between the first and last expense, <strong><var>d<sub>A</sub></var> = {{ all_days }}</strong> day passed.
 {% plural %}Between the first and last expense, <strong><var>d<sub>A</sub></var> = {{ all_days }}</strong> days passed.{% endblocktrans %}<br>{% blocktrans count expense_days=days.expense_days trimmed %}
     Out of these, <strong><var>d<sub>E</sub></var> = {{ expense_days }}</strong> day had expenses.
 {% plural %}Out of these, <strong><var>d<sub>E</sub></var> = {{ expense_days }}</strong> days had expenses.{% endblocktrans %}</p>
+{% endif %}
 <h2 class="expenses-report-heading">{% trans "Daily spending (all categories)" %}</h2>
 <table class="table table-bordered table-hover expenses-report-table">
     <thead><tr>

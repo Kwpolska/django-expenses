@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-09 19:35+0100\n"
-"PO-Revision-Date: 2019-02-08 22:23+0100\n"
+"POT-Creation-Date: 2019-02-19 19:59+0100\n"
+"PO-Revision-Date: 2019-02-19 20:02+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -18,9 +18,9 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
 "%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.1\n"
 
-#: expenses/forms.py:27 expenses/forms.py:48 expenses/models.py:126
+#: expenses/forms.py:27 expenses/forms.py:48 expenses/models.py:136
 #: expenses/templates/expenses/bill_add_editmeta.html:16
 #: expenses/templates/expenses/expense_add_edit.html:14
 #: expenses/templates/expenses/expense_show.html:16
@@ -34,7 +34,7 @@ msgid "Date"
 msgstr "Data"
 
 #: expenses/forms.py:28 expenses/forms.py:49 expenses/forms.py:96
-#: expenses/models.py:127 expenses/models.py:226
+#: expenses/models.py:137 expenses/models.py:238 expenses/reports.py:289
 #: expenses/templates/expenses/bill_add_editmeta.html:23
 #: expenses/templates/expenses/expense_add_edit.html:21
 #: expenses/templates/expenses/expense_show.html:24
@@ -49,7 +49,7 @@ msgid "Vendor"
 msgstr "Kontrahent"
 
 #: expenses/forms.py:30 expenses/forms.py:50 expenses/forms.py:98
-#: expenses/models.py:130 expenses/models.py:230
+#: expenses/models.py:140 expenses/models.py:242
 #: expenses/templates/expenses/bill_add_editmeta.html:37
 #: expenses/templates/expenses/expense_add_edit.html:42
 #: expenses/templates/expenses/expense_show.html:45
@@ -61,7 +61,7 @@ msgstr "Kontrahent"
 msgid "Description"
 msgstr "Opis"
 
-#: expenses/forms.py:64 expenses/models.py:183
+#: expenses/forms.py:64 expenses/models.py:195
 #: expenses/templates/expenses/bill_item_add_edit.html:9
 #: expenses/templates/expenses/bill_show.html:38
 #: expenses/templates/expenses/bill_show.html:63
@@ -70,22 +70,25 @@ msgstr "Opis"
 msgid "Product"
 msgstr "Produkt"
 
-#: expenses/forms.py:65 expenses/models.py:184
+#: expenses/forms.py:65 expenses/models.py:196
 #: expenses/templates/expenses/bill_item_add_edit.html:16
 #: expenses/templates/expenses/bill_show.html:64
 #: expenses/templates/expenses/search.html:57
 msgid "Serving [g, L]"
 msgstr "Porcja [g, L]"
 
-#: expenses/forms.py:66 expenses/models.py:185
+#: expenses/forms.py:66 expenses/models.py:197 expenses/reports.py:289
 #: expenses/templates/expenses/bill_item_add_edit.html:23
 #: expenses/templates/expenses/bill_show.html:41
 #: expenses/templates/expenses/bill_show.html:66
 #: expenses/templates/expenses/extras/exp_template_actions.html:9
+#: expenses/templates/expenses/reports/report_daily_spending.html:27
+#: expenses/templates/expenses/reports/report_daily_spending.html:29
+#: expenses/templates/expenses/reports/report_daily_spending.html:56
 msgid "Count"
 msgstr "Ilość"
 
-#: expenses/forms.py:95 expenses/models.py:71 expenses/models.py:225
+#: expenses/forms.py:95 expenses/models.py:71 expenses/models.py:237
 #: expenses/templates/expenses/category_bulk_edit.html:14
 #: expenses/templates/expenses/category_list.html:18
 #: expenses/templates/expenses/extras/template_table.html:9
@@ -118,75 +121,169 @@ msgstr "Podstawa sluga"
 msgid "Order"
 msgstr "Kolejność"
 
-#: expenses/models.py:128 expenses/models.py:227
+#: expenses/models.py:138 expenses/models.py:239 expenses/reports.py:204
+#: expenses/reports.py:223
 #: expenses/templates/expenses/bill_add_editmeta.html:30
 #: expenses/templates/expenses/expense_add_edit.html:28
 #: expenses/templates/expenses/expense_show.html:31
 #: expenses/templates/expenses/extras/expense_table.html:12
 #: expenses/templates/expenses/extras/expense_table.html:24
+#: expenses/templates/expenses/reports/report_daily_spending.html:48
 #: expenses/templates/expenses/template_add_edit.html:23
 #: expenses/templates/expenses/template_show.html:44
 msgid "Category"
 msgstr "Kategoria"
 
-#: expenses/models.py:129 expenses/models.py:229
+#: expenses/models.py:139 expenses/models.py:241
 #: expenses/templates/expenses/bill_show.html:42
 #: expenses/templates/expenses/expense_add_edit.html:35
 #: expenses/templates/expenses/expense_show.html:38
 #: expenses/templates/expenses/extras/expense_table.html:13
 #: expenses/templates/expenses/extras/expense_table.html:26
 #: expenses/templates/expenses/extras/template_table.html:10
+#: expenses/templates/expenses/reports/report_daily_spending.html:28
+#: expenses/templates/expenses/reports/report_daily_spending.html:30
+#: expenses/templates/expenses/reports/report_daily_spending.html:57
 #: expenses/templates/expenses/template_add_edit.html:30
 #: expenses/templates/expenses/template_show.html:51
 msgid "Amount"
 msgstr "Wartość"
 
-#: expenses/models.py:131
+#: expenses/models.py:141
 msgid "This is a bill"
 msgstr "To jest rachunek"
 
-#: expenses/models.py:132
+#: expenses/models.py:142
 msgid "Description (cache)"
 msgstr "Opis (cache)"
 
-#: expenses/models.py:151
+#: expenses/models.py:161
 msgid "(empty)"
 msgstr "(pusty)"
 
-#: expenses/models.py:182
+#: expenses/models.py:194
 #: expenses/templates/expenses/extras/expense_table.html:43
 #: expenses/templates/expenses/extras/expense_table.html:59
 msgid "Bill"
 msgstr "Rachunek"
 
-#: expenses/models.py:186
+#: expenses/models.py:198
 msgid "Unit price"
 msgstr "Cena jednostkowa"
 
-#: expenses/models.py:216
+#: expenses/models.py:228
 msgid "Simple"
 msgstr "Prosty"
 
-#: expenses/models.py:217
+#: expenses/models.py:229
 msgid "Multiplied by count"
 msgstr "Mnożony przez ilość"
 
-#: expenses/models.py:218
+#: expenses/models.py:230
 msgid "With custom description"
 msgstr "Z własnym opisem"
 
-#: expenses/models.py:219
+#: expenses/models.py:231
 msgid "With description selected from list"
 msgstr "Z opisem wybieranym z listy"
 
-#: expenses/models.py:228
+#: expenses/models.py:240
 msgid "Template type"
 msgstr "Rodzaj szablonu"
 
-#: expenses/models.py:231 expenses/templates/expenses/template_add_edit.html:72
+#: expenses/models.py:243 expenses/templates/expenses/template_add_edit.html:72
 #: expenses/templates/expenses/template_show.html:27
 msgid "Comment"
 msgstr "Komentarz"
+
+#: expenses/reports.py:158
+msgid "Month/Category breakdown"
+msgstr "Podział według miesięcy/kategorii"
+
+#: expenses/reports.py:160
+msgid "Show expenses broken down by month and category."
+msgstr "Pokaż wydatki z podziałem na miesiące i kategorie."
+
+#: expenses/reports.py:201
+msgid "Break down expenses by:"
+msgstr "Kryterium podziału wydatków:"
+
+#: expenses/reports.py:202
+msgid "Month and category"
+msgstr "Miesiąc i kategoria"
+
+#: expenses/reports.py:203 expenses/reports.py:219 expenses/reports.py:228
+msgid "Month"
+msgstr "Miesiąc"
+
+#: expenses/reports.py:219 expenses/reports.py:223 expenses/reports.py:228
+msgid "Total"
+msgstr "Suma"
+
+#: expenses/reports.py:251 expenses/reports.py:259 expenses/reports.py:270
+#: expenses/reports.py:302
+msgid "Grand Total"
+msgstr "Suma końcowa"
+
+#: expenses/reports.py:274
+msgid "Vendor statistics"
+msgstr "Statystyki kontrahentów"
+
+#: expenses/reports.py:276
+msgid ""
+"Get basic statistics about money spent at each vendor. Includes vendors with "
+"at least 2 separate purchases."
+msgstr ""
+"Podstawowe statystyki na temat wydatków u każdego kontrahenta. Uwzględnia "
+"sprzedawców z co najmniej dwoma wydatkami."
+
+#: expenses/reports.py:289
+msgid "Sum"
+msgstr "Suma"
+
+#: expenses/reports.py:289
+msgid "Average"
+msgstr "Średnia"
+
+#: expenses/reports.py:306
+msgid "Daily spending"
+msgstr "Dzienne wydatki"
+
+#: expenses/reports.py:308
+msgid "Get daily, weekly, monthly average spending."
+msgstr "Średnie dzienne, tygodniowe, miesięczne wydatki."
+
+#: expenses/reports.py:345
+msgid "Per 1 day"
+msgstr "Na 1 dzień"
+
+#: expenses/reports.py:346
+msgid "Per week (7 days)"
+msgstr "Na tydzień (7 dni)"
+
+#: expenses/reports.py:347
+msgid "Per month (30 days)"
+msgstr "Na miesiąc (30 dni)"
+
+#: expenses/reports.py:348
+msgid "Per year (365 days)"
+msgstr "Na rok (365 dni)"
+
+#: expenses/reports.py:380 expenses/reports.py:409
+msgid "All time"
+msgstr "Cały okres czasu"
+
+#: expenses/reports.py:389
+msgid "Category spending per expense-day (<var>d<sub>E</sub></var> = {})"
+msgstr "Wydatki w kategoriach na wydatko-dzień (<var>d<sub>E</sub></var> = {})"
+
+#: expenses/reports.py:390
+msgid "Category spending per day (<var>d<sub>A</sub></var> = {})"
+msgstr "Wydatki w kategoriach na dzień (<var>d<sub>E</sub></var> = {})"
+
+#: expenses/reports.py:449
+msgid "No results to show."
+msgstr "Brak wyników do wyświetlenia."
 
 #: expenses/templates/expenses/bill_add_editmeta.html:8
 #: expenses/templates/expenses/bill_show.html:7
@@ -378,36 +475,17 @@ msgstr "Nie udało się usunąć kategorii. Wybierz poprawny cel przeniesienia."
 #: expenses/templates/expenses/category_delete.html:9
 #, python-format
 msgid ""
-"\n"
-"            You’re attempting to delete the <strong>%(object.name)s</strong> "
-"category.\n"
-"        "
-msgstr ""
-"\n"
-"Próbujesz usunąć kategorię <strong >%(object.name)s</strong>."
+"You’re attempting to delete the <strong>%(object.name)s</strong> category."
+msgstr "Próbujesz usunąć kategorię <strong >%(object.name)s</strong>."
 
 #: expenses/templates/expenses/category_delete.html:12
 #, python-format
-msgid ""
-"\n"
-"            The category has %(num)s item in total.\n"
-"        "
-msgid_plural ""
-"\n"
-"            The category has %(num)s items in total.\n"
-"        "
-msgstr[0] ""
-"\n"
-"Kategoria zawiera %(num)s element."
-msgstr[1] ""
-"\n"
-"Kategoria zawiera %(num)s elementy."
-msgstr[2] ""
-"\n"
-"Kategoria zawiera %(num)s elementów."
-msgstr[3] ""
-"\n"
-"Kategoria zawiera %(num)s elementów."
+msgid "The category has %(num)s item in total."
+msgid_plural "The category has %(num)s items in total."
+msgstr[0] "Kategoria zawiera %(num)s element."
+msgstr[1] "Kategoria zawiera %(num)s elementy."
+msgstr[2] "Kategoria zawiera %(num)s elementów."
+msgstr[3] "Kategoria zawiera %(num)s elementów."
 
 #: expenses/templates/expenses/category_delete.html:20
 msgid "It can be deleted without further intervention."
@@ -501,9 +579,13 @@ msgid "Categories"
 msgstr "Kategorie"
 
 #: expenses/templates/expenses/expbase.html:38
-#: expenses/templates/expenses/search.html:37 expenses/views/search.py:176
+#: expenses/templates/expenses/search.html:37 expenses/views/search.py:181
 msgid "Search"
 msgstr "Wyszukaj"
+
+#: expenses/templates/expenses/expbase.html:39 expenses/views/reports.py:23
+msgid "Reports"
+msgstr "Raporty"
 
 #: expenses/templates/expenses/expense_convert.html:5
 #: expenses/views/expense.py:149
@@ -630,6 +712,126 @@ msgstr "Wydatki w kategoriach"
 msgid "Category chart"
 msgstr "Wykres kategorii"
 
+#: expenses/templates/expenses/report_list.html:5
+msgid "Choose a report"
+msgstr "Wybierz raport"
+
+#: expenses/templates/expenses/report_run.html:13
+#: expenses/templates/expenses/report_run_print.html:13
+#, python-format
+msgid "Calculated in %(t)s seconds."
+msgstr "Obliczono w %(t)s sekund."
+
+#: expenses/templates/expenses/report_run_print.html:13
+msgid "Powered by Expenses."
+msgstr "Napędzane przez aplikację Wydatki."
+
+#: expenses/templates/expenses/report_run_print.html:15
+msgid "Print"
+msgstr "Drukuj"
+
+#: expenses/templates/expenses/report_run_print.html:15
+msgid "« Back to Expenses"
+msgstr "« Wróć do Wydatków"
+
+#: expenses/templates/expenses/report_setup.html:7
+msgid "Set up report"
+msgstr "Ustawienia raportu"
+
+#: expenses/templates/expenses/report_setup.html:30
+msgid "Output format"
+msgstr "Format wyjściowy"
+
+#: expenses/templates/expenses/report_setup.html:31
+msgid "Web page (default)"
+msgstr "Strona internetowa (domyślny)"
+
+#: expenses/templates/expenses/report_setup.html:32
+msgid "Printable version"
+msgstr "Wersja drukowalna"
+
+#: expenses/templates/expenses/report_setup.html:36
+msgid "Run Report"
+msgstr "Uruchom Raport"
+
+#: expenses/templates/expenses/reports/report_daily_spending.html:4
+msgid ""
+"There is only <strong><var>d<sub>A</sub></var> = <var>d<sub>E</sub></var> = "
+"1</strong> day with recorded expenses."
+msgstr ""
+"Tylko <strong><var>d<sub>E</sub></var> = 1</strong> dzień miał wydatki."
+
+#: expenses/templates/expenses/reports/report_daily_spending.html:6
+#, python-format
+msgid ""
+"Between the first and last expense, <strong><var>d<sub>A</sub></var> = "
+"%(all_days)s</strong> day passed."
+msgid_plural ""
+"Between the first and last expense, <strong><var>d<sub>A</sub></var> = "
+"%(all_days)s</strong> days passed."
+msgstr[0] ""
+"Pomiędzy pierwszym i ostatnim wydatkiem, minął <strong><var>d<sub>A</sub></"
+"var> = %(all_days)s</strong> dzień."
+msgstr[1] ""
+"Pomiędzy pierwszym i ostatnim wydatkiem, minęły <strong><var>d<sub>A</sub></"
+"var> = %(all_days)s</strong> dni."
+msgstr[2] ""
+"Pomiędzy pierwszym i ostatnim wydatkiem, minęło <strong><var>d<sub>A</sub></"
+"var> = %(all_days)s</strong> dni."
+msgstr[3] ""
+"Between the first and last expense, <strong><var>d<sub>A</sub></var> = "
+"%(all_days)s</strong> days passed."
+
+#: expenses/templates/expenses/reports/report_daily_spending.html:8
+#, python-format
+msgid ""
+"Out of these, <strong><var>d<sub>E</sub></var> = %(expense_days)s</strong> "
+"day had expenses."
+msgid_plural ""
+"Out of these, <strong><var>d<sub>E</sub></var> = %(expense_days)s</strong> "
+"days had expenses."
+msgstr[0] ""
+"<strong><var>d<sub>E</sub></var> = %(expense_days)s</strong> dzień miał "
+"wydatki."
+msgstr[1] ""
+"Spośród nich, <strong><var>d<sub>E</sub></var> = %(expense_days)s</strong> "
+"dni miało wydatki."
+msgstr[2] ""
+"Spośród nich, <strong><var>d<sub>E</sub></var> = %(expense_days)s</strong> "
+"dni miało wydatki."
+msgstr[3] ""
+
+#: expenses/templates/expenses/reports/report_daily_spending.html:12
+msgid "Daily spending (all categories)"
+msgstr "Dzienne wydatki (wszystkie kategorie)"
+
+#: expenses/templates/expenses/reports/report_daily_spending.html:15
+msgid "Time scale"
+msgstr "Odstęp czasowy"
+
+#: expenses/templates/expenses/reports/report_daily_spending.html:16
+#, python-format
+msgid "Per <var>d<sub>E</sub></var> = %(days)s day"
+msgid_plural "Per <var>d<sub>E</sub></var> = %(days)s days"
+msgstr[0] "Na <var>d<sub>E</sub></var> = %(days)s dzień"
+msgstr[1] "Na <var>d<sub>E</sub></var> = %(days)s dni"
+msgstr[2] "Na <var>d<sub>E</sub></var> = %(days)s dni"
+msgstr[3] ""
+
+#: expenses/templates/expenses/reports/report_daily_spending.html:20
+#, python-format
+msgid "Per <var>d<sub>A</sub></var> = %(days)s day"
+msgid_plural "Per <var>d<sub>A</sub></var> = %(days)s days"
+msgstr[0] "Na <var>d<sub>A</sub></var> = %(days)s dzień"
+msgstr[1] "Na <var>d<sub>A</sub></var> = %(days)s dni"
+msgstr[2] "Na <var>d<sub>A</sub></var> = %(days)s dni"
+msgstr[3] ""
+
+#: expenses/templates/expenses/reports/report_daily_spending.html:26
+#: expenses/templates/expenses/reports/report_daily_spending.html:54
+msgid "Property"
+msgstr "Własność"
+
 #: expenses/templates/expenses/search.html:5
 msgid "Filters"
 msgstr "Filtry"
@@ -727,10 +929,10 @@ msgid ""
 "For English, provide two forms (one, many). For Polish, provide three or "
 "four forms (one, two, five, fraction)."
 msgstr ""
-"Jeżeli szablon jest typu „Mnożony przez ilość”, linie zostaną "
-"wykorzystane jako formy liczby mnogiej. Dla języka angielskiego, podaj dwie "
-"formy (jeden, wiele). Dla języka polskiego, podaj trzy albo cztery formy "
-"(jeden, dwa, pięć, ułamek)."
+"Jeżeli szablon jest typu „Mnożony przez ilość”, linie zostaną wykorzystane "
+"jako formy liczby mnogiej. Dla języka angielskiego, podaj dwie formy (jeden, "
+"wiele). Dla języka polskiego, podaj trzy albo cztery formy (jeden, dwa, "
+"pięć, ułamek)."
 
 #. Translators: Do not translate the !description! tag name
 #: expenses/templates/expenses/template_add_edit.html:52
@@ -739,9 +941,9 @@ msgid ""
 "main description line, and further lines are choices shown to the user. The "
 "main description should contain a <code>!description!</code> tag."
 msgstr ""
-"Jeżeli szablon jest typu „Z opisem wybieranym z listy”, pierwsza linia "
-"jest głównym opisem, a następne stanowią opcje pokazywane użytkownikowi. "
-"Główny opis powinien zawierać tag <code>!description!</code>."
+"Jeżeli szablon jest typu „Z opisem wybieranym z listy”, pierwsza linia jest "
+"głównym opisem, a następne stanowią opcje pokazywane użytkownikowi. Główny "
+"opis powinien zawierać tag <code>!description!</code>."
 
 #: expenses/templates/expenses/template_add_edit.html:58
 #: expenses/templates/expenses/template_show.html:19
@@ -760,16 +962,16 @@ msgstr "Szczegóły"
 msgid "Values"
 msgstr "Wartości"
 
-#: expenses/views/__init__.py:73
+#: expenses/views/__init__.py:74
 msgid "Expenses Dashboard"
 msgstr "Wydatki — Kokpit"
 
-#: expenses/views/__init__.py:95 expenses/views/category.py:119
+#: expenses/views/__init__.py:96 expenses/views/category.py:119
 #, python-format
 msgid "%s has been deleted."
 msgstr "Pomyślnie usunięto %s."
 
-#: expenses/views/__init__.py:101 expenses/views/bill_item.py:84
+#: expenses/views/__init__.py:102 expenses/views/bill_item.py:84
 #, python-format
 msgid "Delete %s"
 msgstr "Usuń %s"

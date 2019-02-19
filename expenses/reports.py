@@ -120,7 +120,7 @@ class SimpleSQLReport(Report):
         column_header_names, column_alignment = column_headers
         column_headers_with_alignment = zip(*column_headers)
         if not results:
-            return format_html('<p class="expenses-empty">{}</p>', _("No results to show."))
+            return no_results_to_show()
         results = self.preprocess_rows(results)
 
         first_row, results = peek(results)
@@ -336,6 +336,9 @@ class DailySpending(SimpleSQLReport):
             cursor.execute(sql, [self.request.user.id])
             cat_data: typing.List[tuple] = cursor.fetchall()
 
+        if days["all_days"] == 0:
+            return no_results_to_show()
+
         user_categories: typing.Iterable[Category] = Category.user_objects(self.request)
         timescales = [1, 7, 30, 365]
         timescale_names = {
@@ -413,6 +416,11 @@ class DailySpending(SimpleSQLReport):
         cat_tables = zip(cat_tables_headings, cat_tables_contents)
 
         return cat_tables
+
+
+def no_results_to_show():
+    """Produce an error message when there are no results to show."""
+    return format_html('<p class="expenses-empty">{}</p>', _("No results to show."))
 
 
 AVAILABLE_REPORTS: typing.Dict[str, typing.Type[Report]] = {r.slug: r for r in [
