@@ -155,7 +155,7 @@ def format_yearmonth(yearmonth: str) -> str:
 
 
 class MonthCategoryBreakdown(SimpleSQLReport):
-    name = _("Month/Category Breakdown")
+    name = _("Month/Category breakdown")
     slug = "month_category_breakdown"
     description = _("Show expenses broken down by month and category.")
     sql = {
