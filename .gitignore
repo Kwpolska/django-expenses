@@ -41,4 +41,6 @@ nosetests.xml
 
 # Node
 node_modules
+
 /ts/js
+.vscode

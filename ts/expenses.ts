@@ -30,12 +30,13 @@ function onDocReady() {
         initializeBillEditor();
     }
 
-    // initialize BillTable editor
+    // initialize bulk category editor
     let expCatForm = document.querySelector("#expenses-bulkcatedit-form");
     if (expCatForm !== null) {
         initializeBulkCatEditor();
     }
     
+    // initialize search form
     let searchForm = document.querySelector("#expenses-search-form");
     if (searchForm !== null) {
         initializeSearchForm();

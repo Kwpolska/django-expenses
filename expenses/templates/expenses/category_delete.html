@@ -6,10 +6,10 @@
         <p class="text-danger">{% trans "Failed to delete category. Select a valid move destination." %}</p>
     {% endif %}
     <p>
-        {% blocktrans %}
+        {% blocktrans trimmed %}
             You’re attempting to delete the <strong>{{ object.name }}</strong> category.
         {% endblocktrans %}
-        {% blocktrans count num=object.total_count %}
+        {% blocktrans count num=object.total_count trimmed %}
             The category has {{ num }} item in total.
         {% plural %}
             The category has {{ num }} items in total.
