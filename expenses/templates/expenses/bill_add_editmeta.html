@@ -9,6 +9,16 @@
     {% endif %}
 {% endblock %}
 {% block content %}
+{% if mode == 'add' %}
+    <form action="{% url "expenses:bill_quickadd" %}" method="POST">
+    <p>{% trans "Recent vendors:" %}
+    {% csrf_token %}
+    {% for vendor, cat_id, cat_name in last_vendors %}
+        <button class="btn btn-light" name="quickadd" value="{{ cat_id }};{{ vendor }}" type="submit">{{ vendor }} ({{ cat_name }})</button>
+    {% endfor %}
+    </p>
+    </form>
+{% endif %}
 <form action="" method="POST" autocomplete="off">
     {% csrf_token %}
     {{ form.non_field_errors }}

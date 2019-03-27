@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-19 19:59+0100\n"
-"PO-Revision-Date: 2019-02-19 20:02+0100\n"
+"POT-Creation-Date: 2019-03-20 19:18+0100\n"
+"PO-Revision-Date: 2019-03-20 19:20+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -21,7 +21,7 @@ msgstr ""
 "X-Generator: Poedit 2.2.1\n"
 
 #: expenses/forms.py:27 expenses/forms.py:48 expenses/models.py:136
-#: expenses/templates/expenses/bill_add_editmeta.html:16
+#: expenses/templates/expenses/bill_add_editmeta.html:26
 #: expenses/templates/expenses/expense_add_edit.html:14
 #: expenses/templates/expenses/expense_show.html:16
 #: expenses/templates/expenses/extras/exp_template_actions.html:6
@@ -34,8 +34,9 @@ msgid "Date"
 msgstr "Data"
 
 #: expenses/forms.py:28 expenses/forms.py:49 expenses/forms.py:96
-#: expenses/models.py:137 expenses/models.py:238 expenses/reports.py:289
-#: expenses/templates/expenses/bill_add_editmeta.html:23
+#: expenses/models.py:137 expenses/models.py:238 expenses/reports.py:290
+#: expenses/reports.py:429
+#: expenses/templates/expenses/bill_add_editmeta.html:33
 #: expenses/templates/expenses/expense_add_edit.html:21
 #: expenses/templates/expenses/expense_show.html:24
 #: expenses/templates/expenses/extras/expense_table.html:11
@@ -50,7 +51,7 @@ msgstr "Kontrahent"
 
 #: expenses/forms.py:30 expenses/forms.py:50 expenses/forms.py:98
 #: expenses/models.py:140 expenses/models.py:242
-#: expenses/templates/expenses/bill_add_editmeta.html:37
+#: expenses/templates/expenses/bill_add_editmeta.html:47
 #: expenses/templates/expenses/expense_add_edit.html:42
 #: expenses/templates/expenses/expense_show.html:45
 #: expenses/templates/expenses/extras/exp_template_actions.html:11
@@ -77,7 +78,7 @@ msgstr "Produkt"
 msgid "Serving [g, L]"
 msgstr "Porcja [g, L]"
 
-#: expenses/forms.py:66 expenses/models.py:197 expenses/reports.py:289
+#: expenses/forms.py:66 expenses/models.py:197 expenses/reports.py:290
 #: expenses/templates/expenses/bill_item_add_edit.html:23
 #: expenses/templates/expenses/bill_show.html:41
 #: expenses/templates/expenses/bill_show.html:66
@@ -123,7 +124,7 @@ msgstr "Kolejność"
 
 #: expenses/models.py:138 expenses/models.py:239 expenses/reports.py:204
 #: expenses/reports.py:223
-#: expenses/templates/expenses/bill_add_editmeta.html:30
+#: expenses/templates/expenses/bill_add_editmeta.html:40
 #: expenses/templates/expenses/expense_add_edit.html:28
 #: expenses/templates/expenses/expense_show.html:31
 #: expenses/templates/expenses/extras/expense_table.html:12
@@ -220,16 +221,16 @@ msgstr "Miesiąc"
 msgid "Total"
 msgstr "Suma"
 
-#: expenses/reports.py:251 expenses/reports.py:259 expenses/reports.py:270
-#: expenses/reports.py:302
+#: expenses/reports.py:252 expenses/reports.py:260 expenses/reports.py:271
+#: expenses/reports.py:303
 msgid "Grand Total"
 msgstr "Suma końcowa"
 
-#: expenses/reports.py:274
+#: expenses/reports.py:275
 msgid "Vendor statistics"
 msgstr "Statystyki kontrahentów"
 
-#: expenses/reports.py:276
+#: expenses/reports.py:277
 msgid ""
 "Get basic statistics about money spent at each vendor. Includes vendors with "
 "at least 2 separate purchases."
@@ -237,51 +238,63 @@ msgstr ""
 "Podstawowe statystyki na temat wydatków u każdego kontrahenta. Uwzględnia "
 "sprzedawców z co najmniej dwoma wydatkami."
 
-#: expenses/reports.py:289
+#: expenses/reports.py:290
 msgid "Sum"
 msgstr "Suma"
 
-#: expenses/reports.py:289
+#: expenses/reports.py:290
 msgid "Average"
 msgstr "Średnia"
 
-#: expenses/reports.py:306
+#: expenses/reports.py:307
 msgid "Daily spending"
 msgstr "Dzienne wydatki"
 
-#: expenses/reports.py:308
+#: expenses/reports.py:309
 msgid "Get daily, weekly, monthly average spending."
 msgstr "Średnie dzienne, tygodniowe, miesięczne wydatki."
 
-#: expenses/reports.py:345
+#: expenses/reports.py:346
 msgid "Per 1 day"
 msgstr "Na 1 dzień"
 
-#: expenses/reports.py:346
+#: expenses/reports.py:347
 msgid "Per week (7 days)"
 msgstr "Na tydzień (7 dni)"
 
-#: expenses/reports.py:347
+#: expenses/reports.py:348
 msgid "Per month (30 days)"
 msgstr "Na miesiąc (30 dni)"
 
-#: expenses/reports.py:348
+#: expenses/reports.py:349
 msgid "Per year (365 days)"
 msgstr "Na rok (365 dni)"
 
-#: expenses/reports.py:380 expenses/reports.py:409
+#: expenses/reports.py:381 expenses/reports.py:410
 msgid "All time"
 msgstr "Za cały czas"
 
-#: expenses/reports.py:389
+#: expenses/reports.py:390
 msgid "Category spending per expense-day (<var>d<sub>E</sub></var> = {})"
 msgstr "Wydatki w kategoriach na wydatko-dzień (<var>d<sub>E</sub></var> = {})"
 
-#: expenses/reports.py:390
+#: expenses/reports.py:391
 msgid "Category spending per day (<var>d<sub>A</sub></var> = {})"
 msgstr "Wydatki w kategoriach na dzień (<var>d<sub>E</sub></var> = {})"
 
-#: expenses/reports.py:449
+#: expenses/reports.py:427
+msgid "Customize data included in report"
+msgstr "Dostosuj dane uwzględnione w raporcie"
+
+#: expenses/reports.py:428
+msgid "Product name"
+msgstr "Nazwa produktu"
+
+#: expenses/reports.py:429
+msgid "Filter by vendor"
+msgstr "Filtruj po kontrahencie"
+
+#: expenses/reports.py:448
 msgid "No results to show."
 msgstr "Brak wyników do wyświetlenia."
 
@@ -290,7 +303,11 @@ msgstr "Brak wyników do wyświetlenia."
 msgid "Convert to expense"
 msgstr "Przekonwertuj na wydatek"
 
-#: expenses/templates/expenses/bill_add_editmeta.html:41
+#: expenses/templates/expenses/bill_add_editmeta.html:14
+msgid "Recent vendors:"
+msgstr "Ostatni kontrahenci:"
+
+#: expenses/templates/expenses/bill_add_editmeta.html:51
 msgid ""
 "If you leave this empty, the description will be generated automatically, "
 "based on bill items."
@@ -298,11 +315,11 @@ msgstr ""
 "Jeżeli zostawisz to pole puste, opis zostanie wygenerowany automatycznie na "
 "podstawie pozycji na rachunku."
 
-#: expenses/templates/expenses/bill_add_editmeta.html:45
+#: expenses/templates/expenses/bill_add_editmeta.html:55
 msgid "Save and add items"
 msgstr "Zapisz i dodaj pozycje"
 
-#: expenses/templates/expenses/bill_add_editmeta.html:45
+#: expenses/templates/expenses/bill_add_editmeta.html:55
 #: expenses/templates/expenses/bill_item_add_edit.html:37
 #: expenses/templates/expenses/bill_show.html:82
 #: expenses/templates/expenses/expense_add_edit.html:49
@@ -667,7 +684,7 @@ msgid "Add an expense"
 msgstr "Dodaj wydatek"
 
 #: expenses/templates/expenses/extras/expenses_add_toolbar.html:4
-#: expenses/views/bill.py:41
+#: expenses/views/bill.py:56
 msgid "Add a bill"
 msgstr "Dodaj rachunek"
 
@@ -976,7 +993,7 @@ msgstr "Pomyślnie usunięto %s."
 msgid "Delete %s"
 msgstr "Usuń %s"
 
-#: expenses/views/bill.py:125
+#: expenses/views/bill.py:154
 #, python-format
 msgid "Saved changes to %(count)d item."
 msgid_plural "Saved changes to %(count)d items."
@@ -985,7 +1002,7 @@ msgstr[1] "Zapisano zmiany w %(count)d pozycjach."
 msgstr[2] "Zapisano zmiany w %(count)d pozycjach."
 msgstr[3] ""
 
-#: expenses/views/bill.py:131
+#: expenses/views/bill.py:160
 #, python-format
 msgid "Failed to change %(count)d item."
 msgid_plural "Failed to change %(count)d items."

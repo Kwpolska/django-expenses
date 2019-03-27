@@ -7,9 +7,10 @@
 
 import collections
 
+from django.db import connection
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext as _, ngettext
@@ -18,6 +19,16 @@ from expenses.forms import BillForm
 from expenses.models import Expense, BillItem
 from expenses.views import ExpDeleteView
 from expenses.views.expense import expense_list as _expense_list
+
+
+LAST_VENDORS_QUERY = """
+SELECT DISTINCT "vendor", "category_id", "expenses_category"."name"
+FROM "expenses_expense"
+INNER JOIN "expenses_category" ON ("category_id" = "expenses_category"."id")
+WHERE ("is_bill" = 1 AND "expenses_expense"."user_id" = %s)
+ORDER BY "expenses_expense"."date_added" DESC
+LIMIT 3"""
+
 
 @login_required
 def bill_list(request):
@@ -37,12 +48,30 @@ def bill_add(request):
             form.save_m2m()
             return HttpResponseRedirect(reverse('expenses:bill_show', args=[inst.pk]))
 
+    with connection.cursor() as cursor:
+        cursor.execute(LAST_VENDORS_QUERY, [request.user.pk])
+        last_vendors = cursor.fetchall()
+
     return render(request, 'expenses/bill_add_editmeta.html', {
         'htmltitle': _("Add a bill"),
         'pid': 'bill_add',
         'form': form,
         'mode': 'add',
+        'last_vendors': last_vendors,
     })
+
+
+@login_required
+def bill_quickadd(request):
+    if request.method != "POST":
+        return HttpResponseNotAllowed(['POST'])
+    quickadd_str = request.POST.get('quickadd')
+    if quickadd_str is None:
+        return HttpResponseBadRequest()
+    category_id, vendor = quickadd_str.split(';', 1)
+    inst = Expense(user=request.user, category_id=category_id, vendor=vendor, is_bill=True)
+    inst.save()
+    return HttpResponseRedirect(reverse('expenses:bill_show', args=[inst.pk]))
 
 
 @login_required

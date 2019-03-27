@@ -51,6 +51,7 @@ urlpatterns = [
 
     path('bills/', views.bill.bill_list, name='bill_list'),
     path('bills/add/', views.bill.bill_add, name='bill_add'),
+    path('bills/quickadd/', views.bill.bill_quickadd, name='bill_quickadd'),
     path('bills/<int:pk>/', views.bill.bill_show, name='bill_show'),
     path('bills/<int:pk>/add_item/', views.bill_item.bill_item_add, name='bill_item_add'),
     path('bills/<int:pk>/editmeta/', views.bill.bill_editmeta, name='bill_editmeta'),
