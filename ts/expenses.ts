@@ -6,6 +6,7 @@ import initializeBillEditor from "./billeditor";
 import initializeBulkCatEditor from "./bulkcateditor";
 import initializeSearchForm from "./searchform";
 import setUpAutoComplete from "./autocomplete";
+import setUpFlickMenu from "./flickmenu";
 
 function injectAutoComplete() {
     let baseUrl = _expConfig_.baseUrl;
@@ -65,6 +66,9 @@ function onDocReady() {
         let body = document.querySelector<HTMLElement>('body');
         body.style.paddingTop = '50px';
     }
+
+    // On mobile, accept flick to uncover top menu
+    setUpFlickMenu();
 }
 
 document.addEventListener('DOMContentLoaded', onDocReady, false);
