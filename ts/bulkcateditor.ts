@@ -1,4 +1,4 @@
-/*!
+/*
  * Expenses Bulk Category Editor
  * Copyright © 2018-2019, Chris Warrick. All rights reserved. License: 3-clause BSD.
  */

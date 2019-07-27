@@ -87,6 +87,7 @@ class TemplateForm(forms.ModelForm):
         self.fields['category'].queryset = Category.objects.filter(user=user).order_by('order')
         self.fields['description'].required = True
         self.fields['comment'].required = False
+        self.fields['amount'].required = False
 
     class Meta:
         model = ExpenseTemplate
@@ -99,3 +100,11 @@ class TemplateForm(forms.ModelForm):
             'type': forms.RadioSelect(),
             'comment': forms.Textarea(attrs={'class': 'form-control expenses-tmplform-comment', 'rows': '3', 'placeholder': gettext_lazy("Comment (optional)")})
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        amount = cleaned_data.get("amount")
+        template_type = cleaned_data.get("type")
+
+        if not amount and template_type != "menu":
+            self.add_error("amount", gettext_lazy("Amount is required for this template type."))

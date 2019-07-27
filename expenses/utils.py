@@ -73,6 +73,17 @@ def parse_decimal(amount_str: str) -> decimal.Decimal:
     return decimal.Decimal(amount_str)
 
 
+def parse_amount_input(amount_str: str) -> typing.Optional[decimal.Decimal]:
+    """Parse an amount in a human-forgiving way."""
+    try:
+        return decimal.Decimal(amount_str)
+    except decimal.InvalidOperation:
+        try:
+            return decimal.Decimal(amount_str.replace(',', '.'))
+        except ValueError:
+            return None
+
+
 def get_babel_locale() -> str:
     """Get a babel-friendly locale name."""
     lang, region = get_language().split('-')

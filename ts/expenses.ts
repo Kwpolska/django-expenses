@@ -5,6 +5,7 @@
 import initializeBillEditor from "./billeditor";
 import initializeBulkCatEditor from "./bulkcateditor";
 import initializeSearchForm from "./searchform";
+import initializeTemplateEditForm from "./templateedit";
 import setUpAutoComplete from "./autocomplete";
 import setUpFlickMenu from "./flickmenu";
 
@@ -42,6 +43,12 @@ function onDocReady() {
     let expCatForm = document.querySelector("#expenses-bulkcatedit-form");
     if (expCatForm !== null) {
         initializeBulkCatEditor();
+    }
+
+    // initialize template editor
+    let expTemplateForm = document.querySelector("#expenses-templateedit-form");
+    if (expTemplateForm !== null) {
+        initializeTemplateEditForm();
     }
     
     // initialize search form

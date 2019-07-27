@@ -9,10 +9,10 @@
                 <input name="count" class="form-control" title="{% trans "Count" %}" placeholder="{% trans "Count" %}">
             {% elif template.type == "description" %}
                 <input name="description" class="form-control" title="{% trans "Description" %}" placeholder="{% trans "Description" %}">
-            {% elif template.type == "desc_select" %}
-                <select name="description" class="custom-select">
+            {% elif template.type == "desc_select" or template.type == "menu" %}
+                <select name="desc_id" class="custom-select">
                 {% for choice in template.description_choices %}
-                    <option>{{ choice }}</option>
+                    <option value="{{ forloop.counter0 }}">{{ choice }}</option>
                 {% endfor %}
                 </select>
             {% endif %}

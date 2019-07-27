@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load expenses_extras %}
 {% block content %}
-    <form action="" method="POST">
+    <form action="" method="POST" id="expenses-templateedit-form">
         {% csrf_token %}
         {{ form.non_field_errors }}
         <div class="form-group row">
@@ -50,6 +50,7 @@
                         <li>{% trans "If the type is “Multiplied by count”, lines will be used as plural forms. For English, provide two forms (one, many). For Polish, provide three or four forms (one, two, five, fraction)." %}</li>
                         {# Translators: Do not translate the !description! tag name #}
                         <li>{% trans "If the type is “With description selected from list”, the first line is the main description line, and further lines are choices shown to the user. The main description should contain a <code>!description!</code> tag." %}</li>
+                        <li>{% trans "If the type is “Menu”, each line is a menu item. Put the amount first, followed by a single space, followed by the description (spaces allowed). The “Amount” field is ignored." %}</li>
                     </ul>
                 </small>
             </div>

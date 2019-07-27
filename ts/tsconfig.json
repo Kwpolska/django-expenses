@@ -1,7 +1,9 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "es2015",
+        "moduleResolution": "node",
         "noImplicitAny": true,
+        "noImplicitThis": true,
         "removeComments": false,
         "preserveConstEnums": true,
         "outDir": "js",

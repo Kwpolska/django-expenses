@@ -15,7 +15,7 @@
         {% for template in templates %}
             <tr>
                 <td class="expenses-templatetable-name">{{ template.html_link }}</td>
-                <td class="expenses-templatetable-amount">{% if template.type == "count" %}×{% endif %}{% money template.amount %}</td>
+                <td class="expenses-templatetable-amount">{{ template.display_amount }}</td>
                 <td class="expenses-templatetable-actions">
                     {% exp_template_actions template False %}
                 </td>
@@ -26,7 +26,7 @@
 
     <ul class="d-block d-md-none list-unstyled expenses-templatelist">
         {% for template in templates %}
-            <li><strong>{{ template.html_link }}</strong> ({% if template.type == "count" %}×{% endif %}{% money template.amount %})<br>
+            <li><strong>{{ template.html_link }}</strong> ({{ template.display_amount }})<br>
                 {% exp_template_actions template True %}
             </li>
         {% endfor %}

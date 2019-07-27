@@ -15,7 +15,7 @@ from django.db import models, connection
 
 
 from expenses.utils import round_money, serialize_dt, serialize_date, serialize_decimal, \
-    parse_dt, parse_date, parse_decimal
+    parse_dt, parse_date, parse_decimal, format_money
 
 
 class ExpensesModel(models.Model):
@@ -228,7 +228,8 @@ TEMPLATE_TYPE_CHOICES = (
     ('simple', _('Simple')),
     ('count', _('Multiplied by count')),
     ('description', _('With custom description')),
-    ('desc_select', _('With description selected from list'))
+    ('desc_select', _('With description selected from list')),
+    ('menu', _('Menu (amount and description selected from list)'))
 )
 TEMPLATE_TYPE_CHOICES_LOOKUP = {k: v for k, v in TEMPLATE_TYPE_CHOICES}
 
@@ -258,7 +259,21 @@ class ExpenseTemplate(ExpensesModel):
         return '<ExpenseTemplate "{0}">'.format(self.name)
 
     def description_choices(self):
-        return self.description.split('\n')[1:]
+        """A list of choices for the description."""
+        if self.type == 'desc_select':
+            return [opt.strip() for opt in self.description.split('\n')[1:]]
+        elif self.type == 'menu':
+            return [opt.strip() for opt in self.description.split('\n')]
+        raise ValueError(f"Description choices not available for {self.type} templates")
+
+    def display_amount(self):
+        """A displayable version of the amount."""
+        if self.type == "menu":
+            return "—"
+        if self.type == "count":
+            # Translators: Used to display amounts of count templates
+            return format_html(_("×{amount}"), amount=format_money(self.amount))
+        return format_money(self.amount)
 
     def fields_to_json(self) -> dict:
         return {

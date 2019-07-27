@@ -11,7 +11,7 @@ from django.utils.translation import gettext as _
 
 from expenses.forms import TemplateForm
 from expenses.models import ExpenseTemplate, Expense
-from expenses.utils import today_date, round_money
+from expenses.utils import today_date, round_money, parse_amount_input
 from expenses.views import ExpDeleteView
 
 
@@ -74,13 +74,9 @@ def template_run(request, pk):
         if 'count' not in request.GET:
             count = decimal.Decimal(1)
         else:
-            try:
-                count = decimal.Decimal(request.GET['count'])
-            except decimal.InvalidOperation:
-                try:
-                    count = decimal.Decimal(request.GET['count'].replace(',', '.'))
-                except ValueError:
-                    return HttpResponseBadRequest()
+            count = parse_amount_input(request.GET['count'])
+            if count is None:
+                return HttpResponseBadRequest()
 
         expense.amount = round_money(template.amount * count)
         desc_lines = template.description.strip().split("\n")
@@ -110,9 +106,19 @@ def template_run(request, pk):
         expense.description = template.description.replace(
             '!description!', request.GET['description'])
     elif template.type == 'desc_select':
+        main_desc, *desc_options = template.description.strip().split('\n')
+        desc_id = int(request.GET['desc_id'])
         expense.amount = template.amount
-        expense.description = template.description.split('\n', 1)[0].replace(
-            '!description!', request.GET['description'])
+        expense.description = main_desc.strip().replace(
+            '!description!', desc_options[desc_id].strip())
+    elif template.type == 'menu':
+        desc_id = int(request.GET['desc_id'])
+        desc_options = template.description.strip().split('\n')
+        amount_str, desc = desc_options[desc_id].strip().split(' ', 1)
+        expense.amount = parse_amount_input(amount_str.strip())
+        if expense.amount is None:
+            return HttpResponseBadRequest()
+        expense.description = desc.strip()
     else:
         expense.amount = template.amount
         expense.description = template.description
