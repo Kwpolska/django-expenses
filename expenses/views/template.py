@@ -72,15 +72,15 @@ def template_run(request, pk):
 
     if template.type == 'count':
         if 'count' not in request.GET:
-            return HttpResponseBadRequest()
-
-        try:
-            count = decimal.Decimal(request.GET['count'])
-        except decimal.InvalidOperation:
+            count = decimal.Decimal(1)
+        else:
             try:
-                count = decimal.Decimal(request.GET['count'].replace(',', '.'))
-            except ValueError:
-                return HttpResponseBadRequest()
+                count = decimal.Decimal(request.GET['count'])
+            except decimal.InvalidOperation:
+                try:
+                    count = decimal.Decimal(request.GET['count'].replace(',', '.'))
+                except ValueError:
+                    return HttpResponseBadRequest()
 
         expense.amount = round_money(template.amount * count)
         desc_lines = template.description.strip().split("\n")
