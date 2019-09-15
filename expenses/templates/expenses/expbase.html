@@ -42,11 +42,13 @@
                 <li class="nav-item" id="color-changer-menu">
                     <a href="#" class="nav-link" id="color-changer-btn">
                         <div class="color-changer"></div>
-                        {% if request.COOKIES.colorScheme == 'light' %}
-                            {% if LANGUAGE_CODE|slice:":2" == "en" %}Dark Mode{% else %}Tryb Ciemny{% endif %}
-                        {% else %}
-                            {% if LANGUAGE_CODE|slice:":2" == "en" %}Light Mode{% else %}Tryb Jasny{% endif %}
-                        {% endif %}
+                        <span id="color-changer-text">
+                            {% if request.COOKIES.colorScheme == 'light' %}
+                                {% if LANGUAGE_CODE|slice:":2" == "en" %}Dark Mode{% else %}Tryb Ciemny{% endif %}
+                            {% else %}
+                                {% if LANGUAGE_CODE|slice:":2" == "en" %}Light Mode{% else %}Tryb Jasny{% endif %}
+                            {% endif %}
+                        </span>
                     </a>
                 </li>
             </ul>
