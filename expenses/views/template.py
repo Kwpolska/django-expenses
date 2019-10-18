@@ -71,7 +71,7 @@ def template_run(request, pk):
         expense.date = today_date()
 
     if template.type == 'count':
-        if 'count' not in request.GET:
+        if not request.GET.get('count'):
             count = decimal.Decimal(1)
         else:
             count = parse_amount_input(request.GET['count'])
