@@ -419,11 +419,35 @@ class DailySpending(SimpleSQLReport):
         return cat_tables
 
 
+class ProductPriceHistory(Report):
+    name = _("Product price history")
+    slug = "product_price_history"
+    description = _("Get price history for a product.")
+    options = [
+        OptionGroup(_("Customize data included in report"), "product_box", [
+            TextFieldOption(_("Product name"), "product"),
+            TextFieldOption(_("Vendor"), "vendor", True, _("Filter by vendor")),
+            # TODO more filtering options
+        ], type="text")
+    ]
+
+    def run(self):
+        print(self.settings)
+        product = self.settings[self.options[0][0]]
+        vendor = self.settings.get(self.options[0][1], '')
+        return format_html(
+            '<div style="text-align: center; font-size: 1.5rem;">This report is currently unavailable. '
+            'In the meantime, you can use <a href="{0}">the search functionality.</a></div>',
+            '{url}?for=billitems&category_all=true&date-spec=any&q={q}&vendor={vendor}'.format(
+                url=reverse('expenses:search'), q=urllib.parse.quote_plus(product), vendor=urllib.parse.quote_plus(vendor)
+            ))
+
+
 def no_results_to_show():
     """Produce an error message when there are no results to show."""
     return format_html('<p class="expenses-empty">{}</p>', _("No results to show."))
 
 
 AVAILABLE_REPORTS: typing.Dict[str, typing.Type[Report]] = {r.slug: r for r in [
-    MonthCategoryBreakdown, VendorStats, DailySpending
+    MonthCategoryBreakdown, VendorStats, DailySpending, ProductPriceHistory
 ]}

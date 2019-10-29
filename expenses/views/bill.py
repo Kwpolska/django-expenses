@@ -23,7 +23,7 @@ from expenses.views.expense import expense_list as _expense_list
 
 LAST_VENDORS_QUERY = """
 SELECT "vendor", "category_id", "category_name" FROM (
-    SELECT "vendor", "category_id", "category_name", COUNT(*) cnt FROM (
+    SELECT "vendor", "category_id", "category_name" FROM (
         SELECT "vendor", "category_id", "expenses_category"."name" AS "category_name" FROM "expenses_expense"
         INNER JOIN "expenses_category" ON ("category_id" = "expenses_category"."id")
         WHERE "is_bill" = true AND "expenses_expense"."user_id" = %s
