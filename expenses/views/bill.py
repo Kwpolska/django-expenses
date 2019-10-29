@@ -22,13 +22,20 @@ from expenses.views.expense import expense_list as _expense_list
 
 
 LAST_VENDORS_QUERY = """
-SELECT DISTINCT "vendor", "category_id", "category_name"
-FROM (SELECT "vendor", "category_id", "expenses_category"."name" AS "category_name" FROM "expenses_expense"
-INNER JOIN "expenses_category" ON ("category_id" = "expenses_category"."id")
-WHERE ("is_bill" = true AND "expenses_expense"."user_id" = %s)
-ORDER BY "expenses_expense"."date_added" DESC LIMIT 15) AS sq
-ORDER BY "vendor", "category_name"
-LIMIT 3"""
+SELECT "vendor", "category_id", "category_name" FROM (
+    SELECT "vendor", "category_id", "category_name", COUNT(*) cnt FROM (
+        SELECT "vendor", "category_id", "expenses_category"."name" AS "category_name" FROM "expenses_expense"
+        INNER JOIN "expenses_category" ON ("category_id" = "expenses_category"."id")
+        WHERE "is_bill" = true AND "expenses_expense"."user_id" = %s
+        ORDER BY "expenses_expense"."date_added" DESC
+        LIMIT 15
+    ) source
+    GROUP BY "vendor", "category_id", "category_name"
+    ORDER BY COUNT(*) DESC, "vendor", "category_name"
+    LIMIT 3
+) limited
+ORDER BY "vendor", "category_name";
+"""
 
 
 @login_required
