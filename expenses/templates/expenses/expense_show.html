@@ -47,5 +47,19 @@
             {{ expense.description }}
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-sm-2 expenses-show-label">{% trans "Date added" %}</div>
+        <div class="col-sm-10">
+            {{ expense.date_added|date:"DATETIME_FORMAT" }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-2 expenses-show-label">{% trans "Date modified" %}</div>
+        <div class="col-sm-10">
+            {{ expense.date_modified|date:"DATETIME_FORMAT" }}
+        </div>
+    </div>
 </div>
 {% endblock %}

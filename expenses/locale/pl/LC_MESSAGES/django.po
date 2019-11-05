@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-27 21:15+0200\n"
+"POT-Creation-Date: 2019-11-05 14:30+0100\n"
 "PO-Revision-Date: 2019-03-20 19:20+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -64,8 +64,8 @@ msgstr "Opis"
 
 #: expenses/forms.py:64 expenses/models.py:195
 #: expenses/templates/expenses/bill_item_add_edit.html:9
-#: expenses/templates/expenses/bill_show.html:38
-#: expenses/templates/expenses/bill_show.html:63
+#: expenses/templates/expenses/bill_show.html:46
+#: expenses/templates/expenses/bill_show.html:71
 #: expenses/templates/expenses/search.html:56
 #: expenses/templates/expenses/search.html:85
 msgid "Product"
@@ -73,15 +73,15 @@ msgstr "Produkt"
 
 #: expenses/forms.py:65 expenses/models.py:196
 #: expenses/templates/expenses/bill_item_add_edit.html:16
-#: expenses/templates/expenses/bill_show.html:64
+#: expenses/templates/expenses/bill_show.html:72
 #: expenses/templates/expenses/search.html:57
 msgid "Serving [g, L]"
 msgstr "Porcja [g, L]"
 
 #: expenses/forms.py:66 expenses/models.py:197 expenses/reports.py:290
 #: expenses/templates/expenses/bill_item_add_edit.html:23
-#: expenses/templates/expenses/bill_show.html:41
-#: expenses/templates/expenses/bill_show.html:66
+#: expenses/templates/expenses/bill_show.html:49
+#: expenses/templates/expenses/bill_show.html:74
 #: expenses/templates/expenses/extras/exp_template_actions.html:9
 #: expenses/templates/expenses/reports/report_daily_spending.html:27
 #: expenses/templates/expenses/reports/report_daily_spending.html:29
@@ -140,7 +140,7 @@ msgid "Category"
 msgstr "Kategoria"
 
 #: expenses/models.py:139 expenses/models.py:242
-#: expenses/templates/expenses/bill_show.html:42
+#: expenses/templates/expenses/bill_show.html:50
 #: expenses/templates/expenses/expense_add_edit.html:35
 #: expenses/templates/expenses/expense_show.html:38
 #: expenses/templates/expenses/extras/expense_table.html:13
@@ -193,7 +193,6 @@ msgid "With description selected from list"
 msgstr "Z opisem wybieranym z listy"
 
 #: expenses/models.py:232
-#| msgid "With description selected from list"
 msgid "Menu (amount and description selected from list)"
 msgstr "Menu (wartość i opis wybierane z listy)"
 
@@ -208,7 +207,7 @@ msgstr "Komentarz"
 
 #. Translators: Used to display amounts of count templates
 #: expenses/models.py:275
-#| msgid "Amount"
+#, python-brace-format
 msgid "×{amount}"
 msgstr "×{amount}"
 
@@ -344,15 +343,15 @@ msgstr "Zapisz i dodaj pozycje"
 
 #: expenses/templates/expenses/bill_add_editmeta.html:55
 #: expenses/templates/expenses/bill_item_add_edit.html:37
-#: expenses/templates/expenses/bill_show.html:82
+#: expenses/templates/expenses/bill_show.html:90
 #: expenses/templates/expenses/expense_add_edit.html:49
 #: expenses/templates/expenses/template_add_edit.html:80
 msgid "Save changes"
 msgstr "Zapisz zmiany"
 
 #: expenses/templates/expenses/bill_item_add_edit.html:30
-#: expenses/templates/expenses/bill_show.html:40
-#: expenses/templates/expenses/bill_show.html:65
+#: expenses/templates/expenses/bill_show.html:48
+#: expenses/templates/expenses/bill_show.html:73
 #: expenses/templates/expenses/search.html:58
 #: expenses/templates/expenses/search.html:86
 msgid "Unit Price"
@@ -369,7 +368,7 @@ msgid "Edit metadata"
 msgstr "Edytuj metadane"
 
 #: expenses/templates/expenses/bill_show.html:6
-#: expenses/templates/expenses/bill_show.html:57
+#: expenses/templates/expenses/bill_show.html:65
 #: expenses/templates/expenses/expense_show.html:6
 #: expenses/templates/expenses/extras/exp_category_toolbar.html:3
 #: expenses/templates/expenses/template_show.html:6
@@ -395,44 +394,52 @@ msgstr "Kontrahent:"
 msgid "Category:"
 msgstr "Kategoria:"
 
-#: expenses/templates/expenses/bill_show.html:26
+#: expenses/templates/expenses/bill_show.html:25
+msgid "Date added:"
+msgstr "Data dodania:"
+
+#: expenses/templates/expenses/bill_show.html:29
+msgid "Date modified:"
+msgstr "Data modyfikacji:"
+
+#: expenses/templates/expenses/bill_show.html:34
 #: expenses/templates/expenses/expense_convert.html:6
 msgid "Description:"
 msgstr "Opis:"
 
-#: expenses/templates/expenses/bill_show.html:39
+#: expenses/templates/expenses/bill_show.html:47
 msgid "Serving [g,&nbsp;L]"
 msgstr "Porcja [g,&nbsp;L]"
 
-#: expenses/templates/expenses/bill_show.html:43
+#: expenses/templates/expenses/bill_show.html:51
 msgid "Actions"
 msgstr "Akcje"
 
-#: expenses/templates/expenses/bill_show.html:55
+#: expenses/templates/expenses/bill_show.html:63
 msgid "Item actions"
 msgstr "Akcje dla pozycji"
 
-#: expenses/templates/expenses/bill_show.html:56
+#: expenses/templates/expenses/bill_show.html:64
 #: expenses/templates/expenses/expense_show.html:5
 #: expenses/templates/expenses/extras/exp_category_toolbar.html:2
 #: expenses/templates/expenses/template_show.html:5
 msgid "Edit"
 msgstr "Edytuj"
 
-#: expenses/templates/expenses/bill_show.html:69
+#: expenses/templates/expenses/bill_show.html:77
 msgid "Add an item"
 msgstr "Dodaj pozycję"
 
-#: expenses/templates/expenses/bill_show.html:69
+#: expenses/templates/expenses/bill_show.html:77
 msgid "Add"
 msgstr "Dodaj"
 
-#: expenses/templates/expenses/bill_show.html:75
+#: expenses/templates/expenses/bill_show.html:83
 #: expenses/templates/expenses/index.html:30
 msgid "Total:"
 msgstr "Suma:"
 
-#: expenses/templates/expenses/bill_show.html:80
+#: expenses/templates/expenses/bill_show.html:88
 msgid "No changes will be made until you press “Save changes”."
 msgstr "Zmiany nie zostaną dokonane, dopóki nie naciśniesz „Zapisz zmiany”."
 
@@ -664,6 +671,15 @@ msgstr "Ponów"
 msgid "Convert to bill"
 msgstr "Przekonwertuj na rachunek"
 
+#: expenses/templates/expenses/expense_show.html:52
+#, fuzzy
+msgid "Date added"
+msgstr "Data dodania"
+
+#: expenses/templates/expenses/expense_show.html:59
+msgid "Date modified"
+msgstr "Data modyfikacji"
+
 #: expenses/templates/expenses/extras/exp_category_toolbar.html:4
 msgid "Type selection"
 msgstr "Wybór rodzaju"
@@ -707,7 +723,7 @@ msgid "Add an expense"
 msgstr "Dodaj wydatek"
 
 #: expenses/templates/expenses/extras/expenses_add_toolbar.html:4
-#: expenses/views/bill.py:57
+#: expenses/views/bill.py:64
 msgid "Add a bill"
 msgstr "Dodaj rachunek"
 
@@ -1026,7 +1042,7 @@ msgstr "Pomyślnie usunięto %s."
 msgid "Delete %s"
 msgstr "Usuń %s"
 
-#: expenses/views/bill.py:155
+#: expenses/views/bill.py:162
 #, python-format
 msgid "Saved changes to %(count)d item."
 msgid_plural "Saved changes to %(count)d items."
@@ -1035,7 +1051,7 @@ msgstr[1] "Zapisano zmiany w %(count)d pozycjach."
 msgstr[2] "Zapisano zmiany w %(count)d pozycjach."
 msgstr[3] ""
 
-#: expenses/views/bill.py:161
+#: expenses/views/bill.py:168
 #, python-format
 msgid "Failed to change %(count)d item."
 msgid_plural "Failed to change %(count)d items."
