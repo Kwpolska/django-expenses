@@ -25,10 +25,12 @@
             <span class="expenses-bill-meta-title">{% trans "Date added:" %}</span>
             {{ expense.date_added|date:"DATETIME_FORMAT" }}
         </div>
-        <div class="col-md-4">
-            <span class="expenses-bill-meta-title">{% trans "Date modified:" %}</span>
-            {{ expense.date_modified|date:"DATETIME_FORMAT" }}
-        </div>
+        {% if expense.date_added != expense.date_modified %}
+            <div class="col-md-4">
+                <span class="expenses-bill-meta-title">{% trans "Date modified:" %}</span>
+                {{ expense.date_modified|date:"DATETIME_FORMAT" }}
+            </div>
+        {%  endif %}
         {% if expense.description %}
             <div class="col-md-12">
                 <span class="expenses-bill-meta-title">{% trans "Description:" %}</span>

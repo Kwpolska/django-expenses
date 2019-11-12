@@ -672,7 +672,6 @@ msgid "Convert to bill"
 msgstr "Przekonwertuj na rachunek"
 
 #: expenses/templates/expenses/expense_show.html:52
-#, fuzzy
 msgid "Date added"
 msgstr "Data dodania"
 
