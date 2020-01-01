@@ -1,6 +1,6 @@
 /*
  * Expenses Template Edit Form
- * Copyright © 2018-2019, Chris Warrick. All rights reserved. License: 3-clause BSD.
+ * Copyright © 2018-2020, Chris Warrick. All rights reserved. License: 3-clause BSD.
  */
 function enforceTFAmount(templateForm: any) {
     templateForm.amount.required = templateForm.type.value !== "menu";

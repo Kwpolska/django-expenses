@@ -1,6 +1,6 @@
 /*
  * Expenses AutoComplete
- * Copyright © 2018-2019, Chris Warrick. All rights reserved. License: 3-clause BSD.
+ * Copyright © 2018-2020, Chris Warrick. All rights reserved. License: 3-clause BSD.
  */
 
 export default function setUpAutoComplete(input: string | HTMLInputElement,
