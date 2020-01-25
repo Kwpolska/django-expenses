@@ -443,6 +443,7 @@ class ProductPriceHistory(SimpleSQLReport):
         OptionGroup(_("Customize data included in report"), "product_box", [
             TextFieldOption(_("Product name"), "product", False),
             TextFieldOption(_("Vendor"), "vendor", False),
+            CheckOption(_("Separate history for each product name"), "partition_product", True, type="check"),
             CheckOption(_("Separate history for each vendor"), "partition_vendor", True, type="check"),
             CheckOption(_("Fuzzy search"), "fuzzy_search", False, type="check"),
             # TODO more filtering options
@@ -451,7 +452,7 @@ class ProductPriceHistory(SimpleSQLReport):
     query_type = "product_price_history"
     sql = {
         "product_price_history": {Engine.POSTGRESQL: """
-        SELECT vendor, product, date, serving, pricing_unit, count, unit_price, price_per_unit, price_per_unit - lag(price_per_unit) OVER (PARTITION BY {partition_clause}) AS diff
+        SELECT vendor, product, date, serving, pricing_unit, count, unit_price, price_per_unit, price_per_unit - lag(price_per_unit) OVER ({partition_clause}) AS diff
         FROM (
             SELECT vendor, product, date, expenses_billitem.date_added, serving, count, unit_price,
             CASE WHEN serving = 0 THEN unit_price
@@ -476,8 +477,9 @@ class ProductPriceHistory(SimpleSQLReport):
 
         product = self.settings.get(self.options[0][0], '')
         vendor = self.settings.get(self.options[0][1], '')
-        partition_vendor = self.settings.get(self.options[0][2], False)
-        fuzzy_search = self.settings.get(self.options[0][3], False)
+        partition_product = self.settings.get(self.options[0][2], False)
+        partition_vendor = self.settings.get(self.options[0][3], False)
+        fuzzy_search = self.settings.get(self.options[0][4], False)
 
         # We always use ILIKE for case insensitvity, but not always provide %% for fuzzy search
         product_fs = '%' + product + '%' if fuzzy_search else product
@@ -490,12 +492,18 @@ class ProductPriceHistory(SimpleSQLReport):
             filter_options = ' AND vendor ILIKE %s'
             sql_params.append(vendor_fs)
 
-        if partition_vendor:
+        if partition_vendor and partition_product:
             order_clause = 'vendor, product, date'
-            partition_clause = 'vendor, product ORDER BY date, date_added'
-        else:
+            partition_clause = 'PARTITION BY vendor, product ORDER BY date, date_added'
+        elif partition_vendor:
+            order_clause = 'vendor, product, date'
+            partition_clause = 'PARTITION BY vendor ORDER BY date, date_added, product'
+        elif partition_product:
             order_clause = 'product, date, vendor'
-            partition_clause = 'product ORDER BY date, date_added, vendor'
+            partition_clause = 'PARTITION BY product ORDER BY date, date_added, vendor'
+        else:
+            order_clause = 'date, vendor, product'
+            partition_clause = 'ORDER BY date, date_added, vendor, product'
         sql_full = sql.format(filter_options=filter_options, order_clause=order_clause, partition_clause=partition_clause)
         cursor.execute(sql_full, sql_params)
         return cursor.fetchall()
@@ -512,16 +520,26 @@ class ProductPriceHistory(SimpleSQLReport):
         vendor_groups = {row[0] for row in main_groups}
         product_groups = {row[1] for row in main_groups}
 
-        partition_vendor = self.settings.get(self.options[0][2], False)
+        partition_product = self.settings.get(self.options[0][2], False)
+        partition_vendor = self.settings.get(self.options[0][3], False)
 
-        if partition_vendor and len(vendor_groups) > 1 and len(product_groups) > 1:
+        if partition_vendor and partition_product and len(vendor_groups) > 1 and len(product_groups) > 1:
             group_title = _("{1} — {0}")
         elif partition_vendor and len(vendor_groups) > 1:
             group_title = _("{0}")
-        elif len(product_groups) > 1:
+        elif partition_product and len(product_groups) > 1:
             group_title = _("{1}")
         else:
             group_title = ""
+
+        if partition_vendor and partition_product:
+            grouper = lambda row: (row[0], row[1])
+        elif partition_vendor:
+            grouper = lambda row: row[0]
+        elif partition_product:
+            grouper = lambda row: row[1]
+        else:
+            grouper = lambda row: True
 
         first_row, results = peek(results)
         if len(column_header_names) != len(first_row):
@@ -531,23 +549,13 @@ class ProductPriceHistory(SimpleSQLReport):
         results_grouped = []
 
         for row in results:
-            group = (row[0], row[1]) if partition_vendor else row[1]
+            group = grouper(row)
             row = list(row)
             if group != current_group:
                 results_grouped.append({'title': group_title.format(*row), 'rows': []})
                 current_group = group
 
             results_grouped[-1]['rows'].append({k: v for k, v in zip(self.column_names, row)})
-
-            # classes = [''] * len(row)
-            # if row[-1] is None:
-            #     row[-1] = ''
-            # elif row[-1] < 0:
-            #     classes[-1] = 'table-success'
-            # elif row[-1] > 0:
-            #     classes[-1] = 'table-danger'
-
-            # results_grouped[-1]['rows'].append(zip(row, column_alignment))
 
         return mark_safe(render_to_string("expenses/reports/report_product_price_history.html", {
             'results_grouped': results_grouped,
