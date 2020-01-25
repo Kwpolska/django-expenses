@@ -399,3 +399,7 @@ body {
   }
 }
 
+td.pricing-unit-1 {
+  border-left-width: 4px !important;
+  border-right-width: 4px !important;
+}

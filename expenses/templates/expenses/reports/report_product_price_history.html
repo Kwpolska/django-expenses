@@ -16,10 +16,10 @@
                 <td class="align-left">{{ row.product }}</td>
                 <td class="align-left">{{ row.date|date:"c" }}</td>
                 <td class="align-right">{{ row.serving|floatformat:"-3" }}</td>
-                <td class="align-right">{{ row.pricing_unit|floatformat:"-3" }}</td>
+                <td class="align-right pricing-unit-{{ row.pricing_unit|floatformat:"0" }}">{{ row.pricing_unit|floatformat:"-3" }}</td>
                 <td class="align-right">{{ row.count|floatformat:"-3" }}</td>
                 <td class="align-right">{% money row.unit_price %}</td>
-                <td class="align-right">{% money row.price_per_unit %}</td>
+                <td class="align-right pricing-unit-{{ row.pricing_unit|floatformat:"0" }}">{% money row.price_per_unit %}</td>
                 {% if not row.diff %}
                     <td class="align-right"></td>
                 {% else %}
