@@ -98,5 +98,8 @@ def peek(iterable: typing.Iterable[T]) -> (T, typing.Iterable[T]):
 
     Returns (first row, iterable with first row)."""
     iterator = iter(iterable)
-    first_row = next(iterator)
+    try:
+        first_row = next(iterator)
+    except StopIteration:
+        return None, None
     return first_row, itertools.chain([first_row], iterator)

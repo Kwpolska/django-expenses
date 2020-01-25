@@ -10,7 +10,7 @@
 {% plural %}Out of these, <strong><var>d<sub>E</sub></var> = {{ expense_days }}</strong> days had expenses.{% endblocktrans %}</p>
 {% endif %}
 <h2 class="expenses-report-heading">{% trans "Daily spending (all categories)" %}</h2>
-<table class="table table-bordered table-hover expenses-report-table">
+<table class="table table-bordered table-hover expenses-report-table last-row-total">
     <thead><tr>
         <th class="align-right">{% trans "Time scale" %}</th>
         <th colspan="2" class="align-center">{% blocktrans count days=days.expense_days trimmed %}

@@ -1,0 +1,32 @@
+{% load expenses_extras %}
+{% for group in results_grouped %}
+    {% if show_group_title %}
+        <h2>{{ group.title }}</h2>
+    {% endif %}
+    <table class="table table-bordered table-hover expenses-report-table">
+        <thead><tr>
+            {% for col, alignment in column_headers_with_alignment %}
+                <th class="align-{{ alignment }}">{{ col }}</th>
+            {% endfor %}
+        </tr></thead>
+        <tbody>
+        {% for row in group.rows %}
+            <tr>
+                <td class="align-left">{{ row.vendor }}</td>
+                <td class="align-left">{{ row.product }}</td>
+                <td class="align-left">{{ row.date|date:"c" }}</td>
+                <td class="align-right">{{ row.serving|floatformat:"-3" }}</td>
+                <td class="align-right">{{ row.pricing_unit|floatformat:"-3" }}</td>
+                <td class="align-right">{{ row.count|floatformat:"-3" }}</td>
+                <td class="align-right">{% money row.unit_price %}</td>
+                <td class="align-right">{% money row.price_per_unit %}</td>
+                {% if not row.diff %}
+                    <td class="align-right"></td>
+                {% else %}
+                    <td class="align-right {% if row.diff > 0 %}alert-danger{% else %}alert-success{% endif %}">{% money row.diff %}</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}

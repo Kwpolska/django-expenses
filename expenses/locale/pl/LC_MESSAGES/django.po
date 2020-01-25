@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-05 14:30+0100\n"
-"PO-Revision-Date: 2019-03-20 19:20+0100\n"
+"POT-Creation-Date: 2020-01-25 20:08+0100\n"
+"PO-Revision-Date: 2020-01-25 20:09+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -18,9 +18,10 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
 "%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.2.4\n"
 
 #: expenses/forms.py:27 expenses/forms.py:48 expenses/models.py:136
+#: expenses/reports.py:431
 #: expenses/templates/expenses/bill_add_editmeta.html:26
 #: expenses/templates/expenses/expense_add_edit.html:14
 #: expenses/templates/expenses/expense_show.html:16
@@ -34,8 +35,8 @@ msgid "Date"
 msgstr "Data"
 
 #: expenses/forms.py:28 expenses/forms.py:49 expenses/forms.py:97
-#: expenses/models.py:137 expenses/models.py:239 expenses/reports.py:290
-#: expenses/reports.py:429
+#: expenses/models.py:137 expenses/models.py:239 expenses/reports.py:292
+#: expenses/reports.py:429 expenses/reports.py:444
 #: expenses/templates/expenses/bill_add_editmeta.html:33
 #: expenses/templates/expenses/expense_add_edit.html:21
 #: expenses/templates/expenses/expense_show.html:24
@@ -62,10 +63,10 @@ msgstr "Kontrahent"
 msgid "Description"
 msgstr "Opis"
 
-#: expenses/forms.py:64 expenses/models.py:195
+#: expenses/forms.py:64 expenses/models.py:195 expenses/reports.py:430
 #: expenses/templates/expenses/bill_item_add_edit.html:9
-#: expenses/templates/expenses/bill_show.html:46
-#: expenses/templates/expenses/bill_show.html:71
+#: expenses/templates/expenses/bill_show.html:48
+#: expenses/templates/expenses/bill_show.html:73
 #: expenses/templates/expenses/search.html:56
 #: expenses/templates/expenses/search.html:85
 msgid "Product"
@@ -73,15 +74,16 @@ msgstr "Produkt"
 
 #: expenses/forms.py:65 expenses/models.py:196
 #: expenses/templates/expenses/bill_item_add_edit.html:16
-#: expenses/templates/expenses/bill_show.html:72
+#: expenses/templates/expenses/bill_show.html:74
 #: expenses/templates/expenses/search.html:57
 msgid "Serving [g, L]"
 msgstr "Porcja [g, L]"
 
-#: expenses/forms.py:66 expenses/models.py:197 expenses/reports.py:290
+#: expenses/forms.py:66 expenses/models.py:197 expenses/reports.py:292
+#: expenses/reports.py:434
 #: expenses/templates/expenses/bill_item_add_edit.html:23
-#: expenses/templates/expenses/bill_show.html:49
-#: expenses/templates/expenses/bill_show.html:74
+#: expenses/templates/expenses/bill_show.html:51
+#: expenses/templates/expenses/bill_show.html:76
 #: expenses/templates/expenses/extras/exp_template_actions.html:9
 #: expenses/templates/expenses/reports/report_daily_spending.html:27
 #: expenses/templates/expenses/reports/report_daily_spending.html:29
@@ -126,8 +128,8 @@ msgstr "Podstawa sluga"
 msgid "Order"
 msgstr "Kolejność"
 
-#: expenses/models.py:138 expenses/models.py:240 expenses/reports.py:204
-#: expenses/reports.py:223
+#: expenses/models.py:138 expenses/models.py:240 expenses/reports.py:206
+#: expenses/reports.py:225
 #: expenses/templates/expenses/bill_add_editmeta.html:40
 #: expenses/templates/expenses/expense_add_edit.html:28
 #: expenses/templates/expenses/expense_show.html:31
@@ -140,7 +142,7 @@ msgid "Category"
 msgstr "Kategoria"
 
 #: expenses/models.py:139 expenses/models.py:242
-#: expenses/templates/expenses/bill_show.html:50
+#: expenses/templates/expenses/bill_show.html:52
 #: expenses/templates/expenses/expense_add_edit.html:35
 #: expenses/templates/expenses/expense_show.html:38
 #: expenses/templates/expenses/extras/expense_table.html:13
@@ -211,40 +213,40 @@ msgstr "Komentarz"
 msgid "×{amount}"
 msgstr "×{amount}"
 
-#: expenses/reports.py:158
+#: expenses/reports.py:160
 msgid "Month/Category breakdown"
 msgstr "Podział według miesięcy/kategorii"
 
-#: expenses/reports.py:160
+#: expenses/reports.py:162
 msgid "Show expenses broken down by month and category."
 msgstr "Pokaż wydatki z podziałem na miesiące i kategorie."
 
-#: expenses/reports.py:201
+#: expenses/reports.py:203
 msgid "Break down expenses by:"
 msgstr "Kryterium podziału wydatków:"
 
-#: expenses/reports.py:202
+#: expenses/reports.py:204
 msgid "Month and category"
 msgstr "Miesiąc i kategoria"
 
-#: expenses/reports.py:203 expenses/reports.py:219 expenses/reports.py:228
+#: expenses/reports.py:205 expenses/reports.py:221 expenses/reports.py:230
 msgid "Month"
 msgstr "Miesiąc"
 
-#: expenses/reports.py:219 expenses/reports.py:223 expenses/reports.py:228
+#: expenses/reports.py:221 expenses/reports.py:225 expenses/reports.py:230
 msgid "Total"
 msgstr "Suma"
 
-#: expenses/reports.py:252 expenses/reports.py:260 expenses/reports.py:271
-#: expenses/reports.py:303
+#: expenses/reports.py:254 expenses/reports.py:262 expenses/reports.py:273
+#: expenses/reports.py:305
 msgid "Grand Total"
 msgstr "Suma końcowa"
 
-#: expenses/reports.py:275
+#: expenses/reports.py:277
 msgid "Vendor statistics"
 msgstr "Statystyki kontrahentów"
 
-#: expenses/reports.py:277
+#: expenses/reports.py:279
 msgid ""
 "Get basic statistics about money spent at each vendor. Includes vendors with "
 "at least 2 separate purchases."
@@ -252,71 +254,111 @@ msgstr ""
 "Podstawowe statystyki na temat wydatków u każdego kontrahenta. Uwzględnia "
 "sprzedawców z co najmniej dwoma wydatkami."
 
-#: expenses/reports.py:290
+#: expenses/reports.py:292
 msgid "Sum"
 msgstr "Suma"
 
-#: expenses/reports.py:290
+#: expenses/reports.py:292
 msgid "Average"
 msgstr "Średnia"
 
-#: expenses/reports.py:307
+#: expenses/reports.py:309
 msgid "Daily spending"
 msgstr "Dzienne wydatki"
 
-#: expenses/reports.py:309
+#: expenses/reports.py:311
 msgid "Get daily, weekly, monthly average spending."
 msgstr "Średnie dzienne, tygodniowe, miesięczne wydatki."
 
-#: expenses/reports.py:346
+#: expenses/reports.py:348
 msgid "Per 1 day"
 msgstr "Na 1 dzień"
 
-#: expenses/reports.py:347
+#: expenses/reports.py:349
 msgid "Per week (7 days)"
 msgstr "Na tydzień (7 dni)"
 
-#: expenses/reports.py:348
+#: expenses/reports.py:350
 msgid "Per month (30 days)"
 msgstr "Na miesiąc (30 dni)"
 
-#: expenses/reports.py:349
+#: expenses/reports.py:351
 msgid "Per year (365 days)"
 msgstr "Na rok (365 dni)"
 
-#: expenses/reports.py:381 expenses/reports.py:410
+#: expenses/reports.py:383 expenses/reports.py:412
 msgid "All time"
 msgstr "Za cały czas"
 
-#: expenses/reports.py:390
+#: expenses/reports.py:392
 msgid "Category spending per expense-day (<var>d<sub>E</sub></var> = {})"
 msgstr "Wydatki w kategoriach na wydatko-dzień (<var>d<sub>E</sub></var> = {})"
 
-#: expenses/reports.py:391
+#: expenses/reports.py:393
 msgid "Category spending per day (<var>d<sub>A</sub></var> = {})"
 msgstr "Wydatki w kategoriach na dzień (<var>d<sub>E</sub></var> = {})"
 
-#: expenses/reports.py:423
+#: expenses/reports.py:425
 msgid "Product price history"
 msgstr "Historia cen produktu"
 
-#: expenses/reports.py:425
+#: expenses/reports.py:427
 msgid "Get price history for a product."
 msgstr "Wyświetl zmiany cen danego produktu."
 
-#: expenses/reports.py:427
+#: expenses/reports.py:432
+msgid "Serving"
+msgstr "Porcja"
+
+#: expenses/reports.py:433
+msgid "Serving Unit"
+msgstr "Jednostka porcji"
+
+#: expenses/reports.py:435
+#: expenses/templates/expenses/bill_item_add_edit.html:30
+#: expenses/templates/expenses/bill_show.html:50
+#: expenses/templates/expenses/bill_show.html:75
+#: expenses/templates/expenses/search.html:58
+#: expenses/templates/expenses/search.html:86
+msgid "Unit Price"
+msgstr "Cena jednostkowa"
+
+#: expenses/reports.py:436
+msgid "Price per Serving Unit"
+msgstr "Cena jednostki porcji"
+
+#: expenses/reports.py:437
+msgid "Difference"
+msgstr "Różnica"
+
+#: expenses/reports.py:442
 msgid "Customize data included in report"
 msgstr "Dostosuj dane uwzględnione w raporcie"
 
-#: expenses/reports.py:428
+#: expenses/reports.py:443
 msgid "Product name"
 msgstr "Nazwa produktu"
 
-#: expenses/reports.py:429
-msgid "Filter by vendor"
-msgstr "Filtruj po kontrahencie"
+#: expenses/reports.py:445
+msgid "Separate history for each vendor"
+msgstr "Oddzielne historie dla kontrahentów"
 
-#: expenses/reports.py:448
+#: expenses/reports.py:510
+#, python-brace-format
+msgid "{1} — {0}"
+msgstr "{1} — {0}"
+
+#: expenses/reports.py:512
+#, python-brace-format
+msgid "{0}"
+msgstr "{0}"
+
+#: expenses/reports.py:514
+#, python-brace-format
+msgid "{1}"
+msgstr "{1}"
+
+#: expenses/reports.py:556
 msgid "No results to show."
 msgstr "Brak wyników do wyświetlenia."
 
@@ -343,19 +385,11 @@ msgstr "Zapisz i dodaj pozycje"
 
 #: expenses/templates/expenses/bill_add_editmeta.html:55
 #: expenses/templates/expenses/bill_item_add_edit.html:37
-#: expenses/templates/expenses/bill_show.html:90
+#: expenses/templates/expenses/bill_show.html:92
 #: expenses/templates/expenses/expense_add_edit.html:49
 #: expenses/templates/expenses/template_add_edit.html:80
 msgid "Save changes"
 msgstr "Zapisz zmiany"
-
-#: expenses/templates/expenses/bill_item_add_edit.html:30
-#: expenses/templates/expenses/bill_show.html:48
-#: expenses/templates/expenses/bill_show.html:73
-#: expenses/templates/expenses/search.html:58
-#: expenses/templates/expenses/search.html:86
-msgid "Unit Price"
-msgstr "Cena jednostkowa"
 
 #: expenses/templates/expenses/bill_item_add_edit.html:37
 #: expenses/templates/expenses/expense_add_edit.html:49
@@ -368,7 +402,7 @@ msgid "Edit metadata"
 msgstr "Edytuj metadane"
 
 #: expenses/templates/expenses/bill_show.html:6
-#: expenses/templates/expenses/bill_show.html:65
+#: expenses/templates/expenses/bill_show.html:67
 #: expenses/templates/expenses/expense_show.html:6
 #: expenses/templates/expenses/extras/exp_category_toolbar.html:3
 #: expenses/templates/expenses/template_show.html:6
@@ -398,48 +432,48 @@ msgstr "Kategoria:"
 msgid "Date added:"
 msgstr "Data dodania:"
 
-#: expenses/templates/expenses/bill_show.html:29
+#: expenses/templates/expenses/bill_show.html:30
 msgid "Date modified:"
 msgstr "Data modyfikacji:"
 
-#: expenses/templates/expenses/bill_show.html:34
+#: expenses/templates/expenses/bill_show.html:36
 #: expenses/templates/expenses/expense_convert.html:6
 msgid "Description:"
 msgstr "Opis:"
 
-#: expenses/templates/expenses/bill_show.html:47
+#: expenses/templates/expenses/bill_show.html:49
 msgid "Serving [g,&nbsp;L]"
 msgstr "Porcja [g,&nbsp;L]"
 
-#: expenses/templates/expenses/bill_show.html:51
+#: expenses/templates/expenses/bill_show.html:53
 msgid "Actions"
 msgstr "Akcje"
 
-#: expenses/templates/expenses/bill_show.html:63
+#: expenses/templates/expenses/bill_show.html:65
 msgid "Item actions"
 msgstr "Akcje dla pozycji"
 
-#: expenses/templates/expenses/bill_show.html:64
+#: expenses/templates/expenses/bill_show.html:66
 #: expenses/templates/expenses/expense_show.html:5
 #: expenses/templates/expenses/extras/exp_category_toolbar.html:2
 #: expenses/templates/expenses/template_show.html:5
 msgid "Edit"
 msgstr "Edytuj"
 
-#: expenses/templates/expenses/bill_show.html:77
+#: expenses/templates/expenses/bill_show.html:79
 msgid "Add an item"
 msgstr "Dodaj pozycję"
 
-#: expenses/templates/expenses/bill_show.html:77
+#: expenses/templates/expenses/bill_show.html:79
 msgid "Add"
 msgstr "Dodaj"
 
-#: expenses/templates/expenses/bill_show.html:83
+#: expenses/templates/expenses/bill_show.html:85
 #: expenses/templates/expenses/index.html:30
 msgid "Total:"
 msgstr "Suma:"
 
-#: expenses/templates/expenses/bill_show.html:88
+#: expenses/templates/expenses/bill_show.html:90
 msgid "No changes will be made until you press “Save changes”."
 msgstr "Zmiany nie zostaną dokonane, dopóki nie naciśniesz „Zapisz zmiany”."
 
@@ -675,7 +709,7 @@ msgstr "Przekonwertuj na rachunek"
 msgid "Date added"
 msgstr "Data dodania"
 
-#: expenses/templates/expenses/expense_show.html:59
+#: expenses/templates/expenses/expense_show.html:60
 msgid "Date modified"
 msgstr "Data modyfikacji"
 
@@ -771,21 +805,30 @@ msgstr "Wykres kategorii"
 msgid "Choose a report"
 msgstr "Wybierz raport"
 
+#: expenses/templates/expenses/report_run.html:6
+msgid "Back to setup"
+msgstr "Wróć do ustawień"
+
+#: expenses/templates/expenses/report_run.html:7
+#: expenses/templates/expenses/report_setup.html:32
+msgid "Printable version"
+msgstr "Wersja drukowalna"
+
 #: expenses/templates/expenses/report_run.html:13
-#: expenses/templates/expenses/report_run_print.html:13
+#: expenses/templates/expenses/report_run_print.html:14
 #, python-format
 msgid "Calculated in %(t)s seconds."
 msgstr "Obliczono w %(t)s sekund."
 
-#: expenses/templates/expenses/report_run_print.html:13
+#: expenses/templates/expenses/report_run_print.html:14
 msgid "Powered by Expenses."
 msgstr "Napędzane przez aplikację Wydatki."
 
-#: expenses/templates/expenses/report_run_print.html:15
+#: expenses/templates/expenses/report_run_print.html:16
 msgid "Print"
 msgstr "Drukuj"
 
-#: expenses/templates/expenses/report_run_print.html:15
+#: expenses/templates/expenses/report_run_print.html:16
 msgid "« Back to Expenses"
 msgstr "« Wróć do Wydatków"
 
@@ -800,10 +843,6 @@ msgstr "Format wyjściowy"
 #: expenses/templates/expenses/report_setup.html:31
 msgid "Web page (default)"
 msgstr "Strona internetowa (domyślny)"
-
-#: expenses/templates/expenses/report_setup.html:32
-msgid "Printable version"
-msgstr "Wersja drukowalna"
 
 #: expenses/templates/expenses/report_setup.html:36
 msgid "Run Report"
@@ -1102,3 +1141,9 @@ msgstr "Szablon %s"
 #: expenses/views/template.py:145
 msgid "Edit a template"
 msgstr "Edytuj szablon"
+
+#~ msgid "Separate vendors in history"
+#~ msgstr "Rozdziel kontrahentów"
+
+#~ msgid "Filter by vendor"
+#~ msgstr "Filtruj po kontrahencie"

@@ -292,11 +292,11 @@ ul.expenses-templatelist li:first-child {
     width: unset;
 }
 
-.expenses-report-table > tbody > tr:last-child > td:first-child {
+.expenses-report-table.last-row-total > tbody > tr:last-child > td:first-child {
     font-weight: bold;
 }
 
-.expenses-report-table > tbody > tr:last-child > td {
+.expenses-report-table.last-row-total > tbody > tr:last-child > td {
     border-top-width: 2px;
 }
 

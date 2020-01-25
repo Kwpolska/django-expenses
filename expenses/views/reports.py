@@ -62,6 +62,11 @@ def get_settings_from_post_data(
         for opt in options:
             if opt.option_id in request.POST:
                 values[opt] = request.POST[opt.option_id]
+            elif opt.type == "text":
+                values[opt] = ""
+            else:
+                values[opt] = False
+
     # TODO support for date ranges
 
     return values

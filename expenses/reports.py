@@ -37,6 +37,7 @@ class Engine(enum.Enum):
 class Option:
     name: str
     option_id: str
+    type: str = attr.ib("", init=False, repr=False)
 
 
 @attr.s(auto_attribs=True, frozen=True)
@@ -57,7 +58,8 @@ class OptionGroup:
 @attr.s(auto_attribs=True, frozen=True)
 class CheckOption(Option):
     """A radio or checkbox option."""
-    type: str = attr.ib("check", init=False, repr=False)
+    default: bool = False
+    type: str = "radio"
 
 
 @attr.s(auto_attribs=True, frozen=True)
@@ -74,8 +76,8 @@ class Report(metaclass=abc.ABCMeta):
     slug: str = None
     description: str = None
     request: django.http.HttpRequest = None
-    options: typing.List[CheckOption] = []
-    settings: typing.Dict[CheckOption, typing.Union[str, bool]] = {}
+    options: typing.List[Option] = []
+    settings: typing.Dict[Option, typing.Union[str, bool]] = {}
 
     @classmethod
     def meta_to_dict(cls) -> typing.Dict[str, typing.Any]:
@@ -119,11 +121,12 @@ class SimpleSQLReport(Report):
         column_headers: (typing.List[str], typing.List[str]) = self.get_column_headers(engine)
         column_header_names, column_alignment = column_headers
         column_headers_with_alignment = zip(*column_headers)
+
+        first_row, results = peek(self.preprocess_rows(results))
+
         if not results:
             return no_results_to_show()
-        results = self.preprocess_rows(results)
 
-        first_row, results = peek(results)
         if len(column_header_names) != len(first_row):
             raise ValueError("Results do not match expected column headers")
         results_with_alignment = (zip(row, column_alignment) for row in results)
@@ -419,28 +422,141 @@ class DailySpending(SimpleSQLReport):
         return cat_tables
 
 
-class ProductPriceHistory(Report):
+class ProductPriceHistory(SimpleSQLReport):
     name = _("Product price history")
     slug = "product_price_history"
     description = _("Get price history for a product.")
+    column_headers = (
+        [_("Vendor"),
+         _("Product"),
+         _("Date"),
+         _("Serving"),
+         _("Serving Unit"),
+         _("Count"),
+         _("Unit Price"),
+         _("Price per Serving Unit"),
+         _("Difference")],
+        ["left", "left", "left", "right", "right", "right", "right", "right", "right"]
+    )
+    column_names = ["vendor", "product", "date", "serving", "pricing_unit", "count", "unit_price", "price_per_unit", "diff"]
     options = [
         OptionGroup(_("Customize data included in report"), "product_box", [
-            TextFieldOption(_("Product name"), "product"),
-            TextFieldOption(_("Vendor"), "vendor", True, _("Filter by vendor")),
+            TextFieldOption(_("Product name"), "product", False),
+            TextFieldOption(_("Vendor"), "vendor", False),
+            CheckOption(_("Separate history for each vendor"), "partition_vendor", True, type="check"),
+            CheckOption(_("Fuzzy search"), "fuzzy_search", False, type="check"),
             # TODO more filtering options
         ], type="text")
     ]
+    query_type = "product_price_history"
+    sql = {
+        "product_price_history": {Engine.POSTGRESQL: """
+        SELECT vendor, product, date, serving, pricing_unit, count, unit_price, price_per_unit, price_per_unit - lag(price_per_unit) OVER (PARTITION BY {partition_clause}) AS diff
+        FROM (
+            SELECT vendor, product, date, expenses_billitem.date_added, serving, count, unit_price,
+            CASE WHEN serving = 0 THEN unit_price
+                 WHEN serving < 20 THEN (unit_price / serving)::numeric(10, 4)
+                 ELSE (unit_price * 100 / serving)::numeric(10, 4)
+            END AS price_per_unit,
+            CASE WHEN serving = 0 THEN NULL
+                 WHEN serving < 20 THEN 1
+                 ELSE 100
+            END AS pricing_unit
+            FROM expenses_billitem
+            JOIN expenses_expense ON expenses_expense.id = expenses_billitem.bill_id
+            WHERE expenses_billitem.user_id = %s {filter_options}
+        ) sq
+        ORDER BY {order_clause};
+        """}
+    }
 
-    def run(self):
-        print(self.settings)
-        product = self.settings[self.options[0][0]]
+    def query(self, cursor, sql: str) -> typing.Iterable:
+        filter_options = ''
+        sql_params = [self.request.user.id]
+
+        product = self.settings.get(self.options[0][0], '')
         vendor = self.settings.get(self.options[0][1], '')
-        return format_html(
-            '<div style="text-align: center; font-size: 1.5rem;">This report is currently unavailable. '
-            'In the meantime, you can use <a href="{0}">the search functionality.</a></div>',
-            '{url}?for=billitems&category_all=true&date-spec=any&q={q}&vendor={vendor}'.format(
-                url=reverse('expenses:search'), q=urllib.parse.quote_plus(product), vendor=urllib.parse.quote_plus(vendor)
-            ))
+        partition_vendor = self.settings.get(self.options[0][2], False)
+        fuzzy_search = self.settings.get(self.options[0][3], False)
+
+        # We always use ILIKE for case insensitvity, but not always provide %% for fuzzy search
+        product_fs = '%' + product + '%' if fuzzy_search else product
+        vendor_fs = '%' + vendor + '%' if fuzzy_search else vendor
+
+        if product:
+            filter_options = ' AND product ILIKE %s'
+            sql_params.append(product_fs)
+        if vendor:
+            filter_options = ' AND vendor ILIKE %s'
+            sql_params.append(vendor_fs)
+
+        if partition_vendor:
+            order_clause = 'vendor, product, date'
+            partition_clause = 'vendor, product ORDER BY date, date_added'
+        else:
+            order_clause = 'product, date, vendor'
+            partition_clause = 'product ORDER BY date, date_added, vendor'
+        sql_full = sql.format(filter_options=filter_options, order_clause=order_clause, partition_clause=partition_clause)
+        cursor.execute(sql_full, sql_params)
+        return cursor.fetchall()
+
+    def tabulate(self, results: typing.Iterable, engine: Engine) -> SafeString:
+        column_headers: (typing.List[str], typing.List[str]) = self.get_column_headers(engine)
+        column_header_names, column_alignment = column_headers
+        column_headers_with_alignment = list(zip(*column_headers))
+
+        if not results:
+            return no_results_to_show()
+
+        main_groups = {(row[0], row[1]) for row in results}
+        vendor_groups = {row[0] for row in main_groups}
+        product_groups = {row[1] for row in main_groups}
+
+        partition_vendor = self.settings.get(self.options[0][2], False)
+
+        if partition_vendor and len(vendor_groups) > 1 and len(product_groups) > 1:
+            group_title = _("{1} — {0}")
+        elif partition_vendor and len(vendor_groups) > 1:
+            group_title = _("{0}")
+        elif len(product_groups) > 1:
+            group_title = _("{1}")
+        else:
+            group_title = ""
+
+        first_row, results = peek(results)
+        if len(column_header_names) != len(first_row):
+            raise ValueError("Results do not match expected column headers")
+
+        current_group = None
+        results_grouped = []
+
+        for row in results:
+            group = (row[0], row[1]) if partition_vendor else row[1]
+            row = list(row)
+            if group != current_group:
+                results_grouped.append({'title': group_title.format(*row), 'rows': []})
+                current_group = group
+
+            results_grouped[-1]['rows'].append({k: v for k, v in zip(self.column_names, row)})
+
+            # classes = [''] * len(row)
+            # if row[-1] is None:
+            #     row[-1] = ''
+            # elif row[-1] < 0:
+            #     classes[-1] = 'table-success'
+            # elif row[-1] > 0:
+            #     classes[-1] = 'table-danger'
+
+            # results_grouped[-1]['rows'].append(zip(row, column_alignment))
+
+        return mark_safe(render_to_string("expenses/reports/report_product_price_history.html", {
+            'results_grouped': results_grouped,
+            'column_headers_with_alignment': column_headers_with_alignment,
+            'show_group_title': bool(group_title)
+        }, self.request))
+
+    # def tabulate(self, results: typing.Iterable, engine: Engine) -> SafeString:
+    #     print(self.settings)
 
 
 def no_results_to_show():

@@ -18,8 +18,8 @@
                         <label for="er__{{ option.option_id }}">{{ option.name }}</label>
                     {% endif %}
                     <input class="form-control expenses-setup-box-indented" type="text" name="{{ option.option_id }}" id="er__{{ option.option_id }}" placeholder="{{ option.name }}" {% if option.required %}required{% endif %}>
-                {% elif optgroup.type == "check" %}
-                    <label><input type="checkbox" name="{{ option.option_id }}"> {{ option.name }}</label>
+                {% elif option.type == "check" %}
+                    <label><input type="checkbox" name="{{ option.option_id }}"{% if option.default %} checked{% endif %}> {{ option.name }}</label>
                 {% else %}
                     <label><input type="radio" name="{{ optgroup.option_id }}" value="{{ option.option_id }}" required {% if forloop.first %}checked{% endif %}> {{ option.name }}</label>
                 {% endif %}
