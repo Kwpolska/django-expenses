@@ -32,6 +32,10 @@ class Engine(enum.Enum):
     POSTGRESQL = 'django.db.backends.postgresql_psycopg2'
     ANY_ENGINE = ''
 
+    @classmethod
+    def get_from_connection(cls, connection) -> 'Engine':
+        return cls(connection.settings_dict['ENGINE'])
+
 
 @attr.s(auto_attribs=True, frozen=True)
 class Option:
@@ -137,7 +141,7 @@ class SimpleSQLReport(Report):
         }, self.request))
 
     def run(self) -> SafeString:
-        engine: Engine = Engine(connection.settings_dict['ENGINE'])
+        engine: Engine = Engine.get_from_connection(connection)
         sql: str = self.get_query(self.query_type, engine)
 
         with connection.cursor() as cursor:
@@ -325,7 +329,7 @@ class DailySpending(SimpleSQLReport):
     }
 
     def run(self):
-        engine: Engine = Engine(connection.settings_dict['ENGINE'])
+        engine: Engine = Engine.get_from_connection(connection)
 
         days: typing.Dict[str, int] = {}
         days_names = ("expense_days", "all_days")
@@ -451,13 +455,14 @@ class ProductPriceHistory(SimpleSQLReport):
     ]
     query_type = "product_price_history"
     sql = {
-        "product_price_history": {Engine.POSTGRESQL: """
+        "product_price_history": {
+            Engine.SQLITE3: """
         SELECT vendor, product, date, serving, pricing_unit, count, unit_price, price_per_unit, price_per_unit - lag(price_per_unit) OVER ({partition_clause}) AS diff
         FROM (
             SELECT vendor, product, date, expenses_billitem.date_added, serving, count, unit_price,
             CASE WHEN serving = 0 THEN unit_price
-                 WHEN serving < 20 THEN (unit_price / serving)::numeric(10, 4)
-                 ELSE (unit_price * 100 / serving)::numeric(10, 4)
+                 WHEN serving < 20 THEN round(unit_price / serving, 4)
+                 ELSE round(unit_price * 100 / serving, 4)
             END AS price_per_unit,
             CASE WHEN serving = 0 THEN NULL
                  WHEN serving < 20 THEN 1
@@ -468,7 +473,26 @@ class ProductPriceHistory(SimpleSQLReport):
             WHERE expenses_billitem.user_id = %s {filter_options}
         ) sq
         ORDER BY {order_clause};
-        """}
+        """,
+            Engine.POSTGRESQL: """
+            SELECT vendor, product, date, serving, pricing_unit, count, unit_price, price_per_unit, price_per_unit - lag(price_per_unit) OVER ({partition_clause}) AS diff
+            FROM (
+                SELECT vendor, product, date, expenses_billitem.date_added, serving, count, unit_price,
+                CASE WHEN serving = 0 THEN unit_price
+                     WHEN serving < 20 THEN (unit_price / serving)::numeric(10, 4)
+                     ELSE (unit_price * 100 / serving)::numeric(10, 4)
+                END AS price_per_unit,
+                CASE WHEN serving = 0 THEN NULL
+                     WHEN serving < 20 THEN 1
+                     ELSE 100
+                END AS pricing_unit
+                FROM expenses_billitem
+                JOIN expenses_expense ON expenses_expense.id = expenses_billitem.bill_id
+                WHERE expenses_billitem.user_id = %s {filter_options}
+            ) sq
+            ORDER BY {order_clause};
+            """
+        }
     }
 
     def query(self, cursor, sql: str) -> typing.Iterable:
@@ -481,16 +505,28 @@ class ProductPriceHistory(SimpleSQLReport):
         partition_vendor = self.settings.get(self.options[0][3], False)
         fuzzy_search = self.settings.get(self.options[0][4], False)
 
-        # We always use ILIKE for case insensitvity, but not always provide %% for fuzzy search
-        product_fs = '%' + product + '%' if fuzzy_search else product
-        vendor_fs = '%' + vendor + '%' if fuzzy_search else vendor
+        if Engine.get_from_connection(connection) == Engine.POSTGRESQL:
+            # We always use ILIKE for case insensitvity, but not always provide %% for fuzzy search
+            product_fs = '%' + product + '%' if fuzzy_search else product
+            vendor_fs = '%' + vendor + '%' if fuzzy_search else vendor
 
-        if product:
-            filter_options = ' AND product ILIKE %s'
-            sql_params.append(product_fs)
-        if vendor:
-            filter_options = ' AND vendor ILIKE %s'
-            sql_params.append(vendor_fs)
+            if product:
+                filter_options += ' AND product ILIKE %s'
+                sql_params.append(product_fs)
+            if vendor:
+                filter_options += ' AND vendor ILIKE %s'
+                sql_params.append(vendor_fs)
+        else:
+            product_fs = '%' + product.lower() + '%' if fuzzy_search else product.lower()
+            vendor_fs = '%' + vendor.lower() + '%' if fuzzy_search else vendor.lower()
+
+            if product:
+                filter_options += ' AND LOWER(product) {} %s'.format('LIKE' if fuzzy_search else '=')
+                sql_params.append(product_fs)
+            if vendor:
+                filter_options += ' AND LOWER(vendor) {} %s'.format('LIKE' if fuzzy_search else '=')
+                sql_params.append(vendor_fs)
+
 
         if partition_vendor and partition_product:
             order_clause = 'vendor, product, date'
@@ -562,9 +598,6 @@ class ProductPriceHistory(SimpleSQLReport):
             'column_headers_with_alignment': column_headers_with_alignment,
             'show_group_title': bool(group_title)
         }, self.request))
-
-    # def tabulate(self, results: typing.Iterable, engine: Engine) -> SafeString:
-    #     print(self.settings)
 
 
 def no_results_to_show():
