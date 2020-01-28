@@ -378,17 +378,14 @@ export default function initializeBillEditor() {
             let hint = <BillHint>data;
             return `✨ ${hint.product} ⚖️${hint.serving} 💶${hint.unit_price}`;
         },
-        "✨",
         (data) => {
+            let hint = <BillHint>data;
             let addForm: HTMLTableRowElement = document.querySelector<HTMLTableRowElement>("#expenses-billtable-addrow");
-            let re = /✨ (.*?) ⚖️(.*?) 💶(.*)/;
-            let splits = re.exec(data);
-            let output: BillReOutput = {'product': splits[1], 'serving': splits[2], 'unitprice': splits[3]};
 
             addProduct.dataset['autocomplete'] = 'off';
-            for (var key in output) {
-                addForm.querySelector<HTMLInputElement>(`.expenses-billtable-${key} input`).value = output[key];
-            }
+            addForm.querySelector<HTMLInputElement>('.expenses-billtable-product input').value = hint.product;
+            addForm.querySelector<HTMLInputElement>('.expenses-billtable-serving input').value = hint.serving.toString();
+            addForm.querySelector<HTMLInputElement>('.expenses-billtable-unitprice input').value = hint.unit_price.toString();
             addProduct.dataset['autocomplete'] = 'on';
 
             recalculateAmount(addForm);

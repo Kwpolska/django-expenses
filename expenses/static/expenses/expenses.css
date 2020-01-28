@@ -318,7 +318,7 @@ ul.expenses-templatelist li:first-child {
     }
 
     #expenses-billtable td, #expenses-billtable input,
-    #expenses-billtable a, #expenses-billtable button {
+    #expenses-billtable .btn {
         font-size: 0.85rem;
     }
 
@@ -328,7 +328,7 @@ ul.expenses-templatelist li:first-child {
     }
 
     #expenses-billtable th, #expenses-billtable td,
-    #expenses-billtable a, #expenses-billtable button {
+    #expenses-billtable .btn {
         padding: .15rem;
     }
 
@@ -363,4 +363,26 @@ td.pricing-unit-1 {
     color: var(--teal);
     border-left-width: 4px !important;
     border-right-width: 4px !important;
+}
+
+.expenses-autocomplete-menu {
+    display: block;
+    transition: opacity 0.1s linear;
+}
+
+.expenses-autocomplete-menu:empty,
+.expenses-autocomplete-hidden {
+    display: none;
+    opacity: 0;
+}
+
+.expenses-autocomplete-hiding {
+    opacity: 0;
+}
+
+@media (max-width: 575px) {
+    .expenses-autocomplete-menu .dropdown-item {
+        font-size: 1rem;
+        padding: 0.5rem 1.5rem;
+    }
 }
