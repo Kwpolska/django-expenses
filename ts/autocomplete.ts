@@ -9,6 +9,7 @@ const CLS_HIDING = "expenses-autocomplete-hiding";
 class AutoComplete {
     private hiddenByLength: boolean;
     private keyboardSelection: number;
+    private previousCount: number;
     private entries: Array<any>;
     private minLength: number;
     private displayHandler?: (data: string | object) => string;
@@ -32,7 +33,8 @@ class AutoComplete {
         this.name = (name === undefined || name == null) ? input.name : name;
         this.url = url;
         this.hiddenByLength = false;
-        this.keyboardSelection  = -1;
+        this.previousCount = 0;
+        this.keyboardSelection = -1;
         this.hideTimeout = null;
         this.entries = [];
         this.minLength = (minLength === undefined || minLength === null) ? 1 : minLength;
@@ -64,6 +66,7 @@ class AutoComplete {
     }
 
     addInputListeners() {
+        this.input.addEventListener("keydown", this.handleKeyDown.bind(this));
         this.input.addEventListener("input", this.buildCompletions.bind(this));
         this.input.addEventListener("change", this.buildCompletions.bind(this));
         this.input.addEventListener("focus", () => this.focusInput());
@@ -96,30 +99,34 @@ class AutoComplete {
         }
         let self = this;
         fetch(usedUrl).then((response) => response.json()).then((json: Array<any>) => {
+            self.previousCount = self.entries.length;
             self.entries = json;
             self.acDiv.innerHTML = '';
-
+            let i = 0;
             json.forEach((value) => {
                 let c: HTMLButtonElement = document.createElement("button");
                 c.type = "button";
                 c.className = "dropdown-item";
-                let innerText = "";
-                if (self.displayHandler !== undefined) {
-                    innerText = self.displayHandler(value);
-                } else {
-                    innerText = value;
-                }
-                c.innerText = innerText;
-                c.addEventListener("click", _btnEvent => {
-                    if (self.selectHandler !== undefined) self.selectHandler(value);
-                    else self.input.value = innerText;
-                    self.input.blur();
-                    setTimeout(() => self.hideAcDiv(), 10);
-                });
+                c.dataset.id = i.toString();
+                i++;
+                c.innerText = self.getDisplayText(value);
+                c.addEventListener("click", _btnEvent => self.select(value));
                 self.acDiv.appendChild(c);
             });
+            this.resetKeyboardSelection();
             this.popperInstance.update();
         });
+    }
+
+    getDisplayText(value: any) {
+        return (this.displayHandler !== undefined) ? this.displayHandler(value) : value;
+    }
+
+    select(value: any) {
+        if (this.selectHandler !== undefined) this.selectHandler(value);
+        else this.input.value = this.getDisplayText(value);
+        this.input.blur();
+        setTimeout(() => this.hideAcDiv(), 10);
     }
 
     focusInput() {
@@ -152,11 +159,10 @@ class AutoComplete {
 
     createPopper() {
         if (this.popperInstance == null) {
-            this.popperInstance = new Popper(this.input, this.acDiv,
-                {
-                    placement: 'bottom-start',
-                    modifiers: {flip: {enabled: true}}
-                  });
+            this.popperInstance = new Popper(this.input, this.acDiv, {
+                placement: 'bottom-start',
+                modifiers: { flip: { enabled: true } }
+            });
         }
     }
 
@@ -165,6 +171,40 @@ class AutoComplete {
             this.popperInstance.destroy();
             this.popperInstance = null;
         }
+    }
+
+    handleKeyDown(event: KeyboardEvent) {
+        console.log(event.key);
+        if (event.key === "ArrowDown") {
+            this.setKeyboardSelection(this.keyboardSelection + 1);
+            event.preventDefault();
+        } else if (event.key === "ArrowUp") {
+            this.setKeyboardSelection(this.keyboardSelection - 1);
+            event.preventDefault();
+        } else if (event.key === "Enter" && this.keyboardSelection >= 0) {
+            this.select(this.entries[this.keyboardSelection]);
+            this.setKeyboardSelection(null);
+            event.preventDefault();
+        }
+    }
+
+    resetKeyboardSelection() {
+        if (this.entries.length === this.previousCount) {
+            return;
+        }
+        this.setKeyboardSelection(0);
+    }
+
+    setKeyboardSelection(newValue?: number) {
+        this.acDiv.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+        if (newValue === null) {
+            this.keyboardSelection = -1;
+            return;
+        }
+        if (newValue < 0) newValue = 0;
+        if (newValue >= this.entries.length) newValue = this.entries.length - 1;
+        this.keyboardSelection = newValue;
+        this.acDiv.querySelector(`button[data-id="${newValue}"]`).classList.add("active");
     }
 }
 
