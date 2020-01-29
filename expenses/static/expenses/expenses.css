@@ -368,6 +368,8 @@ td.pricing-unit-1 {
 .expenses-autocomplete-menu {
     display: block;
     transition: opacity 0.1s linear;
+    max-height: calc(90vh - 1.5em - .75rem - 2px);
+    overflow-x: auto;
 }
 
 .expenses-autocomplete-menu:empty,

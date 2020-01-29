@@ -18,6 +18,7 @@ class AutoComplete {
     private url: string | (() => string);
     private acDiv: HTMLDivElement;
     private hideTimeout: any;
+    private popperInstance: any;
 
     constructor(
         input: HTMLInputElement,
@@ -37,6 +38,7 @@ class AutoComplete {
         this.minLength = (minLength === undefined || minLength === null) ? 1 : minLength;
         this.displayHandler = displayHandler;
         this.selectHandler = selectHandler;
+        this.popperInstance = null;
         this.buildAcDiv();
     }
 
@@ -86,6 +88,7 @@ class AutoComplete {
             this.unhideAcDiv();
             this.hiddenByLength = false;
         }
+        this.createPopper();
         if (usedUrl.indexOf("?") !== -1) {
             usedUrl += "&q=" + encodeURIComponent(query);
         } else {
@@ -115,9 +118,9 @@ class AutoComplete {
                 });
                 self.acDiv.appendChild(c);
             });
+            this.popperInstance.update();
         });
     }
-
 
     focusInput() {
         if (this.input.value.trim() === "") {
@@ -132,6 +135,7 @@ class AutoComplete {
 
     unhideAcDiv() {
         if (this.hideTimeout !== null) clearTimeout(this.hideTimeout);
+        this.createPopper();
         this.acDiv.classList.remove(CLS_HIDDEN);
         this.acDiv.classList.remove(CLS_HIDING);
     }
@@ -142,7 +146,25 @@ class AutoComplete {
         this.hideTimeout = setTimeout((() => {
             this.acDiv.classList.remove(CLS_HIDING);
             this.acDiv.classList.add(CLS_HIDDEN);
+            this.destroyPopper();
         }).bind(this), 110);
+    }
+
+    createPopper() {
+        if (this.popperInstance == null) {
+            this.popperInstance = new Popper(this.input, this.acDiv,
+                {
+                    placement: 'bottom-start',
+                    modifiers: {flip: {enabled: true}}
+                  });
+        }
+    }
+
+    destroyPopper() {
+        if (this.popperInstance != null) {
+            this.popperInstance.destroy();
+            this.popperInstance = null;
+        }
     }
 }
 
