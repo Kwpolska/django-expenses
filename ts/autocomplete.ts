@@ -174,7 +174,6 @@ class AutoComplete {
     }
 
     handleKeyDown(event: KeyboardEvent) {
-        console.log(event.key);
         if (event.key === "ArrowDown") {
             this.setKeyboardSelection(this.keyboardSelection + 1);
             event.preventDefault();
