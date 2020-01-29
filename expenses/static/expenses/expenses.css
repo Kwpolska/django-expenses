@@ -100,6 +100,10 @@ footer#footer {
     max-width: 0;
 }
 
+.expenses-table-description-edit {
+    overflow: initial;
+}
+
 .expenses-cattable-name {
     width: 40%;
 }
