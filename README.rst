@@ -19,22 +19,12 @@ Features
 * Searching and filtering data
 * A synchronization API, perfect for mobile apps (one of which is in the
   making)
-
-Work in Progress
-----------------
-
-**Reports**: the basic functionality is here, and there are three reports that
-*generally* work well. The following items still need to be done:
-
-* Code cleanup
-* Report: Product price history
-* Exporting reports to spreadsheet-friendly formats (CSV? XLSX? ODS?)
-
-* Reports (done in 75%)
+* Reporting
 
 To do
 -----
 
+* Exporting reports to spreadsheet-friendly formats (CSV? XLSX?)
 * Monthly goals
 * More?
 
