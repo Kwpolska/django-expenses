@@ -72,7 +72,7 @@ class AutoComplete {
         this.input.addEventListener("focus", () => this.focusInput());
         this.input.addEventListener("blur", () => this.blurInput());
     }
-    
+
     buildCompletions(_event: Event) {
         let usedUrl: string; // need separate variable so we don’t end up with ?q=f&q=fo&q=foo…
         if (typeof this.url !== "string") {
@@ -203,7 +203,9 @@ class AutoComplete {
         if (newValue < 0) newValue = 0;
         if (newValue >= this.entries.length) newValue = this.entries.length - 1;
         this.keyboardSelection = newValue;
-        this.acDiv.querySelector(`button[data-id="${newValue}"]`).classList.add("active");
+        const selection = this.acDiv.querySelector(`button[data-id="${newValue}"]`);
+        selection.classList.add("active");
+        selection.scrollIntoView();
     }
 }
 
