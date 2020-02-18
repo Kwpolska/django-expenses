@@ -4,7 +4,7 @@ import io
 from setuptools import setup, find_packages
 
 setup(name='django-expenses',
-      version='0.4.2',
+      version='0.5.0',
       description='A comprehensive system for managing expenses',
       keywords='django,expenses',
       author='Chris Warrick',

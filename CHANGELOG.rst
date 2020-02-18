@@ -11,6 +11,18 @@ More information can be found on GitHub in the `releases section
 Version History
 ===============
 
+0.5.0
+    * A comprehensive reporting framework with the following reports available:
+
+      * Month/Category breakdown
+      * Vendor statistics
+      * Daily spending
+      * Product price history
+
+    * ``menu`` template type
+    * Better autocomplete with custom widget
+    * Many more minor bugfixes
+
 0.4.2
     * Improve performance by caching bill descriptions
     * Support templates with custom description selected from list
