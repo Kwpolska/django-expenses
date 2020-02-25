@@ -20,13 +20,12 @@ from expenses.utils import parse_dt
 
 
 def hello(_request):
-    return JsonResponse({
-        'auth_url': reverse('oauth2_provider:authorize'),
-        'token_url': reverse('oauth2_provider:token'),
-    })
+    return JsonResponse(
+        {"auth_url": reverse("oauth2_provider:authorize"), "token_url": reverse("oauth2_provider:token"),}
+    )
 
 
-@method_decorator([protected_resource(), csrf_exempt], name='dispatch')
+@method_decorator([protected_resource(), csrf_exempt], name="dispatch")
 class PostJsonEndpoint(View):
     def get(self, _request):
         return JsonResponse({"error": "Only POST requests allowed"}, status=400)
@@ -46,9 +45,7 @@ class PostJsonEndpoint(View):
 
 @protected_resource()
 def profile(request):
-    return JsonResponse({
-        "full_name": request.user.get_full_name() or request.user.get_username(),
-    })
+    return JsonResponse({"full_name": request.user.get_full_name() or request.user.get_username(),})
 
 
 # Input 1: {"last_sync": null, "sync_date": str}
@@ -68,17 +65,8 @@ class RunEndpoint(PostJsonEndpoint):
             now = timezone.now()
         out = {
             "sync_date": now.isoformat(),
-            "deletions": {
-                "new": [],
-                "ack": [],
-                "not_found": [],
-            },
-            "changes": {
-                "new": {},
-                "ack": {},
-                "deleted": [],
-                "not_found": [],
-            }
+            "deletions": {"new": [], "ack": [], "not_found": [],},
+            "changes": {"new": {}, "ack": {}, "deleted": [], "not_found": [],},
         }
 
         for _, model_str in DATA_MODELS:
@@ -88,7 +76,7 @@ class RunEndpoint(PostJsonEndpoint):
         if req_data["last_sync"] is None:
             # Initial sync, provide all data
             for model, model_str in DATA_MODELS:
-                queryset = model.objects.filter(user=request.user, date_modified__lte=now).order_by('id')
+                queryset = model.objects.filter(user=request.user, date_modified__lte=now).order_by("id")
                 out["changes"]["new"][model_str] = [o.to_json() for o in queryset]
             return out, 200
 
@@ -96,8 +84,7 @@ class RunEndpoint(PostJsonEndpoint):
         # Find deletions
         out["deletions"]["new"] = [
             {"model": o.model, "id": o.object_pk}
-            for o in DeletionRecord.objects.filter(
-                user=request.user, date__gt=last_sync, date__lte=now)
+            for o in DeletionRecord.objects.filter(user=request.user, date__gt=last_sync, date__lte=now)
         ]
 
         # And handle provided deletions
@@ -110,8 +97,7 @@ class RunEndpoint(PostJsonEndpoint):
             except ObjectDoesNotExist:
                 # maybe it was deleted before?
                 try:
-                    DeletionRecord.objects.get(
-                        user=request.user, model=deletion["model"], object_pk=deletion["id"])
+                    DeletionRecord.objects.get(user=request.user, model=deletion["model"], object_pk=deletion["id"])
                     out["deletions"]["ack"].append(deletion)
                 except ObjectDoesNotExist:
                     # oh well, that is not exected
@@ -129,8 +115,7 @@ class RunEndpoint(PostJsonEndpoint):
                     except ObjectDoesNotExist:
                         nf_marker = {"model": model_str, "id": change["id"]}
                         try:
-                            DeletionRecord.objects.get(
-                                user=request.user, model=model_str, object_pk=change["id"])
+                            DeletionRecord.objects.get(user=request.user, model=model_str, object_pk=change["id"])
                             out["changes"]["deleted"].append(nf_marker)
                         except DeletionRecord.DoesNotExist:
                             out["changes"]["not_found"].append(nf_marker)
@@ -139,14 +124,13 @@ class RunEndpoint(PostJsonEndpoint):
                 obj.from_json(change, now)
                 # TODO handle bill_local_id
                 obj.save()
-                out["changes"]["ack"][model_str].append({
-                    "local_id": change["local_id"],
-                    "id": obj.pk
-                })
+                out["changes"]["ack"][model_str].append({"local_id": change["local_id"], "id": obj.pk})
 
         # And give them our new data
         for model, model_str in DATA_MODELS:
-            queryset = model.objects.filter(user=request.user, date_modified__gt=last_sync, date_modified__lte=now).order_by('id')
+            queryset = model.objects.filter(
+                user=request.user, date_modified__gt=last_sync, date_modified__lte=now
+            ).order_by("id")
             out["changes"]["new"][model_str] = [o.to_json() for o in queryset]
 
         return out, 200

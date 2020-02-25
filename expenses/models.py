@@ -14,8 +14,16 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models, connection
 
 
-from expenses.utils import round_money, serialize_dt, serialize_date, serialize_decimal, \
-    parse_dt, parse_date, parse_decimal, format_money
+from expenses.utils import (
+    round_money,
+    serialize_dt,
+    serialize_date,
+    serialize_decimal,
+    parse_dt,
+    parse_date,
+    parse_decimal,
+    format_money,
+)
 
 
 class ExpensesModel(models.Model):
@@ -51,11 +59,7 @@ class ExpensesModel(models.Model):
         pass
 
     def delete_at(self, date: datetime.datetime):
-        dr = DeletionRecord(
-            model=MODEL_TO_STR_MAP[self.__class__],
-            object_pk=self.pk,
-            user=self.user,
-            date=date)
+        dr = DeletionRecord(model=MODEL_TO_STR_MAP[self.__class__], object_pk=self.pk, user=self.user, date=date)
         dr.save()
         self.delete()
 
@@ -64,9 +68,7 @@ class Category(ExpensesModel):
     class Meta:
         verbose_name = _("category")
         verbose_name_plural = _("categories")
-        indexes = [
-            models.Index(fields=['slug', 'user'])
-        ]
+        indexes = [models.Index(fields=["slug", "user"])]
 
     name = models.CharField(_("Name"), max_length=20)
     slug = models.CharField(_("Slug"), max_length=20)
@@ -81,24 +83,33 @@ class Category(ExpensesModel):
 
     def all_time_sum(self):
         with connection.cursor() as cursor:
-            cursor.execute("""
+            cursor.execute(
+                """
             SELECT SUM(amount) FROM expenses_expense WHERE category_id = %s
-            """, [self.pk])
+            """,
+                [self.pk],
+            )
             return cursor.fetchone()[0]
 
     def monthly_sum(self):
         today = datetime.date.today()
-        return self.expense_set.select_related('category').filter(
-            date__year=today.year, date__month=today.month).aggregate(models.Sum('amount'))['amount__sum']
+        return (
+            self.expense_set.select_related("category")
+            .filter(date__year=today.year, date__month=today.month)
+            .aggregate(models.Sum("amount"))["amount__sum"]
+        )
 
     @property
     def total_count(self):
         with connection.cursor() as cursor:
-            cursor.execute("""
+            cursor.execute(
+                """
             SELECT c1 + c2 AS sum FROM
             (SELECT COUNT(*) AS c1 FROM expenses_expense WHERE category_id = %s) AS d1,
             (SELECT COUNT(*) AS c2 FROM expenses_expensetemplate WHERE category_id = %s) AS d2
-            """, [self.pk, self.pk])
+            """,
+                [self.pk, self.pk],
+            )
             return cursor.fetchone()[0]
 
     def __str__(self):
@@ -110,7 +121,7 @@ class Category(ExpensesModel):
     @classmethod
     def user_objects(cls, request):
         """Get ordered category objects for a user."""
-        return cls.objects.filter(user=request.user).order_by('order')
+        return cls.objects.filter(user=request.user).order_by("order")
 
     def prepare_deletion(self, dest, user):
         try:
@@ -142,7 +153,7 @@ class Expense(ExpensesModel):
     description_cache = models.CharField(_("Description (cache)"), max_length=300, blank=True)
 
     def __str__(self):
-        return '{0}: {1}'.format(self.desc_auto, self.amount)
+        return "{0}: {1}".format(self.desc_auto, self.amount)
 
     def __repr__(self):
         return '<Expense "{0}" on {1}: {2}>'.format(self.desc_auto, self.date, self.amount)
@@ -225,11 +236,11 @@ class BillItem(ExpensesModel):
 
 
 TEMPLATE_TYPE_CHOICES = (
-    ('simple', _('Simple')),
-    ('count', _('Multiplied by count')),
-    ('description', _('With custom description')),
-    ('desc_select', _('With description selected from list')),
-    ('menu', _('Menu (amount and description selected from list)'))
+    ("simple", _("Simple")),
+    ("count", _("Multiplied by count")),
+    ("description", _("With custom description")),
+    ("desc_select", _("With description selected from list")),
+    ("menu", _("Menu (amount and description selected from list)")),
 )
 TEMPLATE_TYPE_CHOICES_LOOKUP = {k: v for k, v in TEMPLATE_TYPE_CHOICES}
 
@@ -238,7 +249,7 @@ class ExpenseTemplate(ExpensesModel):
     name = models.CharField(_("Name"), max_length=40)
     vendor = models.CharField(_("Vendor"), max_length=40)
     category = models.ForeignKey(Category, verbose_name=_("Category"), on_delete=models.PROTECT)
-    type = models.CharField(_("Template type"), max_length=20, choices=TEMPLATE_TYPE_CHOICES, default='simple')
+    type = models.CharField(_("Template type"), max_length=20, choices=TEMPLATE_TYPE_CHOICES, default="simple")
     amount = models.DecimalField(_("Amount"), max_digits=10, decimal_places=2, null=True)
     description = models.CharField(_("Description"), max_length=400)
     comment = models.TextField(_("Comment"), blank=True)
@@ -260,10 +271,10 @@ class ExpenseTemplate(ExpensesModel):
 
     def description_choices(self):
         """A list of choices for the description."""
-        if self.type == 'desc_select':
-            return [opt.strip() for opt in self.description.split('\n')[1:]]
-        elif self.type == 'menu':
-            return [opt.strip() for opt in self.description.split('\n')]
+        if self.type == "desc_select":
+            return [opt.strip() for opt in self.description.split("\n")[1:]]
+        elif self.type == "menu":
+            return [opt.strip() for opt in self.description.split("\n")]
         raise ValueError(f"Description choices not available for {self.type} templates")
 
     def display_amount(self):
@@ -297,10 +308,10 @@ class ExpenseTemplate(ExpensesModel):
 
 
 DR_MODEL_CHOICES = (
-    ('category', 'category'),
-    ('expense', 'expense'),
-    ('billitem', 'billitem'),
-    ('expensetemplate', 'expensetemplate'),
+    ("category", "category"),
+    ("expense", "expense"),
+    ("billitem", "billitem"),
+    ("expensetemplate", "expensetemplate"),
 )
 
 
@@ -314,31 +325,27 @@ class DeletionRecord(models.Model):
         return "<DeletionRecord {} #{}>".format(self.model, self.object_pk)
 
     def to_json_dict(self):
-        return {
-            "model": self.model,
-            "object": self.object_pk,
-            "date": self.date
-        }
+        return {"model": self.model, "object": self.object_pk, "date": self.date}
 
 
 STR_TO_MODEL_MAP = {
-    'category': Category,
-    'expense': Expense,
-    'billitem': BillItem,
-    'expensetemplate': ExpenseTemplate,
-    'deletionrecord': DeletionRecord
+    "category": Category,
+    "expense": Expense,
+    "billitem": BillItem,
+    "expensetemplate": ExpenseTemplate,
+    "deletionrecord": DeletionRecord,
 }
 MODEL_TO_STR_MAP = {v: k for k, v in STR_TO_MODEL_MAP.items()}
 
 DATA_MODELS = (
-    (Category, 'category'),
-    (Expense, 'expense'),
-    (BillItem, 'billitem'),
-    (ExpenseTemplate, 'expensetemplate')
+    (Category, "category"),
+    (Expense, "expense"),
+    (BillItem, "billitem"),
+    (ExpenseTemplate, "expensetemplate"),
 )
 
-DATA_MODELS_STR = ['category', 'expense', 'billitem', 'expensetemplate']
-STR_TO_DATA_MODEL_MAP = {k: v for k, v in STR_TO_MODEL_MAP.items() if k != 'deletionrecord'}
+DATA_MODELS_STR = ["category", "expense", "billitem", "expensetemplate"]
+STR_TO_DATA_MODEL_MAP = {k: v for k, v in STR_TO_MODEL_MAP.items() if k != "deletionrecord"}
 
 
 # Code from the Achieve project.
@@ -362,7 +369,7 @@ def update_slug(sender, instance: Category, **kwargs):  # NOQA
         # We need to find a new slug for ourselves.
         others = samebase.exclude(slug=slugbase)
         if others:
-            nums = [int(i.slug.split('-')[-1]) for i in others.all()]
+            nums = [int(i.slug.split("-")[-1]) for i in others.all()]
             final_num = max(nums) + 1
         else:
             final_num = 1
@@ -397,8 +404,4 @@ def update_bill_info_on_bill_save(instance: Expense, **kwargs):
 @receiver(models.signals.pre_delete, sender=BillItem)
 @receiver(models.signals.pre_delete, sender=ExpenseTemplate)
 def create_deletion_record(instance, sender, **kwargs):
-    DeletionRecord.objects.get_or_create(
-        model=MODEL_TO_STR_MAP[sender],
-        object_pk=instance.pk,
-        user=instance.user)
-
+    DeletionRecord.objects.get_or_create(model=MODEL_TO_STR_MAP[sender], object_pk=instance.pk, user=instance.user)

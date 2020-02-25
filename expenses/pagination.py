@@ -29,13 +29,13 @@ def pagination(num, maxpage):
         if diff == 2:
             page_range.append(current_page + 1)  # ellipsis should not be one page
         elif diff > 2:
-            page_range.append('...')
+            page_range.append("...")
 
     return page_range
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     maxpage = 15
     print("Pages:", maxpage)
     for i in range(1, maxpage + 1):
-        print(i, pagination(i, maxpage), sep='\t')
+        print(i, pagination(i, maxpage), sep="\t")

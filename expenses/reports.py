@@ -28,13 +28,13 @@ from expenses.utils import format_money, get_babel_locale, peek
 
 
 class Engine(enum.Enum):
-    SQLITE3 = 'django.db.backends.sqlite3'
-    POSTGRESQL = 'django.db.backends.postgresql_psycopg2'
-    ANY_ENGINE = ''
+    SQLITE3 = "django.db.backends.sqlite3"
+    POSTGRESQL = "django.db.backends.postgresql_psycopg2"
+    ANY_ENGINE = ""
 
     @classmethod
-    def get_from_connection(cls, connection) -> 'Engine':
-        return cls(connection.settings_dict['ENGINE'])
+    def get_from_connection(cls, connection) -> "Engine":
+        return cls(connection.settings_dict["ENGINE"])
 
 
 @attr.s(auto_attribs=True, frozen=True)
@@ -47,6 +47,7 @@ class Option:
 @attr.s(auto_attribs=True, frozen=True)
 class OptionGroup:
     """A group of options."""
+
     name: str
     option_id: str
     options: typing.List[Option] = attr.Factory(list)
@@ -62,6 +63,7 @@ class OptionGroup:
 @attr.s(auto_attribs=True, frozen=True)
 class CheckOption(Option):
     """A radio or checkbox option."""
+
     default: bool = False
     type: str = "radio"
 
@@ -69,6 +71,7 @@ class CheckOption(Option):
 @attr.s(auto_attribs=True, frozen=True)
 class TextFieldOption(Option):
     """A text field option, which can have an enabler checkbox attached."""
+
     required: bool = True
     enabler: typing.Optional[str] = None
     enabled_by_default: bool = True
@@ -135,10 +138,16 @@ class SimpleSQLReport(Report):
             raise ValueError("Results do not match expected column headers")
         results_with_alignment = (zip(row, column_alignment) for row in results)
 
-        return mark_safe(render_to_string("expenses/reports/report_basic_table.html", {
-            'results_with_alignment': results_with_alignment,
-            'column_headers_with_alignment': column_headers_with_alignment,
-        }, self.request))
+        return mark_safe(
+            render_to_string(
+                "expenses/reports/report_basic_table.html",
+                {
+                    "results_with_alignment": results_with_alignment,
+                    "column_headers_with_alignment": column_headers_with_alignment,
+                },
+                self.request,
+            )
+        )
 
     def run(self) -> SafeString:
         engine: Engine = Engine.get_from_connection(connection)
@@ -155,10 +164,7 @@ def format_yearmonth(yearmonth: str) -> str:
     # Querying for yearmonth is easier (especially with sqlite3) and about the same speed,
     # even if we need to apply some more logic Python-side to make it look nice.
     year, month = map(int, yearmonth.split("-"))
-    return format_skeleton(
-        'yMMMM',
-        datetime.date(year, month, 1),
-        locale=get_babel_locale())
+    return format_skeleton("yMMMM", datetime.date(year, month, 1), locale=get_babel_locale())
 
 
 class MonthCategoryBreakdown(SimpleSQLReport):
@@ -180,7 +186,8 @@ class MonthCategoryBreakdown(SimpleSQLReport):
             WHERE expenses_expense.user_id = %s AND category_id = expenses_category.id
             GROUP BY yearmonth, category_id, "expenses_category"."order"
             ORDER BY yearmonth, "expenses_category"."order", category_id;
-            """},
+            """,
+        },
         "month": {
             Engine.POSTGRESQL: """
             SELECT to_char(date, 'YYYY-MM') AS yearmonth, SUM(amount)
@@ -193,7 +200,7 @@ class MonthCategoryBreakdown(SimpleSQLReport):
             FROM expenses_expense
             WHERE expenses_expense.user_id = %s
             GROUP BY yearmonth ORDER BY yearmonth;
-            """
+            """,
         },
         "category": {
             Engine.ANY_ENGINE: """
@@ -202,14 +209,19 @@ class MonthCategoryBreakdown(SimpleSQLReport):
             WHERE expenses_expense.user_id = %s AND category_id = expenses_category.id
             GROUP BY category_id, "expenses_category"."order"
             ORDER BY "expenses_category"."order", category_id;
-        """}
+        """
+        },
     }
     options = [
-        OptionGroup(_("Break down expenses by:"), "breakdown", [
-            CheckOption(_("Month and category"), "month_category"),
-            CheckOption(_("Month"), "month"),
-            CheckOption(_("Category"), "category"),
-        ])
+        OptionGroup(
+            _("Break down expenses by:"),
+            "breakdown",
+            [
+                CheckOption(_("Month and category"), "month_category"),
+                CheckOption(_("Month"), "month"),
+                CheckOption(_("Category"), "category"),
+            ],
+        )
     ]
 
     def __init__(self, request, settings: typing.Dict[CheckOption, typing.Any]):
@@ -226,15 +238,9 @@ class MonthCategoryBreakdown(SimpleSQLReport):
             names = [_("Month")] + [c.html_link() for c in user_categories] + [_("Total")]
             return names, ["right"] * len(names)
         elif self.query_type == "category":
-            return (
-                [_("Category"), _("Total")],
-                ["left", "right"]
-            )
+            return ([_("Category"), _("Total")], ["left", "right"])
         elif self.query_type == "month":
-            return (
-                [_("Month"), _("Total")],
-                ["right", "right"]
-            )
+            return ([_("Month"), _("Total")], ["right", "right"])
 
     def preprocess_rows(self, results: typing.Iterable) -> typing.Iterable:
         if self.query_type == "month_category":
@@ -256,7 +262,9 @@ class MonthCategoryBreakdown(SimpleSQLReport):
                 yield row
 
             cat_totals_values = list(cat_totals.values())
-            yield [_("Grand Total")] + [format_money(i) for i in cat_totals_values] + [format_money(sum(cat_totals_values))]
+            yield [_("Grand Total")] + [format_money(i) for i in cat_totals_values] + [
+                format_money(sum(cat_totals_values))
+            ]
 
         elif self.query_type == "month":
             total = 0
@@ -267,9 +275,7 @@ class MonthCategoryBreakdown(SimpleSQLReport):
             yield _("Grand Total"), format_money(total)
         else:
             # category
-            user_categories: typing.Dict[int, Category] = {
-                c.pk: c
-                for c in Category.user_objects(self.request)}
+            user_categories: typing.Dict[int, Category] = {c.pk: c for c in Category.user_objects(self.request)}
             total = 0
             for category, value in results:
                 yield (user_categories[category].html_link(), format_money(value))
@@ -281,16 +287,20 @@ class MonthCategoryBreakdown(SimpleSQLReport):
 class VendorStats(SimpleSQLReport):
     name = _("Vendor statistics")
     slug = "vendor_stats"
-    description = _("Get basic statistics about money spent at each vendor. Includes vendors with at least 2 separate purchases.")
+    description = _(
+        "Get basic statistics about money spent at each vendor. Includes vendors with at least 2 separate purchases."
+    )
     query_type = "vendor_stats"
 
     sql = {
-        "vendor_stats": {Engine.ANY_ENGINE: """
+        "vendor_stats": {
+            Engine.ANY_ENGINE: """
         SELECT vendor, COUNT(*) AS count, SUM(amount) AS sum, AVG(amount) AS avg
         FROM expenses_expense
         WHERE user_id = %s GROUP BY vendor HAVING COUNT(*) > 1
         ORDER BY sum DESC, vendor;
-        """}
+        """
+        }
     }
 
     def get_column_headers(self, engine: Engine) -> (typing.List[str], typing.List[str]):
@@ -300,14 +310,18 @@ class VendorStats(SimpleSQLReport):
         total_count = 0
         total_amount = 0
         for vendor, count, amount, avg in results:
-            url = reverse('expenses:search') + "?for=expenses&include=expenses&include=bills&category_all=true&q=" + urllib.parse.quote_plus(vendor)
+            url = (
+                reverse("expenses:search")
+                + "?for=expenses&include=expenses&include=bills&category_all=true&q="
+                + urllib.parse.quote_plus(vendor)
+            )
             vendor_link = format_html('<a href="{}">{}</a>', url, vendor)
             total_count += count
             total_amount += amount
             yield vendor_link, count, format_money(amount), format_money(avg)
 
         if total_count > 0:
-            yield _("Grand Total"), total_count, format_money(total_amount), format_money(total_amount/total_count)
+            yield _("Grand Total"), total_count, format_money(total_amount), format_money(total_amount / total_count)
 
 
 class DailySpending(SimpleSQLReport):
@@ -315,17 +329,19 @@ class DailySpending(SimpleSQLReport):
     slug = "daily_spending"
     description = _("Get daily, weekly, monthly average spending.")
     sql = {
-        "data": {Engine.ANY_ENGINE: """
+        "data": {
+            Engine.ANY_ENGINE: """
         SELECT category_id, COUNT(amount), SUM(amount)
         FROM expenses_expense, expenses_category
         WHERE expenses_expense.user_id = %s AND category_id = expenses_category.id
         GROUP BY category_id, "expenses_category"."order"
         ORDER BY "expenses_category"."order", category_id;
-        """},
+        """
+        },
         "day_counts": {
             Engine.SQLITE3: "SELECT COUNT(DISTINCT date), MAX(julianday(date)) - MIN(julianday(date)) FROM expenses_expense WHERE user_id=%s;",
-            Engine.POSTGRESQL: "SELECT COUNT(DISTINCT date), MAX(date) - MIN(date) FROM expenses_expense WHERE user_id=%s;"
-        }
+            Engine.POSTGRESQL: "SELECT COUNT(DISTINCT date), MAX(date) - MIN(date) FROM expenses_expense WHERE user_id=%s;",
+        },
     }
 
     def run(self):
@@ -353,7 +369,7 @@ class DailySpending(SimpleSQLReport):
             1: _("Per 1 day"),
             7: _("Per week (7 days)"),
             30: _("Per month (30 days)"),
-            365: _("Per year (365 days)")
+            365: _("Per year (365 days)"),
         }
 
         all_time_count = all_time_sum = 0
@@ -361,15 +377,25 @@ class DailySpending(SimpleSQLReport):
             all_time_count += at_cat_count
             all_time_sum += at_cat_sum
 
-        daily_data = self.compute_daily_data(all_time_count, all_time_sum, days, days_names, timescales, timescale_names)
-        cat_tables = self.compute_category_data(cat_data, user_categories, days, days_names, timescales, timescale_names)
+        daily_data = self.compute_daily_data(
+            all_time_count, all_time_sum, days, days_names, timescales, timescale_names
+        )
+        cat_tables = self.compute_category_data(
+            cat_data, user_categories, days, days_names, timescales, timescale_names
+        )
 
-        return mark_safe(render_to_string("expenses/reports/report_daily_spending.html", {
-            'days': days,
-            'daily_data': daily_data,
-            'cat_links': [cat.html_link() for cat in user_categories],
-            'cat_tables': cat_tables
-        }, self.request))
+        return mark_safe(
+            render_to_string(
+                "expenses/reports/report_daily_spending.html",
+                {
+                    "days": days,
+                    "daily_data": daily_data,
+                    "cat_links": [cat.html_link() for cat in user_categories],
+                    "cat_tables": cat_tables,
+                },
+                self.request,
+            )
+        )
 
     def compute_daily_data(self, all_time_count, all_time_sum, days, days_names, timescales, timescale_names):
         """Compute the “daily data” table."""
@@ -384,9 +410,7 @@ class DailySpending(SimpleSQLReport):
 
         daily_data = [timescale_rows[timescale] for timescale in timescales]
         all_time_row = [int(all_time_count), format_money(all_time_sum)]
-        daily_data.append(
-            [_("All time")] + all_time_row + all_time_row
-        )
+        daily_data.append([_("All time")] + all_time_row + all_time_row)
 
         return daily_data
 
@@ -431,27 +455,44 @@ class ProductPriceHistory(SimpleSQLReport):
     slug = "product_price_history"
     description = _("Get price history for a product.")
     column_headers = (
-        [_("Vendor"),
-         _("Product"),
-         _("Date"),
-         _("Serving"),
-         _("Serving Unit"),
-         _("Count"),
-         _("Unit Price"),
-         _("Price per Serving Unit"),
-         _("Difference")],
-        ["left", "left", "left", "right", "right", "right", "right", "right", "right"]
+        [
+            _("Vendor"),
+            _("Product"),
+            _("Date"),
+            _("Serving"),
+            _("Serving Unit"),
+            _("Count"),
+            _("Unit Price"),
+            _("Price per Serving Unit"),
+            _("Difference"),
+        ],
+        ["left", "left", "left", "right", "right", "right", "right", "right", "right"],
     )
-    column_names = ["vendor", "product", "date", "serving", "pricing_unit", "count", "unit_price", "price_per_unit", "diff"]
+    column_names = [
+        "vendor",
+        "product",
+        "date",
+        "serving",
+        "pricing_unit",
+        "count",
+        "unit_price",
+        "price_per_unit",
+        "diff",
+    ]
     options = [
-        OptionGroup(_("Customize data included in report"), "product_box", [
-            TextFieldOption(_("Product name"), "product", False),
-            TextFieldOption(_("Vendor"), "vendor", False),
-            CheckOption(_("Separate history for each product name"), "partition_product", True, type="check"),
-            CheckOption(_("Separate history for each vendor"), "partition_vendor", True, type="check"),
-            CheckOption(_("Fuzzy search"), "fuzzy_search", False, type="check"),
-            # TODO more filtering options
-        ], type="text")
+        OptionGroup(
+            _("Customize data included in report"),
+            "product_box",
+            [
+                TextFieldOption(_("Product name"), "product", False),
+                TextFieldOption(_("Vendor"), "vendor", False),
+                CheckOption(_("Separate history for each product name"), "partition_product", True, type="check"),
+                CheckOption(_("Separate history for each vendor"), "partition_vendor", True, type="check"),
+                CheckOption(_("Fuzzy search"), "fuzzy_search", False, type="check"),
+                # TODO more filtering options
+            ],
+            type="text",
+        )
     ]
     query_type = "product_price_history"
     sql = {
@@ -491,55 +532,57 @@ class ProductPriceHistory(SimpleSQLReport):
                 WHERE expenses_billitem.user_id = %s {filter_options}
             ) sq
             ORDER BY {order_clause};
-            """
+            """,
         }
     }
 
     def query(self, cursor, sql: str) -> typing.Iterable:
-        filter_options = ''
+        filter_options = ""
         sql_params = [self.request.user.id]
 
-        product = self.settings.get(self.options[0][0], '')
-        vendor = self.settings.get(self.options[0][1], '')
+        product = self.settings.get(self.options[0][0], "")
+        vendor = self.settings.get(self.options[0][1], "")
         partition_product = self.settings.get(self.options[0][2], False)
         partition_vendor = self.settings.get(self.options[0][3], False)
         fuzzy_search = self.settings.get(self.options[0][4], False)
 
         if Engine.get_from_connection(connection) == Engine.POSTGRESQL:
             # We always use ILIKE for case insensitvity, but not always provide %% for fuzzy search
-            product_fs = '%' + product + '%' if fuzzy_search else product
-            vendor_fs = '%' + vendor + '%' if fuzzy_search else vendor
+            product_fs = "%" + product + "%" if fuzzy_search else product
+            vendor_fs = "%" + vendor + "%" if fuzzy_search else vendor
 
             if product:
-                filter_options += ' AND product ILIKE %s'
+                filter_options += " AND product ILIKE %s"
                 sql_params.append(product_fs)
             if vendor:
-                filter_options += ' AND vendor ILIKE %s'
+                filter_options += " AND vendor ILIKE %s"
                 sql_params.append(vendor_fs)
         else:
-            product_fs = '%' + product.lower() + '%' if fuzzy_search else product.lower()
-            vendor_fs = '%' + vendor.lower() + '%' if fuzzy_search else vendor.lower()
+            product_fs = "%" + product.lower() + "%" if fuzzy_search else product.lower()
+            vendor_fs = "%" + vendor.lower() + "%" if fuzzy_search else vendor.lower()
 
             if product:
-                filter_options += ' AND LOWER(product) {} %s'.format('LIKE' if fuzzy_search else '=')
+                filter_options += " AND LOWER(product) {} %s".format("LIKE" if fuzzy_search else "=")
                 sql_params.append(product_fs)
             if vendor:
-                filter_options += ' AND LOWER(vendor) {} %s'.format('LIKE' if fuzzy_search else '=')
+                filter_options += " AND LOWER(vendor) {} %s".format("LIKE" if fuzzy_search else "=")
                 sql_params.append(vendor_fs)
 
         if partition_vendor and partition_product:
-            order_clause = 'vendor, product, date'
-            partition_clause = 'PARTITION BY vendor, product ORDER BY date, date_added'
+            order_clause = "vendor, product, date"
+            partition_clause = "PARTITION BY vendor, product ORDER BY date, date_added"
         elif partition_vendor:
-            order_clause = 'vendor, product, date'
-            partition_clause = 'PARTITION BY vendor ORDER BY date, date_added, product'
+            order_clause = "vendor, product, date"
+            partition_clause = "PARTITION BY vendor ORDER BY date, date_added, product"
         elif partition_product:
-            order_clause = 'product, date, vendor'
-            partition_clause = 'PARTITION BY product ORDER BY date, date_added, vendor'
+            order_clause = "product, date, vendor"
+            partition_clause = "PARTITION BY product ORDER BY date, date_added, vendor"
         else:
-            order_clause = 'date, vendor, product'
-            partition_clause = 'ORDER BY date, date_added, vendor, product'
-        sql_full = sql.format(filter_options=filter_options, order_clause=order_clause, partition_clause=partition_clause)
+            order_clause = "date, vendor, product"
+            partition_clause = "ORDER BY date, date_added, vendor, product"
+        sql_full = sql.format(
+            filter_options=filter_options, order_clause=order_clause, partition_clause=partition_clause
+        )
         cursor.execute(sql_full, sql_params)
         return cursor.fetchall()
 
@@ -587,16 +630,22 @@ class ProductPriceHistory(SimpleSQLReport):
             group = grouper(row)
             row = list(row)
             if group != current_group:
-                results_grouped.append({'title': group_title.format(*row), 'rows': []})
+                results_grouped.append({"title": group_title.format(*row), "rows": []})
                 current_group = group
 
-            results_grouped[-1]['rows'].append({k: v for k, v in zip(self.column_names, row)})
+            results_grouped[-1]["rows"].append({k: v for k, v in zip(self.column_names, row)})
 
-        return mark_safe(render_to_string("expenses/reports/report_product_price_history.html", {
-            'results_grouped': results_grouped,
-            'column_headers_with_alignment': column_headers_with_alignment,
-            'show_group_title': bool(group_title)
-        }, self.request))
+        return mark_safe(
+            render_to_string(
+                "expenses/reports/report_product_price_history.html",
+                {
+                    "results_grouped": results_grouped,
+                    "column_headers_with_alignment": column_headers_with_alignment,
+                    "show_group_title": bool(group_title),
+                },
+                self.request,
+            )
+        )
 
 
 def no_results_to_show():
@@ -604,6 +653,6 @@ def no_results_to_show():
     return format_html('<p class="expenses-empty">{}</p>', _("No results to show."))
 
 
-AVAILABLE_REPORTS: typing.Dict[str, typing.Type[Report]] = {r.slug: r for r in [
-    MonthCategoryBreakdown, VendorStats, DailySpending, ProductPriceHistory
-]}
+AVAILABLE_REPORTS: typing.Dict[str, typing.Type[Report]] = {
+    r.slug: r for r in [MonthCategoryBreakdown, VendorStats, DailySpending, ProductPriceHistory]
+}

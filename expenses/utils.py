@@ -20,7 +20,9 @@ def format_money(amount: typing.Union[int, float, decimal.Decimal]) -> str:
     """Format an amount of money for display."""
     if amount is None:
         amount = 0
-    return babel.numbers.format_currency(amount, settings.EXPENSES_CURRENCY_CODE, locale=settings.EXPENSES_CURRENCY_LOCALE)
+    return babel.numbers.format_currency(
+        amount, settings.EXPENSES_CURRENCY_CODE, locale=settings.EXPENSES_CURRENCY_LOCALE
+    )
 
 
 def today_date() -> datetime.date:
@@ -30,12 +32,12 @@ def today_date() -> datetime.date:
 
 def revchron(qs):
     """Sort expenses in reverse-chronological order."""
-    return qs.order_by('-date', '-date_added')
+    return qs.order_by("-date", "-date_added")
 
 
 def round_money(amount: decimal.Decimal) -> decimal.Decimal:
     """Round money in a way appropriate for money."""
-    return amount.quantize(decimal.Decimal('.01'), rounding=decimal.ROUND_HALF_UP)
+    return amount.quantize(decimal.Decimal(".01"), rounding=decimal.ROUND_HALF_UP)
 
 
 def dict_overwrite(destdict: dict, destkey, srcdict: dict, srckey=None) -> None:
@@ -79,18 +81,18 @@ def parse_amount_input(amount_str: str) -> typing.Optional[decimal.Decimal]:
         return decimal.Decimal(amount_str)
     except decimal.InvalidOperation:
         try:
-            return decimal.Decimal(amount_str.replace(',', '.'))
+            return decimal.Decimal(amount_str.replace(",", "."))
         except ValueError:
             return None
 
 
 def get_babel_locale() -> str:
     """Get a babel-friendly locale name."""
-    lang, region = get_language().split('-')
+    lang, region = get_language().split("-")
     return f"{lang}_{region.upper()}"
 
 
-T = typing.TypeVar('T')
+T = typing.TypeVar("T")
 
 
 def peek(iterable: typing.Iterable[T]) -> (T, typing.Iterable[T]):

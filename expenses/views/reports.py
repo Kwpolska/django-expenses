@@ -19,12 +19,16 @@ from expenses.reports import AVAILABLE_REPORTS, Option, OptionGroup, Report
 
 @login_required
 def report_list(request: HttpRequest):
-    return render(request, 'expenses/report_list.html', {
-        'htmltitle': _("Reports"),
-        'pid': 'report_list',
-        # work around class attributes not picked up by Django templates
-        'reports': [r.meta_to_dict() for r in AVAILABLE_REPORTS.values()],
-    })
+    return render(
+        request,
+        "expenses/report_list.html",
+        {
+            "htmltitle": _("Reports"),
+            "pid": "report_list",
+            # work around class attributes not picked up by Django templates
+            "reports": [r.meta_to_dict() for r in AVAILABLE_REPORTS.values()],
+        },
+    )
 
 
 @login_required
@@ -33,18 +37,20 @@ def report_setup(request: HttpRequest, slug: str):
         return HttpResponseNotFound()
     report: typing.Type[Report] = AVAILABLE_REPORTS[slug]
 
-    return render(request, 'expenses/report_setup.html', {
-        'htmltitle': report.name,
-        'pid': 'report_setup',
-        # work around class attributes not picked up by Django templates
-        'report': report.meta_to_dict()
-    })
+    return render(
+        request,
+        "expenses/report_setup.html",
+        {
+            "htmltitle": report.name,
+            "pid": "report_setup",
+            # work around class attributes not picked up by Django templates
+            "report": report.meta_to_dict(),
+        },
+    )
 
 
 def get_settings_from_post_data(
-        request: HttpRequest,
-        options: typing.List[Option],
-        group: OptionGroup
+    request: HttpRequest, options: typing.List[Option], group: OptionGroup
 ) -> typing.Dict[Option, typing.Any]:
     values: typing.Dict[Option, typing.Any] = {}
     if group.type == "radio":
@@ -89,23 +95,27 @@ def report_run(request, slug):
     end_time = time.monotonic()
 
     postfields: typing.List[(str, str)] = []
-    output_format = 'html'
+    output_format = "html"
     for k, v in request.POST.items():
-        if k == 'output_format':
+        if k == "output_format":
             output_format = v
-        elif k != 'csrfmiddlewaretoken':
+        elif k != "csrfmiddlewaretoken":
             postfields.append((k, v))
 
-    if output_format == 'print':
-        template = 'expenses/report_run_print.html'
+    if output_format == "print":
+        template = "expenses/report_run_print.html"
     else:
-        template = 'expenses/report_run.html'
+        template = "expenses/report_run.html"
 
-    return render(request, template, {
-        'htmltitle': report.name,
-        'pid': 'report_run',
-        'report': report,
-        'report_html': report_html,
-        'time': end_time - start_time,
-        'postfields': postfields
-    })
+    return render(
+        request,
+        template,
+        {
+            "htmltitle": report.name,
+            "pid": "report_run",
+            "report": report,
+            "report_html": report_html,
+            "time": end_time - start_time,
+            "postfields": postfields,
+        },
+    )
