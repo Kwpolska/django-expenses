@@ -39,8 +39,8 @@ You should do the following changes to ``settings.py``:
 * Add ``'expenses'`` and ``'oauth2_provider'`` to ``INSTALLED_APPS``
 * Add ``'oauth2_provider.middleware.OAuth2TokenMiddleware'`` to ``MIDDLEWARE``
   *after* ``SessionMiddleware``
-* If you’re me, add ``'expenses.middleware.ForcePolishLanguageMiddleware'``
-  to ``MIDDLEWARE`` as well
+* If you’re me, add ``'django.middleware.locale.LocaleMiddleware', 'expenses.middleware.ForcePolishLanguageMiddleware'``
+  to ``MIDDLEWARE`` as well (before CommonMiddleware and after S
 
 and also set the following options:
 

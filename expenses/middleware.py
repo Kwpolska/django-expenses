@@ -16,8 +16,7 @@ class ForcePolishLanguageMiddleware:
 
     def process_view(self, request, view_func, view_args, view_kwargs):
         if request.resolver_match.app_name == 'expenses':
-            with translation.override('pl-pl'):
-                return view_func(request, *view_args, **view_kwargs)
-        else:
-            return view_func(request, *view_args, **view_kwargs)
+            translation.activate('pl')
+            request.LANGUAGE_CODE = translation.get_language()
+        return view_func(request, *view_args, **view_kwargs)
 

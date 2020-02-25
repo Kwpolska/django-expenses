@@ -527,7 +527,6 @@ class ProductPriceHistory(SimpleSQLReport):
                 filter_options += ' AND LOWER(vendor) {} %s'.format('LIKE' if fuzzy_search else '=')
                 sql_params.append(vendor_fs)
 
-
         if partition_vendor and partition_product:
             order_clause = 'vendor, product, date'
             partition_clause = 'PARTITION BY vendor, product ORDER BY date, date_added'
