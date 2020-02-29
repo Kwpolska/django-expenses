@@ -205,7 +205,6 @@ class AutoComplete {
         this.keyboardSelection = newValue;
         const selection = this.acDiv.querySelector(`button[data-id="${newValue}"]`);
         selection.classList.add("active");
-        selection.scrollIntoView();
     }
 }
 
