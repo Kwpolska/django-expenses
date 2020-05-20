@@ -15,6 +15,7 @@ class AutoComplete {
     private displayHandler?: (data: string | object) => string;
     private selectHandler?: (data: string | object) => void;
     private input: HTMLInputElement;
+    private hiddenBySelection: string;
     public name: string;
     private url: string | (() => string);
     private acDiv: HTMLDivElement;
@@ -33,6 +34,7 @@ class AutoComplete {
         this.name = (name === undefined || name == null) ? input.name : name;
         this.url = url;
         this.hiddenByLength = false;
+        this.hiddenBySelection = null;
         this.previousCount = 0;
         this.keyboardSelection = -1;
         this.hideTimeout = null;
@@ -90,6 +92,9 @@ class AutoComplete {
         } else if (this.hiddenByLength) {
             this.unhideAcDiv();
             this.hiddenByLength = false;
+        } else if (this.hiddenBySelection !== null) {
+            this.unhideAcDiv();
+            this.hiddenBySelection = null;
         }
         this.createPopper();
         if (usedUrl.indexOf("?") !== -1) {
@@ -125,7 +130,8 @@ class AutoComplete {
     select(value: any) {
         if (this.selectHandler !== undefined) this.selectHandler(value);
         else this.input.value = this.getDisplayText(value);
-        this.input.blur();
+        this.input.focus();
+        this.hiddenBySelection = value;
         setTimeout(() => this.hideAcDiv(), 10);
     }
 
