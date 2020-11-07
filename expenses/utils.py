@@ -88,7 +88,9 @@ def parse_amount_input(amount_str: str) -> typing.Optional[decimal.Decimal]:
 
 def get_babel_locale() -> str:
     """Get a babel-friendly locale name."""
-    lang, region = get_language().split("-")
+    lang, _, region = get_language().partition("-")
+    if not region:
+        region = lang.upper()
     return f"{lang}_{region.upper()}"
 
 
