@@ -1,6 +1,6 @@
 /*
  * Expenses AutoComplete
- * Copyright © 2018-2020, Chris Warrick. All rights reserved. License: 3-clause BSD.
+ * Copyright © 2018-2021, Chris Warrick. All rights reserved. License: 3-clause BSD.
  */
 
 const CLS_HIDDEN = "expenses-autocomplete-hidden";
