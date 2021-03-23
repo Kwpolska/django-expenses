@@ -90,9 +90,6 @@ def report_run(request, slug):
         settings.update(get_settings_from_post_data(request, opt.options, opt))
 
     report: Report = report_class(request, settings)
-    start_time = time.monotonic()
-    report_html = report.run()
-    end_time = time.monotonic()
 
     postfields: typing.List[(str, str)] = []
     output_format = "html"
@@ -104,8 +101,15 @@ def report_run(request, slug):
 
     if output_format == "print":
         template = "expenses/report_run_print.html"
+    elif output_format == "csv":
+        report_csv = report.run_csv()
+        return report_csv
     else:
         template = "expenses/report_run.html"
+
+    start_time = time.monotonic()
+    report_html = report.run()
+    end_time = time.monotonic()
 
     return render(
         request,

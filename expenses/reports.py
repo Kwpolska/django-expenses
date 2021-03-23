@@ -5,6 +5,7 @@
 
 """Report support framework."""
 import abc
+import csv
 import decimal
 import itertools
 import urllib.parse
@@ -18,13 +19,14 @@ import typing
 import django.http
 from babel.dates import format_skeleton
 from django.db import connection
+from django.http.response import HttpResponse
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.safestring import SafeString
 from django.utils.html import format_html, mark_safe
 from django.utils.translation import gettext_lazy as _
 from expenses.models import Category
-from expenses.utils import format_money, get_babel_locale, peek
+from expenses.utils import format_money, format_number, get_babel_locale, peek
 
 
 class Engine(enum.Enum):
@@ -78,6 +80,40 @@ class TextFieldOption(Option):
     type: str = attr.ib("text", init=False, repr=False)
 
 
+class ReportItemFormatter:
+    def format_money(self, amount: typing.Union[int, float, decimal.Decimal]) -> str:
+        return format_money(amount)
+
+    def format_category(self, c: Category) -> str:
+        return c
+
+    def format_vendor_link(self, vendor: str) -> str:
+        return vendor
+
+
+class CsvFormatter(ReportItemFormatter):
+    """"Subclass for csv items formatting"""
+
+    def format_money(self, amount: typing.Union[int, float, decimal.Decimal]) -> str:
+        return format_number(amount)
+
+
+class HtmlFormatter(ReportItemFormatter):
+    """"Subclass for html items formatting"""
+
+    def format_category(self, c: Category) -> str:
+        return c.html_link()
+
+    def format_vendor_link(self, vendor: str) -> str:
+        url = (
+            reverse("expenses:search")
+            + "?for=expenses&include=expenses&include=bills&category_all=true&q="
+            + urllib.parse.quote_plus(vendor)
+        )
+        vendor_link = format_html('<a href="{}">{}</a>', url, vendor)
+        return vendor_link
+
+
 class Report(metaclass=abc.ABCMeta):
     name: str = None
     slug: str = None
@@ -118,10 +154,10 @@ class SimpleSQLReport(Report):
         cursor.execute(sql, sql_params)
         return cursor.fetchall()
 
-    def get_column_headers(self, engine: Engine) -> (typing.List[str], typing.List[str]):
+    def get_column_headers(self, engine: Engine, is_html=True) -> (typing.List[str], typing.List[str]):
         return self.column_headers
 
-    def preprocess_rows(self, results: typing.Iterable) -> typing.Iterable:
+    def preprocess_rows(self, results: typing.Iterable, is_html=True) -> typing.Iterable:
         return results
 
     def tabulate(self, results: typing.Iterable, engine: Engine) -> SafeString:
@@ -149,13 +185,42 @@ class SimpleSQLReport(Report):
             )
         )
 
+    def create_file(self, results: typing.Iterable, engine: Engine) -> HttpResponse:
+        column_headers: (typing.List[str], typing.List[str]) = self.get_column_headers(engine, False)
+        column_header_names = column_headers[0]
+
+        first_row, results = peek(self.preprocess_rows(results, False))
+
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="report.csv"'
+        response.write("\ufeff".encode("utf8"))
+        writer = csv.writer(response)
+        writer.writerow(column_header_names)
+
+        for row in results:
+            writer.writerow(row)
+
+        if not results:
+            return no_results_to_show()
+
+        if len(column_header_names) != len(first_row):
+            raise ValueError("Results do not match expected column headers")
+        return response
+
+    def run_csv(self) -> HttpResponse:
+        engine: Engine = Engine.get_from_connection(connection)
+        sql: str = self.get_query(self.query_type, engine)
+
+        with connection.cursor() as cursor:
+            results: typing.Iterable = self.query(cursor, sql)
+        return self.create_file(results, engine)
+
     def run(self) -> SafeString:
         engine: Engine = Engine.get_from_connection(connection)
         sql: str = self.get_query(self.query_type, engine)
 
         with connection.cursor() as cursor:
             results: typing.Iterable = self.query(cursor, sql)
-
         return self.tabulate(results, engine)
 
 
@@ -232,17 +297,19 @@ class MonthCategoryBreakdown(SimpleSQLReport):
         else:
             raise ValueError("Query type unknown")
 
-    def get_column_headers(self, engine: Engine) -> (typing.List[str], typing.List[str]):
+    def get_column_headers(self, engine: Engine, is_html=True) -> (typing.List[str], typing.List[str]):
+        item_formatter = HtmlFormatter() if is_html else CsvFormatter()
         if self.query_type == "month_category":
             user_categories: typing.Iterable[Category] = Category.user_objects(self.request)
-            names = [_("Month")] + [c.html_link() for c in user_categories] + [_("Total")]
+            names = [_("Month")] + [item_formatter.format_category(c) for c in user_categories] + [_("Total")]
             return names, ["right"] * len(names)
         elif self.query_type == "category":
             return ([_("Category"), _("Total")], ["left", "right"])
         elif self.query_type == "month":
             return ([_("Month"), _("Total")], ["right", "right"])
 
-    def preprocess_rows(self, results: typing.Iterable) -> typing.Iterable:
+    def preprocess_rows(self, results: typing.Iterable, is_html=True) -> typing.Iterable:
+        item_formatter = HtmlFormatter() if is_html else CsvFormatter()
         if self.query_type == "month_category":
             user_categories: typing.Iterable[Category] = Category.user_objects(self.request)
             user_category_ids: typing.Dict[int, int] = {}
@@ -252,36 +319,39 @@ class MonthCategoryBreakdown(SimpleSQLReport):
                 cat_totals[cat.pk] = 0
             cat_count = len(user_category_ids)
             for yearmonth, items in itertools.groupby(results, operator.itemgetter(0)):
-                row = [format_yearmonth(yearmonth)] + [format_money(0)] * cat_count
+                row = [format_yearmonth(yearmonth)] + [item_formatter.format_money(0)] * cat_count
                 row_total = 0
                 for _ym, category_id, value in items:
-                    row[user_category_ids[category_id]] = format_money(value)
+                    row[user_category_ids[category_id]] = item_formatter.format_money(value)
                     row_total += value
                     cat_totals[category_id] += value
-                row.append(format_money(row_total))
+                row.append(item_formatter.format_money(row_total))
                 yield row
 
             cat_totals_values = list(cat_totals.values())
-            yield [_("Grand Total")] + [format_money(i) for i in cat_totals_values] + [
-                format_money(sum(cat_totals_values))
+            yield [_("Grand Total")] + [item_formatter.format_money(i) for i in cat_totals_values] + [
+                item_formatter.format_money(sum(cat_totals_values))
             ]
 
         elif self.query_type == "month":
             total = 0
             for yearmonth, value in results:
-                yield format_yearmonth(yearmonth), format_money(value)
+                yield format_yearmonth(yearmonth), item_formatter.format_money(value)
                 total += value
 
-            yield _("Grand Total"), format_money(total)
+            yield _("Grand Total"), item_formatter.format_money(total)
         else:
             # category
             user_categories: typing.Dict[int, Category] = {c.pk: c for c in Category.user_objects(self.request)}
             total = 0
             for category, value in results:
-                yield (user_categories[category].html_link(), format_money(value))
+                yield (
+                    item_formatter.format_category(user_categories[category]),
+                    item_formatter.format_money(value),
+                )
                 total += value
 
-            yield _("Grand Total"), format_money(total)
+            yield _("Grand Total"), item_formatter.format_money(total)
 
 
 class VendorStats(SimpleSQLReport):
@@ -303,25 +373,24 @@ class VendorStats(SimpleSQLReport):
         }
     }
 
-    def get_column_headers(self, engine: Engine) -> (typing.List[str], typing.List[str]):
+    def get_column_headers(self, engine: Engine, is_html=True) -> (typing.List[str], typing.List[str]):
         return [_("Vendor"), _("Count"), _("Sum"), _("Average")], ["left", "right", "right", "right"]
 
-    def preprocess_rows(self, results: typing.Iterable) -> typing.Iterable:
+    def preprocess_rows(self, results: typing.Iterable, is_html=True) -> typing.Iterable:
         total_count = 0
         total_amount = 0
+        item_formatter = HtmlFormatter() if is_html else CsvFormatter()
+
         for vendor, count, amount, avg in results:
-            url = (
-                reverse("expenses:search")
-                + "?for=expenses&include=expenses&include=bills&category_all=true&q="
-                + urllib.parse.quote_plus(vendor)
-            )
-            vendor_link = format_html('<a href="{}">{}</a>', url, vendor)
+            vendor_link = item_formatter.format_vendor_link(vendor)
             total_count += count
             total_amount += amount
-            yield vendor_link, count, format_money(amount), format_money(avg)
+            yield vendor_link, count, item_formatter.format_money(amount), item_formatter.format_money(avg)
 
         if total_count > 0:
-            yield _("Grand Total"), total_count, format_money(total_amount), format_money(total_amount / total_count)
+            yield _("Grand Total"), total_count, item_formatter.format_money(total_amount), item_formatter.format_money(
+                total_amount / total_count
+            )
 
 
 class DailySpending(SimpleSQLReport):
@@ -344,7 +413,7 @@ class DailySpending(SimpleSQLReport):
         },
     }
 
-    def run(self):
+    def preprocess(self, is_html=True):
         engine: Engine = Engine.get_from_connection(connection)
 
         days: typing.Dict[str, int] = {}
@@ -381,8 +450,13 @@ class DailySpending(SimpleSQLReport):
             all_time_count, all_time_sum, days, days_names, timescales, timescale_names
         )
         cat_tables = self.compute_category_data(
-            cat_data, user_categories, days, days_names, timescales, timescale_names
+            cat_data, user_categories, days, days_names, timescales, timescale_names, is_html
         )
+
+        return days, daily_data, user_categories, cat_tables
+
+    def run(self):
+        days, daily_data, user_categories, cat_tables = self.preprocess()
 
         return mark_safe(
             render_to_string(
@@ -397,7 +471,64 @@ class DailySpending(SimpleSQLReport):
             )
         )
 
-    def compute_daily_data(self, all_time_count, all_time_sum, days, days_names, timescales, timescale_names):
+    def run_csv(self):
+        
+        days, daily_data, user_categories, cat_tables = self.preprocess(False)
+        
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="report.csv"'
+        response.write("\ufeff".encode("utf8"))
+        writer = csv.writer(response)
+
+        property_row = []
+        timescale_row = []
+        timescale_headers: typing.Iterable[str] = [
+            f"Na dE = {days['expense_days']} dni",
+            f"Na dA = {days['all_days']} dzień",
+        ]
+        for timescale in timescale_headers:
+            timescale_row.append(timescale)
+            property_row.append(_("Count"))
+            timescale_row.append(timescale)
+            property_row.append(_("Amount"))
+        timescale_row.insert(0, _("Time scale"))
+        property_row.insert(0, _("Property"))
+
+        writer.writerow(timescale_row)
+        writer.writerow(property_row)
+
+        for row in daily_data:
+            writer.writerow(row)
+
+        for title, results in cat_tables:
+            writer.writerow([])
+            writer.writerow([title])
+            cat_links = []
+            property_row = []
+            for cat in user_categories:
+                cat_links.append(cat.__str__())
+                property_row.append(_("Count"))
+                cat_links.append(cat.__str__())
+                property_row.append(_("Amount"))
+            property_row.insert(0, _("Property"))
+            cat_links.insert(0, _("Category"))
+            writer.writerow(cat_links)
+            writer.writerow(property_row)
+
+            for row in results:
+                writer.writerow(row)
+
+        return response
+
+    def compute_daily_data(
+        self,
+        all_time_count,
+        all_time_sum,
+        days,
+        days_names,
+        timescales,
+        timescale_names,
+    ):
         """Compute the “daily data” table."""
         timescale_rows = {num: [name] for num, name in timescale_names.items()}
 
@@ -414,13 +545,24 @@ class DailySpending(SimpleSQLReport):
 
         return daily_data
 
-    def compute_category_data(self, cat_data, user_categories, days, days_names, timescales, timescale_names):
+    def compute_category_data(
+        self, cat_data, user_categories, days, days_names, timescales, timescale_names, is_html=True
+    ):
         cat_totals: typing.Dict[int, typing.Union[float, decimal.Decimal]] = {}
 
-        cat_tables_headings = [
-            format_html(_("Category spending per expense-day (<var>d<sub>E</sub></var> = {})"), days["expense_days"]),
-            format_html(_("Category spending per day (<var>d<sub>A</sub></var> = {})"), days["all_days"]),
-        ]
+        if is_html:
+            cat_tables_headings = [
+                format_html(
+                    _("Category spending per expense-day (<var>d<sub>E</sub></var> = {})"), days["expense_days"]
+                ),
+                format_html(_("Category spending per day (<var>d<sub>A</sub></var> = {})"), days["all_days"]),
+            ]
+        else:
+            cat_tables_headings = [
+                f"{_('Category spending per expense-day dE =')} {days['expense_days']}",
+                f"{_('Category spending per day dA =')} {days['all_days']}",
+            ]
+
         cat_tables_contents = []
 
         # Just in case not all categories have expenses
