@@ -26,7 +26,7 @@ from django.utils.safestring import SafeString
 from django.utils.html import format_html, mark_safe
 from django.utils.translation import gettext_lazy as _
 from expenses.models import Category
-from expenses.utils import format_money, format_number, get_babel_locale, peek
+from expenses.utils import format_money, format_number, get_babel_locale, peek, today_date
 
 
 class Engine(enum.Enum):
@@ -85,7 +85,7 @@ class ReportItemFormatter:
         return format_money(amount)
 
     def format_category(self, c: Category) -> str:
-        return c
+        return str(c)
 
     def format_vendor_link(self, vendor: str) -> str:
         return vendor
@@ -95,7 +95,7 @@ class CsvFormatter(ReportItemFormatter):
     """"Subclass for csv items formatting"""
 
     def format_money(self, amount: typing.Union[int, float, decimal.Decimal]) -> str:
-        return format_number(amount)
+        return format_number(amount, 2)
 
 
 class HtmlFormatter(ReportItemFormatter):
@@ -191,10 +191,11 @@ class SimpleSQLReport(Report):
 
         first_row, results = peek(self.preprocess_rows(results, False))
 
+        
         response = HttpResponse(content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="report.csv"'
+        response["Content-Disposition"] = f'attachment; filename="{self.slug}-report-{today_date().strftime("%d-%m-%Y")}.csv"'
         response.write("\ufeff".encode("utf8"))
-        writer = csv.writer(response)
+        writer = csv.writer(response, delimiter=self.delimiter)
         writer.writerow(column_header_names)
 
         for row in results:
@@ -207,10 +208,10 @@ class SimpleSQLReport(Report):
             raise ValueError("Results do not match expected column headers")
         return response
 
-    def run_csv(self) -> HttpResponse:
+    def run_csv(self, delimiter=",") -> HttpResponse:
         engine: Engine = Engine.get_from_connection(connection)
         sql: str = self.get_query(self.query_type, engine)
-
+        self.delimiter = delimiter
         with connection.cursor() as cursor:
             results: typing.Iterable = self.query(cursor, sql)
         return self.create_file(results, engine)
@@ -476,7 +477,7 @@ class DailySpending(SimpleSQLReport):
         days, daily_data, user_categories, cat_tables = self.preprocess(False)
         
         response = HttpResponse(content_type="text/csv")
-        response["Content-Disposition"] = 'attachment; filename="report.csv"'
+        response["Content-Disposition"] = f'attachment; filename="{self.slug}-report-{today_date().strftime("%d-%m-%Y")}.csv"'
         response.write("\ufeff".encode("utf8"))
         writer = csv.writer(response)
 

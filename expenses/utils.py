@@ -25,12 +25,12 @@ def format_money(amount: typing.Union[int, float, decimal.Decimal]) -> str:
     )
 
 
-def format_number(amount: typing.Union[int, float, decimal.Decimal]) -> str:
+def format_number(amount: typing.Union[int, float, decimal.Decimal], decimal_places: int) -> str:
     """Format an amount of money for display."""
     if amount is None:
         amount = 0
     return babel.numbers.format_decimal(
-        round(amount, 2), locale=settings.EXPENSES_CURRENCY_LOCALE
+        round(amount, decimal_places), locale=settings.EXPENSES_CURRENCY_LOCALE
     )
 
 
