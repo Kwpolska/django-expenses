@@ -18,6 +18,7 @@ import typing
 
 import django.http
 from babel.dates import format_skeleton
+from django.conf import settings
 from django.db import connection
 from django.http.response import HttpResponse
 from django.template.loader import render_to_string
@@ -195,7 +196,7 @@ class SimpleSQLReport(Report):
         response = HttpResponse(content_type="text/csv")
         response["Content-Disposition"] = f'attachment; filename="{self.slug}-report-{today_date().strftime("%d-%m-%Y")}.csv"'
         response.write("\ufeff".encode("utf8"))
-        writer = csv.writer(response, delimiter=self.delimiter)
+        writer = csv.writer(response, delimiter=settings.CSV_DELIMITER)
         writer.writerow(column_header_names)
 
         for row in results:
@@ -208,10 +209,10 @@ class SimpleSQLReport(Report):
             raise ValueError("Results do not match expected column headers")
         return response
 
-    def run_csv(self, delimiter=",") -> HttpResponse:
+    def run_csv(self) -> HttpResponse:
         engine: Engine = Engine.get_from_connection(connection)
         sql: str = self.get_query(self.query_type, engine)
-        self.delimiter = delimiter
+
         with connection.cursor() as cursor:
             results: typing.Iterable = self.query(cursor, sql)
         return self.create_file(results, engine)
