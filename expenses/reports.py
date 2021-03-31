@@ -192,11 +192,11 @@ class SimpleSQLReport(Report):
 
         first_row, results = peek(self.preprocess_rows(results, False))
 
-        
         response = HttpResponse(content_type="text/csv")
-        response["Content-Disposition"] = f'attachment; filename="{self.slug}-report-{today_date().strftime("%d-%m-%Y")}.csv"'
+        filename = f'{self.slug}-report-{today_date().strftime("%Y-%m-%d")}.csv'
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
         response.write("\ufeff".encode("utf8"))
-        writer = csv.writer(response, delimiter=settings.CSV_DELIMITER)
+        writer = csv.writer(response, delimiter=settings.EXPENSES_CSV_DELIMITER)
         writer.writerow(column_header_names)
 
         for row in results:
@@ -474,11 +474,12 @@ class DailySpending(SimpleSQLReport):
         )
 
     def run_csv(self):
-        
+
         days, daily_data, user_categories, cat_tables = self.preprocess(False)
-        
+
         response = HttpResponse(content_type="text/csv")
-        response["Content-Disposition"] = f'attachment; filename="{self.slug}-report-{today_date().strftime("%d-%m-%Y")}.csv"'
+        filename = f'{self.slug}-report-{today_date().strftime("%Y-%m-%d")}.csv'
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
         response.write("\ufeff".encode("utf8"))
         writer = csv.writer(response)
 

@@ -48,6 +48,7 @@ and also set the following options:
 * ``EXPENSES_INDEX_COUNT`` — number of expenses to display on the dashboard
 * ``EXPENSES_CURRENCY_CODE`` — currency code, eg. ``PLN``
 * ``EXPENSES_CURRENCY_LOCALE`` — currency locale, eg. ``pl_PL``
+* ``EXPENSES_CSV_DELIMITER`` — delimiter for fields in CSV reports, eg. ``,`` or ``;`` or ``\t``
 
 The following ``MESSAGE_TAGS`` is recommended for the default templates:
 
