@@ -30,6 +30,7 @@
         <div class="expenses-setup-description">{% trans "Output format" %}</div>
         <label><input type="radio" name="output_format" value="html" checked> {% trans "Web page (default)" %}</label>
         <label><input type="radio" name="output_format" value="print"> {% trans "Printable version" %}</label>
+        <label><input type="radio" name="output_format" value="csv"> {% trans "Download" %}</label>
     </div>
         {% csrf_token %}
         <p class="expenses-buttons">
