@@ -59,7 +59,10 @@
 {% endblock %}
 
 {% block content_top %}
-    <div id="expenses-toolbar">{% block exp_toolbar %}{% endblock %}</div>
+    <div id="expenses-header">
+        <h1 id="expenses-page-title">{% block exp_title %}{{ htmltitle }}{% endblock %}</h1>
+        <div id="expenses-toolbar">{% block exp_toolbar %}{% endblock %}</div>
+    </div>
     <div id="cookiebox"></div>
     <div class="expenses-container">
         {% block content %}{% endblock %}

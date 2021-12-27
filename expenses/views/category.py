@@ -45,6 +45,7 @@ def category_show(request, slug):
     )
     page = request.GET.get("page")
     expenses = paginator.get_page(page)
+    title = "{} {}".format(_("Category:"), category.name)
     return render(
         request,
         "expenses/category_show.html",
@@ -52,6 +53,8 @@ def category_show(request, slug):
             "expenses": expenses,
             "category": category,
             "pid": "category_show",
+            "title": title,
+            "htmltitle": title,
         },
     )
 

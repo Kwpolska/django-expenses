@@ -1,13 +1,13 @@
 {% extends "expenses/expbase.html" %}
 {% load i18n %}
 {% load expenses_extras %}
+{% block exp_title %}{% trans "Bill editor" %}{% endblock %}
 {% block exp_toolbar %}
     <a class="btn btn-info" href="{% url 'expenses:bill_editmeta' expense.pk %}"><i class="fa fa-edit"></i> {% trans "Edit metadata" %}</a>
     <a class="btn btn-danger" href="{% url 'expenses:bill_delete' expense.pk %}"><i class="fa fa-trash-alt"></i> {% trans "Delete" %}</a>
     <a href="{% url 'expenses:bill_convert' expense.pk %}" class="btn btn-light">{% trans "Convert to expense" %}</a>
 {% endblock %}
 {% block content %}
-    <h1>{% trans "Bill editor" %}</h1>
     <div class="row mb-4 expenses-bill-meta-row">
         <div class="col-md-4">
             <span class="expenses-bill-meta-title">{% trans "Date:" %}</span>

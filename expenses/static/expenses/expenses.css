@@ -34,21 +34,26 @@
     border-top: none;
 }
 
-#expenses-toolbar {
-    border: 1px solid #0000c1;
-    border-top: none;
-    border-radius: 0 0 .25rem .25rem;
-    padding: .5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0px 1px 1px #0ad;
-    overflow-x: auto;
-    white-space: nowrap;
+#expenses-header {
+    margin-top: .75rem;
+    margin-bottom: .75rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
 }
 
-#expenses-toolbar:empty {
-    border: none;
-    padding: 0;
-    box-shadow: none;
+#expenses-header h1 {
+    margin-right: auto;
+}
+
+#expenses-toolbar, #expenses-page-title {
+    margin-top: .25rem;
+    margin-bottom: .25rem;
+}
+
+#expenses-toolbar {
+   overflow-x: auto;
 }
 
 .expenses-empty {

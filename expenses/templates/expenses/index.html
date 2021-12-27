@@ -4,8 +4,10 @@
 {% block exp_toolbar %}
 {% expenses_add_toolbar pid %}
 {% endblock %}
+{% block exp_title %}
+    {% blocktrans count exp_count=EXPENSES_INDEX_COUNT %}Last 1 expense{% plural %}Last {{ exp_count }} expenses{% endblocktrans %}
+{% endblock %}
 {% block content %}
-    <h1>{% blocktrans count exp_count=EXPENSES_INDEX_COUNT %}Last 1 expense{% plural %}Last {{ exp_count }} expenses{% endblocktrans %}</h1>
     {% expense_table last_n_expenses %}
 
     <h1>{% trans "Statistics" %}</h1>

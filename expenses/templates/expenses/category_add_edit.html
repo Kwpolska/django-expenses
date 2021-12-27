@@ -1,7 +1,7 @@
 {% extends "expenses/expbase.html" %}
 {% load i18n %}
+{% block exp_title %}{{ title }}{% endblock %}
 {% block content %}
-    <h1>{{ title }}</h1>
     <form method="POST">
         {% csrf_token %}
         {{ form.non_field_errors }}
