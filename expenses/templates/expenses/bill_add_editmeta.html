@@ -1,6 +1,9 @@
 {% extends "expenses/expbase.html" %}
 {% load i18n %}
 {% load expenses_extras %}
+{% block exp_title %}
+{% if mode == 'add' %}{{ htmltitle }}{% else %}{% trans "Edit bill metadata" %}{% endif %}
+{% endblock %}
 {% block exp_toolbar %}
     {% if mode == 'add' %}
         {% expenses_add_toolbar pid %}
@@ -9,14 +12,17 @@
     {% endif %}
 {% endblock %}
 {% block content %}
-{% if mode == 'add' %}
-    <form action="{% url "expenses:bill_quickadd" %}" method="POST">
-    <p>{% trans "Recent vendors:" %}
+{% if mode == 'add' and has_last_vendors %}
+    <form class="alert alert-success d-flex p-2" action="{% url "expenses:bill_quickadd" %}" method="POST">
+    <div class="mb-0 align-baseline flex-md-fill"><span class="mr-1">{% trans "Quick add:" %}</span>
     {% csrf_token %}
     {% for vendor, cat_id, cat_name in last_vendors %}
-        <button class="btn btn-light" name="quickadd" value="{{ cat_id }};{{ vendor }}" type="submit">{{ vendor }} ({{ cat_name }})</button>
+        <button class="btn btn-light align-baseline" name="quickadd" value="{{ cat_id }};{{ vendor }}" type="submit">{{ vendor }} ({{ cat_name }})</button>
     {% endfor %}
-    </p>
+    </div>
+    <div class="align-self-center d-none d-md-block">
+         <i class="far fa-question-circle align-baseline" style="font-size: 1.5rem" title="{% trans "This box lets you create a bill with one of the recent vendors and categories. Click a vendor/category pair to add a bill with that vendor/category and today’s date." %}"></i>
+    </div>
     </form>
 {% endif %}
 <form action="" method="POST" autocomplete="off">
@@ -58,3 +64,4 @@
     </p>
 </form>
 {% endblock %}
+{% block extra_scripts %}<script>$(function () { $('[data-toggle="tooltip"]').tooltip() });</script>{% endblock %}

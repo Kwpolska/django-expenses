@@ -63,7 +63,7 @@ def bill_add(request):
     return render(
         request,
         "expenses/bill_add_editmeta.html",
-        {"htmltitle": _("Add a bill"), "pid": "bill_add", "form": form, "mode": "add", "last_vendors": last_vendors,},
+        {"htmltitle": _("Add a bill"), "pid": "bill_add", "form": form, "mode": "add", "last_vendors": last_vendors, "has_last_vendors": bool(last_vendors),},
     )
 
 
