@@ -1,6 +1,9 @@
 {% extends "expenses/expbase.html" %}
 {% load i18n %}
 {% load expenses_extras %}
+{% block exp_toolbar %}
+{% expenses_add_toolbar pid %}
+{% endblock %}
 {% block content %}
     <h1>{% blocktrans count exp_count=EXPENSES_INDEX_COUNT %}Last 1 expense{% plural %}Last {{ exp_count }} expenses{% endblocktrans %}</h1>
     {% expense_table last_n_expenses %}
