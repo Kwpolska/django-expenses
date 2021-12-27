@@ -64,7 +64,7 @@ class RawQueryWithSlicing:
 
 @login_required
 def search(request):
-    opt = {"q": "", "vendor": "", "search_for": "expenses", "date_spec": "any", "date_start": "", "date_end": ""}
+    opt = {"q": "", "vendor": "", "search_for": "purchases", "date_spec": "any", "date_start": "", "date_end": ""}
     categories = Category.user_objects(request)
     if "q" in request.GET or "vendor" in request.GET:
         opt["has_query"] = True
