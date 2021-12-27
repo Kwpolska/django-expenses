@@ -21,7 +21,10 @@ from expenses.utils import parse_dt
 
 def hello(_request):
     return JsonResponse(
-        {"auth_url": reverse("oauth2_provider:authorize"), "token_url": reverse("oauth2_provider:token"),}
+        {
+            "auth_url": reverse("oauth2_provider:authorize"),
+            "token_url": reverse("oauth2_provider:token"),
+        }
     )
 
 
@@ -45,7 +48,11 @@ class PostJsonEndpoint(View):
 
 @protected_resource()
 def profile(request):
-    return JsonResponse({"full_name": request.user.get_full_name() or request.user.get_username(),})
+    return JsonResponse(
+        {
+            "full_name": request.user.get_full_name() or request.user.get_username(),
+        }
+    )
 
 
 # Input 1: {"last_sync": null, "sync_date": str}
@@ -65,8 +72,17 @@ class RunEndpoint(PostJsonEndpoint):
             now = timezone.now()
         out = {
             "sync_date": now.isoformat(),
-            "deletions": {"new": [], "ack": [], "not_found": [],},
-            "changes": {"new": {}, "ack": {}, "deleted": [], "not_found": [],},
+            "deletions": {
+                "new": [],
+                "ack": [],
+                "not_found": [],
+            },
+            "changes": {
+                "new": {},
+                "ack": {},
+                "deleted": [],
+                "not_found": [],
+            },
         }
 
         for _, model_str in DATA_MODELS:

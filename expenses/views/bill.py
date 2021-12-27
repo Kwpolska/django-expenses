@@ -63,7 +63,14 @@ def bill_add(request):
     return render(
         request,
         "expenses/bill_add_editmeta.html",
-        {"htmltitle": _("Add a bill"), "pid": "bill_add", "form": form, "mode": "add", "last_vendors": last_vendors, "has_last_vendors": bool(last_vendors),},
+        {
+            "htmltitle": _("Add a bill"),
+            "pid": "bill_add",
+            "form": form,
+            "mode": "add",
+            "last_vendors": last_vendors,
+            "has_last_vendors": bool(last_vendors),
+        },
     )
 
 
@@ -100,7 +107,13 @@ def bill_editmeta(request, pk):
     return render(
         request,
         "expenses/bill_add_editmeta.html",
-        {"htmltitle": str(expense), "pid": "bill_editmeta", "expense": expense, "form": form, "mode": "editmeta",},
+        {
+            "htmltitle": str(expense),
+            "pid": "bill_editmeta",
+            "expense": expense,
+            "form": form,
+            "mode": "editmeta",
+        },
     )
 
 

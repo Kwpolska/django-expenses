@@ -93,14 +93,14 @@ class ReportItemFormatter:
 
 
 class CsvFormatter(ReportItemFormatter):
-    """"Subclass for csv items formatting"""
+    """ "Subclass for csv items formatting"""
 
     def format_money(self, amount: typing.Union[int, float, decimal.Decimal]) -> str:
         return format_number(amount, 2)
 
 
 class HtmlFormatter(ReportItemFormatter):
-    """"Subclass for html items formatting"""
+    """ "Subclass for html items formatting"""
 
     def format_category(self, c: Category) -> str:
         return c.html_link()

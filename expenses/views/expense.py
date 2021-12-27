@@ -70,7 +70,12 @@ def expense_add(request):
     return render(
         request,
         "expenses/expense_add_edit.html",
-        {"htmltitle": _("Add an expense"), "pid": "expense_add", "form": form, "mode": "add",},
+        {
+            "htmltitle": _("Add an expense"),
+            "pid": "expense_add",
+            "form": form,
+            "mode": "add",
+        },
     )
 
 
@@ -81,7 +86,13 @@ def expense_show(request, pk):
         return HttpResponseRedirect(expense.get_absolute_url())
 
     return render(
-        request, "expenses/expense_show.html", {"htmltitle": str(expense), "pid": "expense_show", "expense": expense,}
+        request,
+        "expenses/expense_show.html",
+        {
+            "htmltitle": str(expense),
+            "pid": "expense_show",
+            "expense": expense,
+        },
     )
 
 
@@ -105,7 +116,13 @@ def expense_edit(request, pk):
     return render(
         request,
         "expenses/expense_add_edit.html",
-        {"htmltitle": str(expense), "pid": "expense_edit", "expense": expense, "form": form, "mode": "edit",},
+        {
+            "htmltitle": str(expense),
+            "pid": "expense_edit",
+            "expense": expense,
+            "form": form,
+            "mode": "edit",
+        },
     )
 
 

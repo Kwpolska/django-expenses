@@ -28,7 +28,11 @@ def category_list(request):
     return render(
         request,
         "expenses/category_list.html",
-        {"htmltitle": _("Categories"), "pid": "category_list", "categories": categories,},
+        {
+            "htmltitle": _("Categories"),
+            "pid": "category_list",
+            "categories": categories,
+        },
     )
 
 
@@ -42,7 +46,13 @@ def category_show(request, slug):
     page = request.GET.get("page")
     expenses = paginator.get_page(page)
     return render(
-        request, "expenses/category_show.html", {"expenses": expenses, "category": category, "pid": "category_show",}
+        request,
+        "expenses/category_show.html",
+        {
+            "expenses": expenses,
+            "category": category,
+            "pid": "category_show",
+        },
     )
 
 
@@ -60,7 +70,11 @@ def category_show_templates(request, slug):
     return render(
         request,
         "expenses/category_show_templates.html",
-        {"templates": templates, "category": category, "pid": "category_show_templates",},
+        {
+            "templates": templates,
+            "category": category,
+            "pid": "category_show_templates",
+        },
     )
 
 

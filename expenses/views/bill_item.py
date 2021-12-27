@@ -35,7 +35,13 @@ def bill_item_add(request, pk):
     return render(
         request,
         "expenses/bill_item_add_edit.html",
-        {"htmltitle": _("Add bill item"), "pid": "bill_item_add", "expense": expense, "form": form, "mode": "add",},
+        {
+            "htmltitle": _("Add bill item"),
+            "pid": "bill_item_add",
+            "expense": expense,
+            "form": form,
+            "mode": "add",
+        },
     )
 
 
@@ -60,7 +66,13 @@ def bill_item_edit(request, bill_pk, item_pk):
     return render(
         request,
         "expenses/bill_item_add_edit.html",
-        {"htmltitle": _("Edit bill item"), "pid": "bill_item_edit", "expense": expense, "form": form, "mode": "edit",},
+        {
+            "htmltitle": _("Edit bill item"),
+            "pid": "bill_item_edit",
+            "expense": expense,
+            "form": form,
+            "mode": "edit",
+        },
     )
 
 

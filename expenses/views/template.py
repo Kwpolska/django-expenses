@@ -25,7 +25,11 @@ def template_list(request):
     return render(
         request,
         "expenses/template_list.html",
-        {"htmltitle": _("Templates"), "pid": "template_list", "templates": templates,},
+        {
+            "htmltitle": _("Templates"),
+            "pid": "template_list",
+            "templates": templates,
+        },
     )
 
 
@@ -44,7 +48,12 @@ def template_add(request):
     return render(
         request,
         "expenses/template_add_edit.html",
-        {"htmltitle": _("Add a template"), "pid": "template_add", "form": form, "mode": "add",},
+        {
+            "htmltitle": _("Add a template"),
+            "pid": "template_add",
+            "form": form,
+            "mode": "add",
+        },
     )
 
 
@@ -54,7 +63,11 @@ def template_show(request, pk):
     return render(
         request,
         "expenses/template_show.html",
-        {"htmltitle": _("Template %s") % template.name, "pid": "template_add", "template": template,},
+        {
+            "htmltitle": _("Template %s") % template.name,
+            "pid": "template_add",
+            "template": template,
+        },
     )
 
 
@@ -135,7 +148,12 @@ def template_edit(request, pk):
     return render(
         request,
         "expenses/template_add_edit.html",
-        {"htmltitle": _("Edit a template"), "pid": "template_edit", "form": form, "mode": "edit",},
+        {
+            "htmltitle": _("Edit a template"),
+            "pid": "template_edit",
+            "form": form,
+            "mode": "edit",
+        },
     )
 
 
