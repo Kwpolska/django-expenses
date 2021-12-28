@@ -74,7 +74,7 @@ class BillItemForm(forms.ModelForm):
                     "class": "form-control",
                     "type": "number",
                     "step": "0.001",
-                    "placeholder": gettext_lazy("Serving [g, L]"),
+                    "placeholder": gettext_lazy("Serving"),
                 }
             ),
             "count": forms.TextInput(

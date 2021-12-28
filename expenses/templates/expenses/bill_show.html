@@ -8,31 +8,31 @@
     <a href="{% url 'expenses:bill_convert' expense.pk %}" class="btn btn-light">{% trans "Convert to expense" %}</a>
 {% endblock %}
 {% block content %}
-    <div class="row mb-4 expenses-bill-meta-row">
-        <div class="col-md-4">
+    <div class="mb-4 expenses-bill-meta-row">
+        <div>
             <span class="expenses-bill-meta-title">{% trans "Date:" %}</span>
             {{ expense.date|date:"c" }}
         </div>
-        <div class="col-md-4">
+        <div>
             <span class="expenses-bill-meta-title">{% trans "Vendor:" %}</span>
             <span id="expenses-bill-meta-vendor">{{ expense.vendor }}</span>
         </div>
-        <div class="col-md-4">
+        <div>
             <span class="expenses-bill-meta-title">{% trans "Category:" %}</span>
             {{ expense.category.html_link }}
         </div>
-        <div class="col-md-4">
+        <div>
             <span class="expenses-bill-meta-title">{% trans "Date added:" %}</span>
             {{ expense.date_added|date:"DATETIME_FORMAT" }}
         </div>
         {% if expense.date_added != expense.date_modified %}
-            <div class="col-md-4">
+            <div>
                 <span class="expenses-bill-meta-title">{% trans "Date modified:" %}</span>
                 {{ expense.date_modified|date:"DATETIME_FORMAT" }}
             </div>
         {%  endif %}
         {% if expense.description %}
-            <div class="col-md-12">
+            <div>
                 <span class="expenses-bill-meta-title">{% trans "Description:" %}</span>
                 {{ expense.description }}
             </div>
@@ -46,7 +46,7 @@
         <thead>
         <tr>
             <th class="expenses-billtable-product">{% trans "Product" %}</th>
-            <th class="expenses-billtable-serving">{% trans "Serving [g,&nbsp;L]" %}</th>
+            <th class="expenses-billtable-serving">{% trans "Serving" %}</th>
             <th class="expenses-billtable-unitprice">{% trans "Unit Price" %}</th>
             <th class="expenses-billtable-count">{% trans "Count" %}</th>
             <th class="expenses-billtable-amount">{% trans "Amount" %}</th>
@@ -63,20 +63,20 @@
                 <td class="expenses-billtable-amount" data-value="{{ item.amount|floatformatll:"2" }}">{% money item.amount %}</td>
                 <td class="expenses-billtable-actions">
                     <div class="btn-group" role="group" aria-label="{% trans "Item actions" %}">
-                        <a href="{% url 'expenses:bill_item_edit' expense.pk item.pk %}" class="btn btn-info expenses-billtable-btn-edit" title="{% trans "Edit" %}"><i class="fa fa-fw fa-edit"></i></a>
-                        <a href="{% url 'expenses:bill_item_delete' expense.pk item.pk %}" class="btn btn-danger expenses-billtable-btn-delete" title="{% trans "Delete" %}"><i class="fa fa-fw fa-trash-alt"></i></a>
+                        <a href="{% url 'expenses:bill_item_edit' expense.pk item.pk %}" class="btn btn-outline-info expenses-billtable-btn-edit" title="{% trans "Edit" %}"><i class="fa fa-fw fa-edit"></i></a>
+                        <a href="{% url 'expenses:bill_item_delete' expense.pk item.pk %}" class="btn btn-outline-danger expenses-billtable-btn-delete" title="{% trans "Delete" %}"><i class="fa fa-fw fa-trash-alt"></i></a>
                     </div>
                 </td>
             </tr>
         {% endfor %}
             <tr id="expenses-billtable-addrow">
                 <td class="expenses-billtable-product"><div class="dropdown"><input name="product" class="form-control" placeholder="{% trans "Product" %}" required maxlength="40"></div></td>
-                <td class="expenses-billtable-serving"><input name="serving" class="form-control" placeholder="{% trans "Serving [g, L]" %}" step="0.001" required type="number"></td>
+                <td class="expenses-billtable-serving"><input name="serving" class="form-control" placeholder="{% trans "Serving" %}" step="0.001" required type="number"></td>
                 <td class="expenses-billtable-unitprice"><input name="unit_price" class="form-control" type="number" step="0.01" placeholder="{% trans "Unit Price" %}" required></td>
                 <td class="expenses-billtable-count"><input name="count" class="form-control" placeholder="{% trans "Count" %}" step="0.001" type="number" value="1" data-default="1" required></td>
                 <td class="expenses-billtable-amount">—</td>
                 <td class="expenses-billtable-actions">
-                    <button class="btn btn-primary" id="expenses-billtable-btn-add" type="submit" title="{% trans "Add an item" %}"><i class="fas fa-plus-circle"></i><span class="d-none d-md-inline"> {% trans "Add" %}</span></button>
+                    <button class="btn btn-outline-primary" id="expenses-billtable-btn-add" type="submit" title="{% trans "Add an item" %}"><i class="fas fa-plus-circle"></i><span class="d-none d-md-inline"> {% trans "Add" %}</span></button>
                 </td>
             </tr>
         </tbody>
@@ -84,6 +84,7 @@
         <tr>
             <td colspan="4" class="expenses-bill-total-title">{% trans "Total:" %}</td>
             <td class="expenses-bill-total">{% money expense.amount %}</td>
+            <td class="expenses-billtable-actions"></td>
         </tr>
         </tfoot>
     </table>

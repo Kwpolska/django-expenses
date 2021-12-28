@@ -70,26 +70,26 @@ function getNewAID(): number {
 function getStdButtonGroup(buttonNames: string[]): HTMLDivElement {
     let stdButtons: {[id: string]: ButtonSpec} = {
         'edit': {
-            'classNames': 'btn-info expenses-billtable-btn-edit',
+            'classNames': 'btn-outline-info expenses-billtable-btn-edit',
             'title': gettext('Edit'),
             'icon': 'fa-edit',
             'callback': editBtnHandler
 
         },
         'undo': {
-            'classNames': 'btn-warning expenses-billtable-btn-undo',
+            'classNames': 'btn-outline-warning expenses-billtable-btn-undo',
             'title': gettext('Undo Changes'),
             'icon': 'fa-undo',
             'callback': undoChangesBtnHandler
         },
         'delete': {
-            'classNames': 'btn-danger expenses-billtable-btn-delete',
+            'classNames': 'btn-outline-danger expenses-billtable-btn-delete',
             'title': gettext('Delete'),
             'icon': 'fa-trash-alt',
             'callback': deleteBtnHandler
         },
         'accept': {
-            'classNames': 'btn-success expenses-billtable-btn-accept',
+            'classNames': 'btn-outline-success expenses-billtable-btn-accept',
             'title': gettext('Accept'),
             'icon': 'fa-check',
             'callback': acceptChangesBtnHandler

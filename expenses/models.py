@@ -204,7 +204,7 @@ class Expense(ExpensesModel):
 class BillItem(ExpensesModel):
     bill = models.ForeignKey(Expense, verbose_name=_("Bill"), on_delete=models.CASCADE)
     product = models.CharField(_("Product"), max_length=40)
-    serving = models.DecimalField(_("Serving [g, L]"), max_digits=10, decimal_places=3)
+    serving = models.DecimalField(_("Serving"), max_digits=10, decimal_places=3)
     count = models.DecimalField(_("Count"), max_digits=10, decimal_places=3)  # weighted products
     unit_price = models.DecimalField(_("Unit price"), max_digits=10, decimal_places=2)
 
