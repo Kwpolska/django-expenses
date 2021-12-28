@@ -17,16 +17,8 @@ class ButtonSpec {
 
 class BillHint {
     product: string;
-    serving: number;
+    serving: number | null;
     unit_price: number;
-}
-
-class BillReOutput {
-    product: string;
-    serving: string;
-    unitprice: string;
-
-    [key: string]: string;
 }
 
 function amountChangeHandler(event: Event) {
@@ -376,7 +368,8 @@ export default function initializeBillEditor() {
         3,
         (data) => {
             let hint = <BillHint>data;
-            return `✨ ${hint.product} ⚖️${hint.serving} 💶${hint.unit_price}`;
+            let servingInfo = hint.serving ? ` ⚖️${hint.serving}` : '';
+            return `✨ ${hint.product}${servingInfo} 💶${hint.unit_price}`;
         },
         (data) => {
             let hint = <BillHint>data;
@@ -384,7 +377,7 @@ export default function initializeBillEditor() {
 
             addProduct.dataset['autocomplete'] = 'off';
             addForm.querySelector<HTMLInputElement>('.expenses-billtable-product input').value = hint.product;
-            addForm.querySelector<HTMLInputElement>('.expenses-billtable-serving input').value = hint.serving.toString();
+            addForm.querySelector<HTMLInputElement>('.expenses-billtable-serving input').value = hint.serving !== null ? hint.serving.toString() : '';
             addForm.querySelector<HTMLInputElement>('.expenses-billtable-unitprice input').value = hint.unit_price.toString();
             addProduct.dataset['autocomplete'] = 'on';
 

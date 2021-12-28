@@ -135,7 +135,8 @@ def bill_show(request, pk):
             if mid == "d":
                 # deletions
                 delete.append(int(name))
-            else:
+            elif v or name != "serving":
+                # servings are optional
                 add_edit[mid][name] = v
 
         ok = 0
