@@ -128,8 +128,12 @@ class AutoComplete {
     }
 
     select(value: any) {
-        if (this.selectHandler !== undefined) this.selectHandler(value);
-        else this.input.value = this.getDisplayText(value);
+        if (this.selectHandler !== undefined) {
+            this.selectHandler(value);
+        } else {
+            this.input.value = this.getDisplayText(value);
+        }
+        this.setKeyboardSelection(null);
         this.input.focus();
         this.hiddenBySelection = value;
         setTimeout(() => this.hideAcDiv(), 10);
