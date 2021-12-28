@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-25 20:29+0100\n"
+"POT-Creation-Date: 2021-12-28 01:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,22 +20,22 @@ msgstr ""
 "%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
-#: expenses/static/expenses/expenses.js:1
+#: expenses/static/expenses/expenses.js:2
 msgid "Edit"
 msgstr "Edytuj"
 
-#: expenses/static/expenses/expenses.js:1
+#: expenses/static/expenses/expenses.js:2
 msgid "Undo Changes"
 msgstr "Cofnij zmiany"
 
-#: expenses/static/expenses/expenses.js:1
+#: expenses/static/expenses/expenses.js:2
 msgid "Delete"
 msgstr "Usuń"
 
-#: expenses/static/expenses/expenses.js:1
+#: expenses/static/expenses/expenses.js:2
 msgid "Accept"
 msgstr "Zaakceptuj"
 
-#: expenses/static/expenses/expenses.js:1
+#: expenses/static/expenses/expenses.js:2
 msgid "Item actions"
 msgstr "Akcje dla pozycji"

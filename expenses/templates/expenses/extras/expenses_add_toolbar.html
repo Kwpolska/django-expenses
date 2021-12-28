@@ -9,5 +9,5 @@
     <a href="{% url "expenses:expense_add" %}" class="btn btn-outline-secondary" style="padding-left:4px;padding-right:4px"><i class="fa fa-plus-circle"></i></a>
     <a href="{% url "expenses:expense_add" %}" class="btn btn-secondary {% if pid == 'expense_add' %}active{% endif %}">{% trans "Expense" %}</a>
     <a href="{% url "expenses:bill_add" %}" class="btn btn-secondary {% if pid == 'bill_add' %}active{% endif %}">{% trans "Bill" %}</a>
-    <a href="{% url "expenses:template_list" %}" class="btn btn-secondary {% if pid == 'template_run' %}active{% endif %}">{% trans "Use a template" %}</a>
+    <a href="{% url "expenses:template_list" %}" class="btn btn-secondary {% if pid == 'template_run' %}active{% endif %}">{% trans "Use Template" %}</a>
 </div>
