@@ -2,7 +2,6 @@
 {% load i18n %}
 {% load expenses_extras %}
 {% block content %}
-    <h1>{% trans "Convert" %}</h1>
     <p><strong>{% trans "Description:" %}</strong> {{ expense.desc_auto }}</p>
     {% if expense.is_bill %}
         <p>{% trans "Conversion will remove all bill items permanently and turn the bill into an expense with the same amount as the sum of its items." %}</p>

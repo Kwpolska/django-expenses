@@ -1,7 +1,6 @@
 {% extends "expenses/expbase.html" %}
 {% load i18n %}
 {% block content %}
-    <h1>{% trans "Delete category" %}</h1>
     {% if deletion_failed %}
         <p class="text-danger">{% trans "Failed to delete category. Select a valid move destination." %}</p>
     {% endif %}

@@ -8,7 +8,6 @@
     </form>
 {% endblock %}
 {% block content %}
-    <h1 class="expenses-report-title">{{ report.name }}</h1>
     {{ report_html }}
     <div class="text-muted expenses-report-footer">{% blocktrans with t=time|floatformat:3 %}Calculated in {{ t }} seconds.{% endblocktrans %}</div>
 {% endblock %}

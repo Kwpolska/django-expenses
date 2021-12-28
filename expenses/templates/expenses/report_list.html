@@ -1,8 +1,8 @@
 {% extends "expenses/expbase.html" %}
+{% block exp_title %}{% trans "Choose a report" %}{% endblock %}
 {% load i18n %}
 {% load expenses_extras %}
 {% block content %}
-    <h1>{% trans "Choose a report" %}</h1>
     <ul>
         {% for r in reports %}
             <li>

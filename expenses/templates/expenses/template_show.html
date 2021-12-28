@@ -6,7 +6,7 @@
     <a class="btn btn-danger" href="{% url 'expenses:template_delete' template.pk %}"><i class="fa fa-trash-alt"></i> {% trans "Delete" %}</a>
 {% endblock %}
 {% block content %}
-    <h1>{% trans "Details" %}</h1>
+    <h2>{% trans "Details" %}</h2>
     <div class="expenses-template-show-list">
         <div class="row">
             <div class="col-sm-2 expenses-show-label">{% trans "Name" %}</div>
@@ -31,7 +31,7 @@
             </div>
         {% endif %}
     </div>
-    <h1>{% trans "Values" %}</h1>
+    <h2>{% trans "Values" %}</h2>
     <div class="expenses-template-show-list">
         <div class="row">
             <div class="col-sm-2 expenses-show-label">{% trans "Vendor" %}</div>
@@ -62,7 +62,7 @@
         </div>
     </div>
 
-    <h1>{% trans "Run" %}</h1>
+    <h2>{% trans "Run" %}</h2>
         {% exp_template_actions template True True %}
     </div>
 {% endblock %}

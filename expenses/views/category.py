@@ -70,6 +70,7 @@ def category_show_templates(request, slug):
     )
     page = request.GET.get("page")
     templates = paginator.get_page(page)
+    title = "{} {}".format(_("Category:"), category.name)
     return render(
         request,
         "expenses/category_show_templates.html",
@@ -77,6 +78,8 @@ def category_show_templates(request, slug):
             "templates": templates,
             "category": category,
             "pid": "category_show_templates",
+            "title": title,
+            "htmltitle": title,
         },
     )
 
