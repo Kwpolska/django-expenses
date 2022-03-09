@@ -74,3 +74,12 @@ urls.py
 If you intend to use the API, OAuth applications can be set up at
 ``/_oauth/applications/``. (If you don’t, the endpoints won’t do anything
 without it.)
+
+
+base template
+~~~~~~~~~~~~~
+
+Expenses expects you to have a ``base.html`` template in your template root. A
+sample file that should work is provided as ``base.html.sample`` in the
+repository. If this doesn’t suit you, you can modify ``expbase.html`` (and
+possibly make it independent).
