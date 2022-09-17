@@ -15,6 +15,7 @@ import expenses.views.reports
 import expenses.views.search
 import expenses.views.template
 import expenses.views.api_autocomplete
+import expenses.views.api_lite
 import expenses.views.api_sync
 
 from expenses import views
@@ -81,4 +82,6 @@ urlpatterns = [
     path(
         "api/sync/category/delete/", views.api_sync.CategoryDeleteEndpoint.as_view(), name="api_sync__category_delete"
     ),
+    path("api/lite/categories/", views.api_lite.get_categories, name="api_lite__categories"),
+    path("api/lite/expenses/", views.api_lite.quick_add_expense, name="api_lite__expenses"),
 ]

@@ -307,16 +307,29 @@ class ExpenseTemplate(ExpensesModel):
         self.comment = data["comment"]
 
 
-DR_MODEL_CHOICES = (
+class ApiKey(ExpensesModel):
+    """An API key for the lightweight API."""
+    name = models.CharField(_("Name"), max_length=40)
+    key = models.CharField(_("Key"), max_length=128, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return f'<ApiKey "{self.name}">'
+
+
+DELETIONRECORD_MODEL_CHOICES = (
     ("category", "category"),
     ("expense", "expense"),
     ("billitem", "billitem"),
     ("expensetemplate", "expensetemplate"),
+    ("apikey", "apikey")
 )
 
 
 class DeletionRecord(models.Model):
-    model = models.CharField(max_length=20, choices=DR_MODEL_CHOICES)
+    model = models.CharField(max_length=20, choices=DELETIONRECORD_MODEL_CHOICES)
     object_pk = models.IntegerField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
@@ -333,6 +346,7 @@ STR_TO_MODEL_MAP = {
     "expense": Expense,
     "billitem": BillItem,
     "expensetemplate": ExpenseTemplate,
+    "apikey": ApiKey,
     "deletionrecord": DeletionRecord,
 }
 MODEL_TO_STR_MAP = {v: k for k, v in STR_TO_MODEL_MAP.items()}
@@ -342,9 +356,10 @@ DATA_MODELS = (
     (Expense, "expense"),
     (BillItem, "billitem"),
     (ExpenseTemplate, "expensetemplate"),
+    (ApiKey, "apikey"),
 )
 
-DATA_MODELS_STR = ["category", "expense", "billitem", "expensetemplate"]
+DATA_MODELS_STR = ["category", "expense", "billitem", "expensetemplate", "apikey"]
 STR_TO_DATA_MODEL_MAP = {k: v for k, v in STR_TO_MODEL_MAP.items() if k != "deletionrecord"}
 
 
@@ -404,5 +419,6 @@ def update_bill_info_on_bill_save(instance: Expense, **kwargs):
 @receiver(models.signals.pre_delete, sender=Expense)
 @receiver(models.signals.pre_delete, sender=BillItem)
 @receiver(models.signals.pre_delete, sender=ExpenseTemplate)
+@receiver(models.signals.pre_delete, sender=ApiKey)
 def create_deletion_record(instance, sender, **kwargs):
     DeletionRecord.objects.get_or_create(model=MODEL_TO_STR_MAP[sender], object_pk=instance.pk, user=instance.user)

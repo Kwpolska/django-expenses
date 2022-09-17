@@ -32,7 +32,7 @@ SELECT "vendor", "category_id", "category_name" FROM (
     ) source
     GROUP BY "vendor", "category_id", "category_name"
     ORDER BY COUNT(*) DESC, "vendor", "category_name"
-    LIMIT 3
+    LIMIT 5
 ) limited
 ORDER BY "vendor", "category_name";
 """
