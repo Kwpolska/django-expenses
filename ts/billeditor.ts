@@ -1,6 +1,6 @@
 /*
  * Expenses Bill Editor
- * Copyright © 2018-2022, Chris Warrick. All rights reserved. License: 3-clause BSD.
+ * Copyright © 2018-2023, Chris Warrick. All rights reserved. License: 3-clause BSD.
  */
 
 import { getTrForEvent, getNewAIDForSelector, formatMoney } from './exputils';

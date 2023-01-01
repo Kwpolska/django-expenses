@@ -1,6 +1,6 @@
 /*!
  * Expenses Scripting Enhancements
- * Copyright © 2018-2022, Chris Warrick. All rights reserved. License: 3-clause BSD.
+ * Copyright © 2018-2023, Chris Warrick. All rights reserved. License: 3-clause BSD.
  */
 import initializeBillEditor from "./billeditor";
 import initializeBulkCatEditor from "./bulkcateditor";
@@ -50,7 +50,7 @@ function onDocReady() {
     if (expTemplateForm !== null) {
         initializeTemplateEditForm();
     }
-    
+
     // initialize search form
     let searchForm = document.querySelector("#expenses-search-form");
     if (searchForm !== null) {
