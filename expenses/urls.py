@@ -16,9 +16,10 @@ import expenses.views.search
 import expenses.views.template
 import expenses.views.api_autocomplete
 import expenses.views.api_lite
-import expenses.views.api_sync
 
 from expenses import views
+
+from django.conf import settings
 
 app_name = "expenses"
 urlpatterns = [
@@ -74,14 +75,19 @@ urlpatterns = [
     ),
     path("api/autocomplete/bill/vendor/", views.api_autocomplete.bill_vendor, name="api_autocomplete__bill_vendor"),
     path("api/autocomplete/bill/item/", views.api_autocomplete.bill_item, name="api_autocomplete__bill_item"),
-    path("api/sync/hello/", views.api_sync.hello, name="api_sync__hello"),
-    path("api/sync/profile/", views.api_sync.profile, name="api_sync__profile"),
-    path("api/sync/run/", views.api_sync.RunEndpoint.as_view(), name="api_sync__run"),
-    path("api/sync/category/add/", views.api_sync.CategoryAddEndpoint.as_view(), name="api_sync__category_add"),
-    path("api/sync/category/edit/", views.api_sync.CategoryEditEndpoint.as_view(), name="api_sync__category_edit"),
-    path(
-        "api/sync/category/delete/", views.api_sync.CategoryDeleteEndpoint.as_view(), name="api_sync__category_delete"
-    ),
     path("api/lite/categories/", views.api_lite.get_categories, name="api_lite__categories"),
     path("api/lite/expenses/", views.api_lite.quick_add_expense, name="api_lite__expenses"),
 ]
+
+if settings.EXPENSES_SYNC_API_ENABLED:
+    import expenses.views.api_sync
+    urlpatterns += [
+        path("api/sync/hello/", views.api_sync.hello, name="api_sync__hello"),
+        path("api/sync/profile/", views.api_sync.profile, name="api_sync__profile"),
+        path("api/sync/run/", views.api_sync.RunEndpoint.as_view(), name="api_sync__run"),
+        path("api/sync/category/add/", views.api_sync.CategoryAddEndpoint.as_view(), name="api_sync__category_add"),
+        path("api/sync/category/edit/", views.api_sync.CategoryEditEndpoint.as_view(), name="api_sync__category_edit"),
+        path(
+            "api/sync/category/delete/", views.api_sync.CategoryDeleteEndpoint.as_view(), name="api_sync__category_delete"
+        ),
+    ]

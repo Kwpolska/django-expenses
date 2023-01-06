@@ -34,21 +34,16 @@ Configuration
 settings.py
 ~~~~~~~~~~~
 
-You should do the following changes to ``settings.py``:
+In order to use Expenses, you need to add ``'expenses'`` to ``INSTALLED_APPS``. Also, if you’re me, add ``'django.middleware.locale.LocaleMiddleware', 'expenses.middleware.ForcePolishLanguageMiddleware'`` to ``MIDDLEWARE`` (before CommonMiddleware and after SessionMiddleware).
 
-* Add ``'expenses'`` and ``'oauth2_provider'`` to ``INSTALLED_APPS``
-* Add ``'oauth2_provider.middleware.OAuth2TokenMiddleware'`` to ``MIDDLEWARE``
-  *after* ``SessionMiddleware``
-* If you’re me, add ``'django.middleware.locale.LocaleMiddleware', 'expenses.middleware.ForcePolishLanguageMiddleware'``
-  to ``MIDDLEWARE`` as well (before CommonMiddleware and after S
-
-and also set the following options:
+You should set the following options:
 
 * ``EXPENSES_PAGE_SIZE`` — number of items on one page
 * ``EXPENSES_INDEX_COUNT`` — number of expenses to display on the dashboard
 * ``EXPENSES_CURRENCY_CODE`` — currency code, eg. ``PLN``
 * ``EXPENSES_CURRENCY_LOCALE`` — currency locale, eg. ``pl_PL``
 * ``EXPENSES_CSV_DELIMITER`` — delimiter for fields in CSV reports, eg. ``,`` or ``;`` or ``\t``
+* ``EXPENSES_SYNC_API_ENABLED`` — enable the sync API? (requires extra configuration)
 
 The following ``MESSAGE_TAGS`` is recommended for the default templates:
 
@@ -60,6 +55,10 @@ The following ``MESSAGE_TAGS`` is recommended for the default templates:
        messages.DEBUG: 'secondary'
    }
 
+If you want to use the Expenses Sync API (it’s off by default), you should do the following changes to ``settings.py``:
+
+* Add ``'oauth2_provider'`` to ``INSTALLED_APPS``
+* Add ``'oauth2_provider.middleware.OAuth2TokenMiddleware'`` to ``MIDDLEWARE`` *after* ``SessionMiddleware``
 
 urls.py
 ~~~~~~~
@@ -68,15 +67,13 @@ urls.py
     urlpatterns = [
         # ...
         path('expenses/', include(expenses.urls)),
+        # for Sync API:
         path('__oauth__/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     ]
 
-If you intend to use the API, OAuth applications can be set up at
-``/_oauth/applications/``. (If you don’t, the endpoints won’t do anything
-without it.)
+If you intend to use the API, OAuth applications can be set up at ``/_oauth/applications/``.
 
-
-base template
+Base template
 ~~~~~~~~~~~~~
 
 Expenses expects you to have a ``base.html`` template in your template root. A
