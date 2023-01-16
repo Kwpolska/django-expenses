@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="django-expenses",
-    version="0.5.0",
+    version="0.6.0",
     description="A comprehensive system for managing expenses",
     keywords="django,expenses",
     author="Chris Warrick",
@@ -25,6 +25,6 @@ setup(
         "Topic :: Office/Business :: Financial",
     ],
     packages=find_packages(),
-    install_requires=["Django>=2.1", "Babel", "pygal", "django-oauth-toolkit", "iso8601", "attrs"],
+    install_requires=["Django>=3.0", "Babel", "pygal", "iso8601", "attrs"],
     include_package_data=True,
 )

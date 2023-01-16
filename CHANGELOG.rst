@@ -11,6 +11,9 @@ More information can be found on GitHub in the `releases section
 Version History
 ===============
 
+0.6.0
+    * Various user experience and appearance improvements
+
 0.5.0
     * A comprehensive reporting framework with the following reports available:
 
