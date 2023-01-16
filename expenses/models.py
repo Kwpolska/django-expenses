@@ -408,7 +408,11 @@ def update_bill_info_on_billitem_change(instance: BillItem, **kwargs):
 
 @receiver(models.signals.pre_save, sender=Expense)
 def update_bill_info_on_bill_save(instance: Expense, **kwargs):
-    instance.description_cache = instance.description
+    if instance.description is not None:
+        instance.description_cache = instance.description
+    if instance.pk is None and instance.is_bill:
+        instance.amount = 0
+        return
     if instance.is_bill:
         instance.amount = instance.calculate_bill_total()
     if instance.is_bill and not instance.description:
