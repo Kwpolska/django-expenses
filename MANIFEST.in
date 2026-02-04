@@ -1,0 +1,4 @@
+graft expenses/locale
+graft expenses/static
+graft expenses/templates
+global-exclude *.py[cod]
