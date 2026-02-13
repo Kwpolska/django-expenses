@@ -23,7 +23,7 @@
             {% else %}
                 <p>{% trans "Before you delete it, you will need to move its contents to another category." %}</p>
                 <label for="move_destination"><strong>{% trans "Move items to:" %}</strong></label>
-                <select class="form-control" id="move_destination" name="move_destination">
+                <select class="form-select" id="move_destination" name="move_destination">
                     {% for cat in categories %}
                         {% if cat != object %}
                             <option value="{{ cat.pk }}">{{ cat.name }}</option>

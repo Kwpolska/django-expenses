@@ -3,7 +3,7 @@
 {% load expenses_extras %}
 {% block exp_toolbar %}
     <form action="" method="POST">
-    <a href="{% url 'expenses:report_setup' report.slug %}" class="btn btn-light"><i class="fa fa-cog"></i> {% trans "Back to setup" %}</a>
+    <a href="{% url 'expenses:report_setup' report.slug %}" class="btn btn-secondary"><i class="fa fa-cog"></i> {% trans "Back to setup" %}</a>
     {% csrf_token %}{% for name, value in postfields %}<input name="{{ name }}" value="{{ value }}" type="hidden">{% endfor %}<button type="submit" name="output_format" value="print" class="btn btn-secondary"><i class="fa fa-print"></i> {%trans "Printable version" %}</button>
     </form>
 {% endblock %}

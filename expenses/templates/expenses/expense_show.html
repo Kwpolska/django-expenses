@@ -7,9 +7,9 @@
     <a class="btn btn-danger" href="{% url 'expenses:expense_delete' expense.pk %}"><i class="fa fa-trash-alt"></i> {% trans "Delete" %}</a>
     <form class="d-inline" action="{% url 'expenses:expense_repeat' expense.pk %}" method="POST">
         {% csrf_token %}
-        <button type="submit" class="btn btn-light">{% trans "Repeat" %}</button>
+        <button type="submit" class="btn btn-secondary">{% trans "Repeat" %}</button>
     </form>
-    <a href="{% url 'expenses:expense_convert' expense.pk %}" class="btn btn-light">{% trans "Convert to bill" %}</a>
+    <a href="{% url 'expenses:expense_convert' expense.pk %}" class="btn btn-secondary">{% trans "Convert to bill" %}</a>
 {% endblock %}
 {% block content %}
     <div class="expenses-show-list">

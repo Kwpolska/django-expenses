@@ -10,20 +10,17 @@
             {% elif template.type == "description" %}
                 <input name="description" class="form-control" title="{% trans "Description" %}" placeholder="{% trans "Description" %}">
             {% elif template.type == "desc_select" or template.type == "menu" %}
-                <select name="desc_id" class="custom-select">
+                <select name="desc_id" class="form-select">
                 {% for choice in template.description_choices %}
                     <option value="{{ forloop.counter0 }}">{{ choice }}</option>
                 {% endfor %}
                 </select>
             {% endif %}
-            <div class="input-group-append">
-                <button class="btn btn-primary"><i class="fa fa-forward"></i>{% if show_title %} {% trans "Run" %}{% endif %}</button>
-            </div>
+            <button class="btn btn-primary"><i class="fa fa-forward"></i>{% if show_title %} {% trans "Run" %}{% endif %}</button>
         </div>
     {% elif show_date %}
         <div class="input-group">
             <input name="date" class="form-control" title="{% trans "Date" %}" placeholder="{% trans "Date" %}" value="{{ today|date:"c" }}">
-            <div class="input-group-append">
                 <button class="btn btn-primary"><i class="fa fa-forward"></i>{% if show_title %} {% trans "Run" %}{% endif %}</button>
             </div>
         </div>

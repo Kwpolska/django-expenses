@@ -5,35 +5,35 @@
     <form action="" method="POST" id="expenses-templateedit-form">
         {% csrf_token %}
         {{ form.non_field_errors }}
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label for="{{ form.vendor.id_for_label }}" class="col-sm-2 col-form-label">{% trans "Name" %}</label>
             <div class="col-sm-10">
                 {{ form.name }}
                 {{ form.name.errors }}
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label for="{{ form.vendor.id_for_label }}" class="col-sm-2 col-form-label">{% trans "Vendor" %}</label>
             <div class="col-sm-10">
                 {{ form.vendor }}
                 {{ form.vendor.errors }}
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label for="{{ form.category.id_for_label }}" class="col-sm-2 col-form-label">{% trans "Category" %}</label>
             <div class="col-sm-10">
                 {{ form.category }}
                 {{ form.category.errors }}
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label for="{{ form.amount.id_for_label }}" class="col-sm-2 col-form-label">{% trans "Amount" %}</label>
             <div class="col-sm-10">
                 {{ form.amount }}
                 {{ form.amount.errors }}
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label for="{{ form.description.id_for_label }}" class="col-sm-2 col-form-label">{% trans "Description" %}</label>
             <div class="col-sm-10">
                 {{ form.description }}
@@ -55,7 +55,7 @@
                 </small>
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label for="{{ form.type.id_for_label }}" class="col-sm-2 col-form-label">{% trans "Type" %}</label>
             <div class="col-sm-10">
                 {% for radio in form.type %}
@@ -69,7 +69,7 @@
                 {{ form.type.errors }}
             </div>
         </div>
-        <div class="form-group row">
+        <div class="form-group row mb-3">
             <label for="{{ form.comment.id_for_label }}" class="col-sm-2 col-form-label">{% trans "Comment" %}</label>
             <div class="col-sm-10">
                 {{ form.comment }}

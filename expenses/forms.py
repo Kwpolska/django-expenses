@@ -11,7 +11,7 @@ from expenses.models import Expense, Category, BillItem, ExpenseTemplate
 
 
 class ExpenseForm(forms.ModelForm):
-    category = forms.ModelChoiceField(queryset=None, widget=forms.Select(attrs={"class": "form-control"}))
+    category = forms.ModelChoiceField(queryset=None, widget=forms.Select(attrs={"class": "form-select"}))
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)
@@ -38,7 +38,7 @@ class ExpenseForm(forms.ModelForm):
 
 
 class BillForm(forms.ModelForm):
-    category = forms.ModelChoiceField(queryset=None, widget=forms.Select(attrs={"class": "form-control"}))
+    category = forms.ModelChoiceField(queryset=None, widget=forms.Select(attrs={"class": "form-select"}))
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)
@@ -97,7 +97,7 @@ class CategoryForm(forms.ModelForm):
 
 
 class TemplateForm(forms.ModelForm):
-    category = forms.ModelChoiceField(queryset=None, widget=forms.Select(attrs={"class": "form-control"}))
+    category = forms.ModelChoiceField(queryset=None, widget=forms.Select(attrs={"class": "form-select"}))
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)

@@ -65,15 +65,6 @@ function onDocReady() {
         input.disabled = !target.checked;
     });
 
-    // make navbar sticky for ExpensesWebView Android app
-    if (navigator.userAgent.indexOf("ExpensesWebView") != -1) {
-        let navbar = document.querySelector<HTMLElement>(".navbar-kw");
-        navbar.classList.remove('static-top');
-        navbar.classList.add('fixed-top');
-        let body = document.querySelector<HTMLElement>('body');
-        body.style.paddingTop = '50px';
-    }
-
     // On mobile, accept flick to uncover top menu
     setUpFlickMenu();
 }

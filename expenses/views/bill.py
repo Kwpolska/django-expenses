@@ -186,6 +186,9 @@ def bill_show(request, pk):
         if status_msgs:
             messages.add_message(request, status_type, " ".join(status_msgs))
 
+    # Reload
+    expense = get_object_or_404(Expense, pk=expense.pk)
+
     return render(
         request,
         "expenses/bill_show.html",

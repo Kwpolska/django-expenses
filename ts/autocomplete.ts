@@ -169,9 +169,14 @@ class AutoComplete {
 
     createPopper() {
         if (this.popperInstance == null) {
-            this.popperInstance = new Popper(this.input, this.acDiv, {
+            this.popperInstance = Popper.createPopper(this.input, this.acDiv, {
                 placement: 'bottom-start',
-                modifiers: { flip: { enabled: true } }
+                modifiers: [
+                    {
+                        name: 'flip',
+                        enabled: true
+                    }
+                ]
             });
         }
     }

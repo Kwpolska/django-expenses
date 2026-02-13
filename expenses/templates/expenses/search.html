@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load expenses_extras %}
 {% block exp_toolbar %}
-    <div class="d-block d-md-none"><a href="#expenses-search-settings" class="btn btn-secondary expenses-search-toggle" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="expenses-search-settings"><i class="fa fa-filter"></i> {% trans "Filters" %}</a></div>
+    <div class="d-block d-md-none"><a href="#expenses-search-settings" class="btn btn-secondary expenses-search-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="expenses-search-settings"><i class="fa fa-filter"></i> {% trans "Filters" %}</a></div>
     <form method="GET" id="expenses-search-form">
         <div class="row collapse" id="expenses-search-settings">
             <div class="expenses-search-box expenses-setup-box col-md-3">
@@ -34,7 +34,7 @@
         <div class="input-group">
             <input name="q" class="form-control" placeholder="{% trans "Description/Product" %}" value="{{ q }}">
             <input name="vendor" class="form-control" placeholder="{% trans "Vendor" %}" value="{{ vendor }}">
-            <div class="input-group-append"><button class="btn btn-primary" type="submit"><i class="fa fa-search"></i> {% trans "Search" %}</button></div>
+            <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i> {% trans "Search" %}</button>
         </div>
     </form>
 {% endblock %}

@@ -397,3 +397,11 @@ td.pricing-unit-1 {
         padding: 0.5rem 1.5rem;
     }
 }
+
+a {
+    text-decoration: none;
+}
+
+#content {
+    margin-top: 66px;
+}

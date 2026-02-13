@@ -25,6 +25,10 @@ function amountChangeHandler(event: Event) {
     recalculateAmount(getTrForEvent(event));
 }
 
+function getPrimaryClassName(className: string): string {
+    return className.split(' ').filter(cn => cn != 'bg-info-subtle' && cn != 'bg-success-subtle').join(' ');
+}
+
 function recalculateAmount(tr: HTMLTableRowElement) {
     const unitPriceTd: HTMLTableCellElement = <HTMLTableCellElement>tr.getElementsByClassName("expenses-billtable-unitprice")[0];
     const countTd: HTMLTableCellElement = <HTMLTableCellElement>tr.getElementsByClassName("expenses-billtable-count")[0];
@@ -119,7 +123,6 @@ function addBtnHandler(_event?: Event) {
 
     // Build new table row
     let tr = <HTMLTableRowElement>document.createElement("tr");
-    tr.classList.add("expenses-billtable-row", "table-success");
     let aid = 'a' + getNewAID();
     tr.dataset['id'] = aid;
     buildTrFromInputs(tr, addForm, aid, 'add', ['edit', 'delete']);
@@ -165,7 +168,8 @@ function buildTrFromInputs(tr: HTMLTableRowElement, inputForm: HTMLTableRowEleme
             td.dataset['orig_value'] = oldTd.dataset['orig_value'];
         }
 
-        td.className = input.parentElement.className;
+        td.className = getPrimaryClassName(input.parentElement.className);
+        td.classList.add(type == "edit" ? "bg-info-subtle" : "bg-success-subtle");
         let hiddenInput = <HTMLInputElement>document.createElement("input");
         hiddenInput.hidden = true;
         hiddenInput.value = input.value;
@@ -176,13 +180,13 @@ function buildTrFromInputs(tr: HTMLTableRowElement, inputForm: HTMLTableRowEleme
             hiddenInput.name = iname;
         td.appendChild(hiddenInput);
         let text = input.value;
-        if (td.className == 'expenses-billtable-unitprice') {
+        if (td.className.includes('expenses-billtable-unitprice')) {
             text = formatMoney(parseFloat(input.value));
             td.dataset['value'] = input.value;
         }
         td.appendChild(document.createTextNode(text));
         tr.appendChild(td);
-        if (NUMBER_CLASS_NAMES.indexOf(td.className) != -1) {
+        if (NUMBER_CLASS_NAMES.indexOf(getPrimaryClassName(td.className)) != -1) {
             // @ts-ignore
             addedData[input.name] = parseFloat(input.value);
         } else {
@@ -197,6 +201,7 @@ function buildTrFromInputs(tr: HTMLTableRowElement, inputForm: HTMLTableRowEleme
     amountTd.className = "expenses-billtable-amount";
     amountTd.innerText = oldAmountTd.innerText;
     amountTd.dataset['value'] = oldAmountTd.dataset['value'];
+    amountTd.classList.add(type == "edit" ? "bg-info-subtle" : "bg-success-subtle");
     if (oldAmountTd.dataset.hasOwnProperty('orig_text')) {
         amountTd.dataset['orig_text'] = oldAmountTd.dataset['orig_text'];
         amountTd.dataset['orig_value'] = oldAmountTd.dataset['orig_value'];
@@ -207,6 +212,7 @@ function buildTrFromInputs(tr: HTMLTableRowElement, inputForm: HTMLTableRowEleme
     let actionsTd = document.createElement("td");
     actionsTd.className = "expenses-billtable-actions";
     actionsTd.innerHTML = '';
+    actionsTd.classList.add(type == "edit" ? "bg-info-subtle" : "bg-success-subtle");
     actionsTd.appendChild(getStdButtonGroup(actionButtonNames));
     tr.appendChild(actionsTd);
 }
@@ -216,7 +222,7 @@ function editBtnHandler(event: Event) {
     let addForm: HTMLTableRowElement = document.querySelector<HTMLTableRowElement>("#expenses-billtable-addrow");
     for (let i = 0; i < tr.children.length; i++) {
         let td = <HTMLTableCellElement>tr.children[i];
-        if (td.className == 'expenses-billtable-actions') {
+        if (td.className.includes('expenses-billtable-actions')) {
             td.innerHTML = '';
             td.appendChild(getStdButtonGroup(['accept', 'undo']));
             continue;
@@ -234,7 +240,8 @@ function editBtnHandler(event: Event) {
             td.dataset['orig_text'] = td.innerText.trim();
             td.dataset['orig_value'] = value.trim();
         }
-        let origInput = <HTMLInputElement>addForm.querySelector(`.${td.className} input`);
+        const className = getPrimaryClassName(td.className);
+        let origInput = <HTMLInputElement>addForm.querySelector(`.${className} input`);
         if (origInput === null) {
             continue; // amount or other generated field
         }
@@ -274,13 +281,13 @@ function deleteBtnHandler(event: Event) {
 
 function undoChangesBtnHandler(event: Event) {
     let tr = getTrForEvent(event);
-    tr.classList.remove('table-info');
     tr.querySelectorAll('td').forEach(td => {
+        td.classList.remove('bg-info-subtle');
         if (td.dataset.hasOwnProperty('orig_text')) {
             td.innerText = td.dataset['orig_text'];
             td.dataset['value'] = td.dataset['orig_value'];
         }
-        if (td.className == 'expenses-billtable-actions') {
+        if (td.className.includes('expenses-billtable-actions')) {
             td.innerHTML = '';
             td.appendChild(getStdButtonGroup(['edit', 'delete']));
         }
@@ -302,9 +309,8 @@ function acceptChangesBtnHandler(event: Event) {
 function acceptChangesHandlerWithTr(editedTr: HTMLTableRowElement) {
     let id = editedTr.dataset['id'];
     let newTr = <HTMLTableRowElement>document.createElement('tr');
-    newTr.classList.add("expenses-billtable-row", "table-info");
     newTr.dataset['id'] = id;
-    buildTrFromInputs(newTr, editedTr, id,isIdForAddition(id) ? 'add' : 'edit', ['edit', 'undo', 'delete']);
+    buildTrFromInputs(newTr, editedTr, id, isIdForAddition(id) ? 'add' : 'edit', ['edit', 'undo', 'delete']);
     editedTr.parentElement.replaceChild(newTr, editedTr);
 }
 

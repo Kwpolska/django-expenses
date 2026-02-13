@@ -7,14 +7,14 @@
                 <li class="page-item">
                     <a class="page-link" href="{% exp_set_page page.previous_page_number %}" aria-label="{% trans "Previous" %}">
                         <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">{% trans "Previous" %}</span>
+                        <span class="visually-hidden">{% trans "Previous" %}</span>
                     </a>
                 </li>
             {% else %}
                 <li class="page-item disabled">
                     <a class="page-link" href="{% exp_set_page page.number %}" aria-label="{% trans "Previous" %}">
                         <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">{% trans "Previous" %}</span>
+                        <span class="visually-hidden">{% trans "Previous" %}</span>
                     </a>
                 </li>
             {% endif %}
@@ -29,14 +29,14 @@
                 <li class="page-item">
                     <a class="page-link" href="{% exp_set_page page.next_page_number %}" aria-label="{% trans "Next" %}">
                         <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">{% trans "Next" %}</span>
+                        <span class="visually-hidden">{% trans "Next" %}</span>
                     </a>
                 </li>
             {% else %}
                 <li class="page-item disabled">
                     <a class="page-link" href="{% exp_set_page page.number %}" aria-label="{% trans "Next" %}">
                         <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">{% trans "Next" %}</span>
+                        <span class="visually-hidden">{% trans "Next" %}</span>
                     </a>
                 </li>
             {% endif %}

@@ -6,4 +6,7 @@ declare namespace _expConfig_ {
 
 declare function gettext(text: string): string;
 declare function $(text: string): any;
-declare const Popper: any;
+
+declare namespace Popper {
+    function createPopper(reference: HTMLElement, popper: HTMLElement, options?: any): any;
+}
