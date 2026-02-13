@@ -11,6 +11,9 @@ More information can be found on GitHub in the `releases section
 Version History
 ===============
 
+0.7.1
+    * Upgrade JS dependencies
+
 0.7.0
     * Migrate to Bootstrap 5
 
