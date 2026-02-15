@@ -1,7 +1,8 @@
 {% extends "expenses/expbase.html" %}
 {% load i18n %}
 {% load expenses_extras %}
-{% block exp_toolbar %}
+{% block content %}
+<div class="mb-3">
     <div class="d-block d-md-none"><a href="#expenses-search-settings" class="btn btn-secondary expenses-search-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="expenses-search-settings"><i class="fa fa-filter"></i> {% trans "Filters" %}</a></div>
     <form method="GET" id="expenses-search-form">
         <div class="row collapse" id="expenses-search-settings">
@@ -37,69 +38,69 @@
             <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i> {% trans "Search" %}</button>
         </div>
     </form>
-{% endblock %}
-{% block content %}
-    {% if not has_query %}
-        <p class="expenses-empty">{% trans "Type in a query above and press Search." %}</p>
-    {% elif search_for == 'expenses' %}
-        <h1 id="search-results">{% trans "Search results" %}</h1>
-        {% expense_table items %}
+</div>
+
+{% if not has_query %}
+    <p class="expenses-empty">{% trans "Type in a query above and press Search." %}</p>
+{% elif search_for == 'expenses' %}
+    <h1 id="search-results">{% trans "Search results" %}</h1>
+    {% expense_table items %}
+    {% exp_paginator items %}
+{% elif search_for == 'billitems' %}
+    <h1 id="search-results">{% trans "Search results" %}</h1>
+    {% if items %}
+        <table class="table table-hover expenses-table" id="expenses-billtable">
+            <thead>
+            <tr>
+                <th class="expenses-search-billitemtable-date">{% trans "Date" %}</th>
+                <th class="expenses-search-billitemtable-vendor">{% trans "Vendor" %}</th>
+                <th class="expenses-search-billitemtable-product">{% trans "Product" %}</th>
+                <th class="expenses-search-billitemtable-serving">{% trans "Serving" %}</th>
+                <th class="expenses-search-billitemtable-unitprice">{% trans "Unit Price" %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for bi in items %}
+                <tr>
+                    <td class="expenses-search-billitemtable-date">{{ bi.bill.date|date:"c" }}</td>
+                    <td class="expenses-search-billitemtable-vendor">{{ bi.bill.vendor }}</td>
+                    <td class="expenses-search-billitemtable-product">{{ bi.product }}</td>
+                    <td class="expenses-search-billitemtable-serving">{{ bi.serving }}</td>
+                    <td class="expenses-search-billitemtable-unitprice">{% money bi.unit_price %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
         {% exp_paginator items %}
-    {% elif search_for == 'billitems' %}
-        <h1 id="search-results">{% trans "Search results" %}</h1>
-        {% if items %}
-            <table class="table table-hover expenses-table" id="expenses-billtable">
-                <thead>
-                <tr>
-                    <th class="expenses-search-billitemtable-date">{% trans "Date" %}</th>
-                    <th class="expenses-search-billitemtable-vendor">{% trans "Vendor" %}</th>
-                    <th class="expenses-search-billitemtable-product">{% trans "Product" %}</th>
-                    <th class="expenses-search-billitemtable-serving">{% trans "Serving" %}</th>
-                    <th class="expenses-search-billitemtable-unitprice">{% trans "Unit Price" %}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for bi in items %}
-                    <tr>
-                        <td class="expenses-search-billitemtable-date">{{ bi.bill.date|date:"c" }}</td>
-                        <td class="expenses-search-billitemtable-vendor">{{ bi.bill.vendor }}</td>
-                        <td class="expenses-search-billitemtable-product">{{ bi.product }}</td>
-                        <td class="expenses-search-billitemtable-serving">{{ bi.serving }}</td>
-                        <td class="expenses-search-billitemtable-unitprice">{% money bi.unit_price %}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            {% exp_paginator items %}
-        {% else %}
-            <p class="expenses-empty">{% trans "No bill items to show." %}</p>
-        {% endif %}
-    {% elif search_for == 'purchases' %}
-        <h1 id="search-results">{% trans "Search results" %}</h1>
-        {% if items %}
-            <table class="table table-hover expenses-table" id="expenses-billtable">
-                <thead>
-                <tr>
-                    <th class="expenses-search-purchasetable-date">{% trans "Date" %}</th>
-                    <th class="expenses-search-purchasetable-vendor">{% trans "Vendor" %}</th>
-                    <th class="expenses-search-purchasetable-product">{% trans "Product" %}</th>
-                    <th class="expenses-search-purchasetable-unitprice">{% trans "Unit Price" %}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for item_date, vendor, product, unit_price in items %}
-                    <tr>
-                        <td class="expenses-search-purchasetable-date">{{ item_date|date:"c" }}</td>
-                        <td class="expenses-search-purchasetable-vendor">{{ vendor }}</td>
-                        <td class="expenses-search-purchasetable-product">{{ product }}</td>
-                        <td class="expenses-search-purchasetable-unitprice">{% money unit_price %}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            {% exp_paginator items %}
-        {% else %}
-            <p class="expenses-empty">{% trans "No bill items to show." %}</p>
-        {% endif %}
+    {% else %}
+        <p class="expenses-empty">{% trans "No bill items to show." %}</p>
     {% endif %}
+{% elif search_for == 'purchases' %}
+    <h1 id="search-results">{% trans "Search results" %}</h1>
+    {% if items %}
+        <table class="table table-hover expenses-table" id="expenses-billtable">
+            <thead>
+            <tr>
+                <th class="expenses-search-purchasetable-date">{% trans "Date" %}</th>
+                <th class="expenses-search-purchasetable-vendor">{% trans "Vendor" %}</th>
+                <th class="expenses-search-purchasetable-product">{% trans "Product" %}</th>
+                <th class="expenses-search-purchasetable-unitprice">{% trans "Unit Price" %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item_date, vendor, product, unit_price in items %}
+                <tr>
+                    <td class="expenses-search-purchasetable-date">{{ item_date|date:"c" }}</td>
+                    <td class="expenses-search-purchasetable-vendor">{{ vendor }}</td>
+                    <td class="expenses-search-purchasetable-product">{{ product }}</td>
+                    <td class="expenses-search-purchasetable-unitprice">{% money unit_price %}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% exp_paginator items %}
+    {% else %}
+        <p class="expenses-empty">{% trans "No bill items to show." %}</p>
+    {% endif %}
+{% endif %}
 {% endblock %}
