@@ -19,7 +19,7 @@ from django.utils.translation import get_language
 
 def asciify(string: str) -> str:
     """Convert a Latin-with-diacritics string to ASCII."""
-    nfkd_form = unicodedata.normalize("NFKD", string.replace("ł", "l").replace("’", "'"))
+    nfkd_form = unicodedata.normalize("NFKD", string.casefold().replace("ł", "l").replace("’", "'"))
     return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
 
 
