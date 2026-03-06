@@ -38,7 +38,7 @@
                 <td class="expenses-table-vendor">{{ expense.vendor }}</td>
                 <td class="expenses-table-category">{{ expense.category.html_link }}</td>
                 <td class="expenses-table-amount">{% money expense.amount %}</td>
-                <td class="expenses-table-description"><a href="{{ expense.get_absolute_url }}">{% if expense.is_bill and pid != 'bill_list' %}<span class="badge bg-secondary">{% trans "Bill" %}</span>{% endif %} {{ expense.desc_auto }}</a></td>
+                <td class="expenses-table-description"><a href="{{ expense.get_absolute_url }}">{% if expense.is_bill and pid != 'bill_list' %}<span class="badge bg-secondary">{% trans "Bill" %}</span> {% endif %}{% if expense.desc_auto == '' %}<i>{% trans "(empty)" %}</i>{% else %}{{ expense.desc_auto }}{% endif %}</a></td>
             </tr>
         {% endfor %}
         </tbody>
@@ -51,7 +51,7 @@
             <tr><td colspan="2" class="expenses-mtable-date">{{ expense.date|date:"c" }}</td></tr>
         {% endifchanged %}
         <tr>
-            <td class="expenses-mtable-left"><a class="expenses-mtable-description" href="{{ expense.get_absolute_url }}">{{ expense.desc_auto }}</a>
+            <td class="expenses-mtable-left"><a class="expenses-mtable-description" href="{{ expense.get_absolute_url }}">{% if expense.desc_auto == '' %}<i>{% trans "(empty)" %}</i>{% else %}{{ expense.desc_auto }}{% endif %}</a>
                 <p class="expenses-mtable-details">
                     {{ expense.vendor }} — {{ expense.category.html_link }}
                     {% if expense.is_bill and pid != 'bill_list' %}— <span class="badge bg-secondary">{% trans "Bill" %}</span>{% endif %}

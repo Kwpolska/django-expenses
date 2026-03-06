@@ -3,14 +3,14 @@
 {% load static %}
 {% load expenses_extras %}
 {% block extra_head %}
-<link href="{% static "expenses/expenses.css" %}?v=20260213" rel="stylesheet">
+<link href="{% static "expenses/expenses.css" %}?v=20260216" rel="stylesheet">
 <link rel="shortcut icon" href="{% static "expenses/expenses-favicon.ico" %}">
 <link rel="icon" href="{% static "expenses/expenses-favicon.ico" %}">
 {% endblock %}
 {% block extra_scripts %}
     <script>var _expConfig_ = {% exp_config_json %};</script>
     <script type="text/javascript" src="{% url 'expenses:javascript-catalog' %}"></script>
-    <script src="{% static "expenses/expenses.js" %}?v=20260213"></script>
+    <script src="{% static "expenses/expenses.js" %}?v=20260216"></script>
 {% endblock %}
 {% block navbar_container %}
     <nav class="navbar navbar-expand-md navbar-kw fixed-top"><div class="container">

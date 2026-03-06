@@ -34,6 +34,15 @@ class ExpensesModel(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        """Strip whitespace from text fields before saving."""
+        for field in self._meta.get_fields():
+            if isinstance(field, (models.CharField, models.TextField)):
+                value = getattr(self, field.name, None)
+                if value is not None and isinstance(value, str):
+                    setattr(self, field.name, value.strip())
+        super().save(*args, **kwargs)
+
     def to_json(self) -> dict:
         output = {
             "id": self.pk,
@@ -169,7 +178,7 @@ class Expense(ExpensesModel):
 
     def generate_bill_description_full(self):
         if self.billitem_set.count() == 0:
-            return _("(empty)")
+            return ""
         return ", ".join(i.product for i in self.billitem_set.all())
 
     def generate_bill_description(self):
