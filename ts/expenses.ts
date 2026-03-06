@@ -1,6 +1,6 @@
 /*!
  * Expenses Scripting Enhancements
- * Copyright © 2018-2023, Chris Warrick. All rights reserved. License: 3-clause BSD.
+ * Copyright © 2018-2026, Chris Warrick. All rights reserved. License: 3-clause BSD.
  */
 import initializeBillEditor from "./billeditor";
 import initializeBulkCatEditor from "./bulkcateditor";

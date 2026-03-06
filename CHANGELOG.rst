@@ -11,6 +11,9 @@ More information can be found on GitHub in the `releases section
 Version History
 ===============
 
+0.8.0
+    * Autocomplete ignores some diacritics and other special characters
+
 0.7.1
     * Upgrade JS dependencies
 

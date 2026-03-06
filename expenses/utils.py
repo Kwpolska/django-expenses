@@ -1,5 +1,5 @@
 # Django-Expenses
-# Copyright © 2018-2023, Chris Warrick.
+# Copyright © 2018-2026, Chris Warrick.
 # All rights reserved.
 # See /LICENSE for licensing information.
 
@@ -11,9 +11,16 @@ import decimal
 import iso8601
 import itertools
 import typing
+import unicodedata
 from django.utils import timezone
 from django.conf import settings
 from django.utils.translation import get_language
+
+
+def asciify(string: str) -> str:
+    """Convert a Latin-with-diacritics string to ASCII."""
+    nfkd_form = unicodedata.normalize("NFKD", string.replace("ł", "l").replace("’", "'"))
+    return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
 
 
 def format_money(amount: typing.Union[int, float, decimal.Decimal]) -> str:

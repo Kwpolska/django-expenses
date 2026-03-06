@@ -1,5 +1,5 @@
 # Django-Expenses
-# Copyright © 2018-2023, Chris Warrick.
+# Copyright © 2018-2026, Chris Warrick.
 # All rights reserved.
 # See /LICENSE for licensing information.
 
@@ -15,6 +15,7 @@ from django.db import models, connection
 
 
 from expenses.utils import (
+    asciify,
     round_money,
     serialize_dt,
     serialize_date,
@@ -159,6 +160,8 @@ class Expense(ExpensesModel):
     amount = models.DecimalField(_("Amount"), max_digits=10, decimal_places=2)
     description = models.CharField(_("Description"), max_length=80, blank=True)
     is_bill = models.BooleanField(_("This is a bill"), default=False)
+    vendor_ascii = models.CharField(_("Vendor (ASCII)"), max_length=40)
+    description_ascii = models.CharField(_("Description (ASCII)"), max_length=80, blank=True)
     description_cache = models.CharField(_("Description (cache)"), max_length=300, blank=True)
 
     def __str__(self):
@@ -216,6 +219,7 @@ class BillItem(ExpensesModel):
     serving = models.DecimalField(_("Serving"), max_digits=10, decimal_places=3, null=True)
     count = models.DecimalField(_("Count"), max_digits=10, decimal_places=3)  # weighted products
     unit_price = models.DecimalField(_("Unit price"), max_digits=10, decimal_places=2)
+    product_ascii = models.CharField(_("Product (ASCII)"), max_length=40)
 
     @property
     def amount(self):
@@ -412,6 +416,7 @@ def update_bill_info_on_billitem_change(instance: BillItem, **kwargs):
         bill.description_cache = bill.generate_bill_description()
     else:
         bill.description_cache = bill.description
+    instance.product_ascii = asciify(instance.product)
     bill.save()
 
 
@@ -426,6 +431,9 @@ def update_bill_info_on_bill_save(instance: Expense, **kwargs):
         instance.amount = instance.calculate_bill_total()
     if instance.is_bill and not instance.description:
         instance.description_cache = instance.generate_bill_description()
+
+    instance.vendor_ascii = asciify(instance.vendor)
+    instance.description_ascii = asciify(instance.description)
 
 
 @receiver(models.signals.pre_delete, sender=Category)
