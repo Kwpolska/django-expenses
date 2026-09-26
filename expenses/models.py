@@ -416,8 +416,12 @@ def update_bill_info_on_billitem_change(instance: BillItem, **kwargs):
         bill.description_cache = bill.generate_bill_description()
     else:
         bill.description_cache = bill.description
-    instance.product_ascii = asciify(instance.product)
     bill.save()
+
+
+@receiver(models.signals.pre_save, sender=BillItem)
+def update_billitem_ascii(instance: BillItem, **kwargs):
+    instance.product_ascii = asciify(instance.product)
 
 
 @receiver(models.signals.pre_save, sender=Expense)
